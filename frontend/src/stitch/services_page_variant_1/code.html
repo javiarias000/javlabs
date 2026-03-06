@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS - Servicios de Automatización</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Michroma&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "accent-violet": "#8b5cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#111827",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "michroma": ["Michroma", "sans-serif"],
+                        "montserrat": ["Montserrat", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .gradient-underline {
+            height: 2px;
+            background: linear-gradient(90deg, #0d0df2 0%, #8b5cf6 100%);
+        }
+        .gradient-border-btn {
+            position: relative;
+            background: #111827;
+            background-clip: padding-box;
+            border: 1px solid transparent;
+        }
+        .gradient-border-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            z-index: -1;
+            margin: -1px;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #0d0df2, #8b5cf6);
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(13, 13, 242, 0.15);
+            border-color: rgba(13, 13, 242, 0.4);
+        }
+        .circuit-icon {
+            background: linear-gradient(135deg, #0d0df2 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-800 px-10 py-4 bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined text-3xl">settings_input_component</span>
+</div>
+<h2 class="text-white text-xl font-michroma tracking-wider">JAV LABS</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-9 font-montserrat">
+<a class="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest" href="#">Servicios</a>
+<a class="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest" href="#">Procesos</a>
+<a class="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest" href="#">FAQ</a>
+<a class="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest" href="#">Contacto</a>
+</div>
+<button class="bg-primary hover:bg-primary/80 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 transition-all">
+                Agendar Diagnóstico
+            </button>
+</nav>
+</header>
+<main class="flex-1">
+<!-- Page Header -->
+<section class="relative py-24 px-10 flex flex-col items-center justify-center text-center overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-20" style="background-image: radial-gradient(circle at 50% 50%, #0d0df2 0%, transparent 70%);"></div>
+<div class="relative z-10 max-w-4xl">
+<h1 class="text-white text-5xl md:text-6xl font-michroma mb-6 tracking-tighter">
+                    NUESTROS SERVICIOS
+                </h1>
+<div class="gradient-underline w-32 mx-auto mb-8"></div>
+<p class="text-slate-400 font-montserrat text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                    Soluciones avanzadas de automatización e inteligencia artificial diseñadas para escalar tu infraestructura digital.
+                </p>
+</div>
+</section>
+<!-- Service Cards Grid -->
+<section class="px-10 py-20 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-card-dark border border-slate-800 p-8 flex flex-col hover-glow transition-all group">
+<span class="material-symbols-outlined text-5xl circuit-icon mb-6">memory</span>
+<h3 class="text-white text-xl font-michroma mb-4 tracking-tight">Automatización de Procesos</h3>
+<p class="text-slate-400 font-montserrat text-sm mb-8 leading-relaxed">
+                        Eliminamos cuellos de botella mediante flujos de trabajo inteligentes que conectan sus herramientas actuales.
+                    </p>
+<ul class="space-y-3 mb-10 flex-1">
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Ahorro de +40h mensuales
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Reducción de error humano
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Reportes en tiempo real
+                        </li>
+</ul>
+<button class="gradient-border-btn w-full py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-primary/10 transition-colors">
+                        Solicitar este servicio
+                    </button>
+</div>
+<!-- Card 2 -->
+<div class="bg-card-dark border border-slate-800 p-8 flex flex-col hover-glow transition-all group">
+<span class="material-symbols-outlined text-5xl circuit-icon mb-6">psychology</span>
+<h3 class="text-white text-xl font-michroma mb-4 tracking-tight">IA Generativa</h3>
+<p class="text-slate-400 font-montserrat text-sm mb-8 leading-relaxed">
+                        Implementación de modelos de lenguaje personalizados para atención al cliente y análisis de datos profundo.
+                    </p>
+<ul class="space-y-3 mb-10 flex-1">
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Chatbots con contexto real
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Análisis predictivo
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Entrenamiento de LLMs
+                        </li>
+</ul>
+<button class="gradient-border-btn w-full py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-primary/10 transition-colors">
+                        Solicitar este servicio
+                    </button>
+</div>
+<!-- Card 3 -->
+<div class="bg-card-dark border border-slate-800 p-8 flex flex-col hover-glow transition-all group">
+<span class="material-symbols-outlined text-5xl circuit-icon mb-6">hub</span>
+<h3 class="text-white text-xl font-michroma mb-4 tracking-tight">Integración de Sistemas</h3>
+<p class="text-slate-400 font-montserrat text-sm mb-8 leading-relaxed">
+                        Conectamos su ecosistema de software a través de APIs robustas para una sincronización de datos impecable.
+                    </p>
+<ul class="space-y-3 mb-10 flex-1">
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Estrategia API First
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Escalabilidad horizontal
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Seguridad de grado bancario
+                        </li>
+</ul>
+<button class="gradient-border-btn w-full py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-primary/10 transition-colors">
+                        Solicitar este servicio
+                    </button>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="bg-slate-900/50 py-24 px-10">
+<div class="max-w-7xl mx-auto">
+<h2 class="text-white text-3xl font-michroma mb-16 text-center">¿CÓMO TRABAJAMOS?</h2>
+<div class="relative flex flex-col md:flex-row justify-between items-start gap-12">
+<!-- Line -->
+<div class="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent-violet z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center text-center md:w-1/4">
+<div class="size-16 bg-background-dark border-2 border-primary flex items-center justify-center text-primary font-michroma text-xl mb-6">01</div>
+<h4 class="text-white font-bold mb-2 font-michroma text-sm">DIAGNÓSTICO</h4>
+<p class="text-slate-400 text-xs font-montserrat px-4">Auditamos sus procesos actuales y detectamos ineficiencias.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center text-center md:w-1/4">
+<div class="size-16 bg-background-dark border-2 border-primary flex items-center justify-center text-primary font-michroma text-xl mb-6">02</div>
+<h4 class="text-white font-bold mb-2 font-michroma text-sm">PROPUESTA</h4>
+<p class="text-slate-400 text-xs font-montserrat px-4">Diseñamos una arquitectura técnica a medida de sus metas.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center text-center md:w-1/4">
+<div class="size-16 bg-background-dark border-2 border-primary flex items-center justify-center text-primary font-michroma text-xl mb-6">03</div>
+<h4 class="text-white font-bold mb-2 font-michroma text-sm">IMPLEMENTACIÓN</h4>
+<p class="text-slate-400 text-xs font-montserrat px-4">Desarrollo ágil y despliegue de las soluciones elegidas.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative z-10 flex flex-col items-center text-center md:w-1/4">
+<div class="size-16 bg-background-dark border-2 border-accent-violet flex items-center justify-center text-accent-violet font-michroma text-xl mb-6">04</div>
+<h4 class="text-white font-bold mb-2 font-michroma text-sm">SOPORTE</h4>
+<p class="text-slate-400 text-xs font-montserrat px-4">Optimización continua y mantenimiento proactivo 24/7.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Comparison Table -->
+<section class="px-10 py-24 max-w-7xl mx-auto">
+<h2 class="text-white text-3xl font-michroma mb-12">COMPARATIVA DE PLANES</h2>
+<div class="overflow-x-auto border border-slate-800">
+<table class="w-full text-left font-montserrat">
+<thead>
+<tr class="bg-gradient-to-r from-primary/20 to-accent-violet/20 border-b border-slate-800">
+<th class="p-6 text-white font-michroma text-sm tracking-widest uppercase">Característica</th>
+<th class="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Básico</th>
+<th class="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center border-x border-slate-700/50 bg-primary/10">Profesional</th>
+<th class="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Enterprise</th>
+</tr>
+</thead>
+<tbody class="bg-card-dark divide-y divide-slate-800">
+<tr>
+<td class="p-6 text-slate-300 font-medium">Automatizaciones</td>
+<td class="p-6 text-center text-slate-400">Hasta 5</td>
+<td class="p-6 text-center text-white border-x border-slate-700/50">Hasta 20</td>
+<td class="p-6 text-center text-slate-400">Ilimitadas</td>
+</tr>
+<tr>
+<td class="p-6 text-slate-300 font-medium">Soporte Técnico</td>
+<td class="p-6 text-center text-slate-400">Email (48h)</td>
+<td class="p-6 text-center text-white border-x border-slate-700/50">Prioritario 24/7</td>
+<td class="p-6 text-center text-slate-400">Manager Dedicado</td>
+</tr>
+<tr>
+<td class="p-6 text-slate-300 font-medium">Integraciones Custom</td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="p-6 text-center border-x border-slate-700/50"><span class="material-symbols-outlined text-primary">check</span></td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+<tr>
+<td class="p-6 text-slate-300 font-medium">Infraestructura IA</td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="p-6 text-center border-x border-slate-700/50"><span class="material-symbols-outlined text-primary">check</span></td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="px-10 py-24 max-w-4xl mx-auto">
+<h2 class="text-white text-3xl font-michroma mb-12 text-center uppercase">Preguntas Frecuentes</h2>
+<div class="space-y-4">
+<div class="bg-card-dark border-l-4 border-slate-800 p-6 hover:border-primary transition-all">
+<div class="flex justify-between items-center cursor-pointer">
+<h4 class="text-white font-michroma text-sm uppercase">¿Cuánto tiempo toma una implementación estándar?</h4>
+<span class="material-symbols-outlined text-slate-500">expand_more</span>
+</div>
+<div class="mt-4 text-slate-400 text-sm font-montserrat leading-relaxed">
+                        Típicamente, los proyectos básicos se despliegan en 2-3 semanas, mientras que las soluciones Enterprise pueden tomar de 2 a 4 meses dependiendo de la complejidad.
+                    </div>
+</div>
+<div class="bg-card-dark border-l-4 border-primary p-6">
+<div class="flex justify-between items-center cursor-pointer">
+<h4 class="text-white font-michroma text-sm uppercase">¿Es necesario reemplazar mis herramientas actuales?</h4>
+<span class="material-symbols-outlined text-primary">expand_less</span>
+</div>
+<div class="mt-4 text-slate-400 text-sm font-montserrat leading-relaxed">
+                        No. Nuestra especialidad es la integración. Trabajamos sobre su stack tecnológico actual (Salesforce, Hubspot, SAP, etc.) para potenciarlo sin fricciones.
+                    </div>
+</div>
+<div class="bg-card-dark border-l-4 border-slate-800 p-6 hover:border-primary transition-all">
+<div class="flex justify-between items-center cursor-pointer">
+<h4 class="text-white font-michroma text-sm uppercase">¿Ofrecen garantía de ROI?</h4>
+<span class="material-symbols-outlined text-slate-500">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom CTA -->
+<section class="bg-background-dark py-20 px-10 border-t border-slate-800">
+<div class="max-w-5xl mx-auto text-center">
+<h3 class="text-white text-2xl md:text-3xl font-michroma mb-8">
+                    ¿NO SABES QUÉ SERVICIO NECESITAS? HABLEMOS.
+                </h3>
+<button class="bg-gradient-to-r from-primary to-accent-violet hover:opacity-90 text-white font-bold uppercase tracking-widest px-10 py-5 transition-all shadow-lg shadow-primary/20">
+                    Agendar Diagnóstico Gratuito
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-card-dark px-10 py-12 border-t border-slate-800">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-2">
+<div class="flex items-center gap-3 text-white mb-6">
+<span class="material-symbols-outlined text-2xl text-primary">settings_input_component</span>
+<h2 class="text-lg font-michroma tracking-widest">JAV LABS</h2>
+</div>
+<p class="text-slate-500 font-montserrat text-sm max-w-md leading-relaxed">
+                    Laboratorio de automatización avanzada especializado en IA y optimización de flujos operativos para empresas de alto rendimiento.
+                </p>
+</div>
+<div>
+<h4 class="text-white font-michroma text-xs uppercase mb-6 tracking-widest">Legal</h4>
+<div class="flex flex-col gap-3">
+<a class="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="#">Privacidad</a>
+<a class="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="#">Términos</a>
+<a class="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="#">Cookies</a>
+</div>
+</div>
+<div>
+<h4 class="text-white font-michroma text-xs uppercase mb-6 tracking-widest">Social</h4>
+<div class="flex flex-col gap-3">
+<a class="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="#">LinkedIn</a>
+<a class="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="#">X / Twitter</a>
+<a class="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="#">Github</a>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-600 text-xs font-montserrat">© 2024 JAV LABS. Todos los derechos reservados.</p>
+<p class="text-slate-600 text-xs font-montserrat uppercase tracking-widest">Pioneering Efficiency.</p>
+</div>
+</footer>
+</div>
+</body></html>

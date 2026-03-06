@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS Client Dashboard Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Montserrat:wght@300;400;500;600;700&amp;family=Michroma&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "nav-bg": "#0D1B2A",
+                        "card-bg": "#1E293B",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "montserrat": ["Montserrat", "sans-serif"],
+                        "michroma": ["Michroma", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="flex min-h-screen">
+<!-- SIDEBAR -->
+<aside class="w-[240px] bg-nav-bg flex-shrink-0 flex flex-col border-r border-slate-800">
+<div class="p-8 flex items-center gap-3">
+<div class="size-10 bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center rounded-lg shadow-lg shadow-primary/20">
+<span class="text-white font-michroma text-xl">JV</span>
+</div>
+<div>
+<h1 class="text-white font-michroma text-sm tracking-widest">JAV LABS</h1>
+<p class="text-slate-400 text-[10px] uppercase tracking-tighter font-montserrat">Automation Agency</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-2 font-montserrat">
+<a class="flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 border-primary bg-gradient-to-r from-primary/20 to-transparent" href="#">
+<span class="material-symbols-outlined text-primary">dashboard</span>
+<span class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm font-medium transition-all border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span>Mis Proyectos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm font-medium transition-all border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span>Automatizaciones</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm font-medium transition-all border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reportes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm font-medium transition-all border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span>Soporte</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm font-medium transition-all border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Configuración</span>
+</a>
+</nav>
+<div class="p-6 border-t border-slate-800">
+<div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700">
+<p class="text-xs text-slate-400 font-montserrat mb-2">Plan Enterprise</p>
+<div class="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- TOP BAR -->
+<header class="h-16 border-b border-slate-800 bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center gap-4 w-96">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xl group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-slate-800/50 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary placeholder:text-slate-500" placeholder="Buscar automatizaciones..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
+</button>
+<div class="h-8 w-px bg-slate-800"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-montserrat text-slate-400">Bienvenido,</p>
+<p class="text-sm font-bold text-white">Alex Rivadeneira</p>
+</div>
+<div class="size-10 rounded-full bg-primary/20 border border-primary/40 p-0.5">
+<img alt="Avatar del usuario" class="w-full h-full rounded-full bg-slate-800" data-alt="User profile avatar with friendly face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlIuqyJFQjzjitdFro14TLSmuLxRLQWIUOVaN2qMFDALyTkmKUSFJNcy7maJfazPMjVRYPiPYXdC-CGdh-i4_Knx8l4ENMt-pZOcMLp0B7gUPuEQojSwYFU3mcOgA3PlUQCFN7KJCn3CratpfzmrIMmfKwU5Ee7BaAW_4Hbm5JZnf285d83jkLmpkSl51lMCb-p2PHa4hptmV2ZMqzHjhF6tuEMWlT6GILL3qsVy2n55YxLXtPHqOJXkGk-cDR1iclM24w94wHacA"/>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8 overflow-y-auto">
+<!-- KPI CARDS -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-card-bg p-6 border border-slate-700 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-primary">hub</span>
+</div>
+<p class="text-slate-400 text-xs font-montserrat uppercase tracking-wider">Automatizaciones Activas</p>
+<div class="flex items-end justify-between mt-2">
+<h3 class="font-michroma text-3xl text-white">24</h3>
+<span class="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-1 rounded">+12%</span>
+</div>
+</div>
+<div class="bg-card-bg p-6 border border-slate-700 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-violet-500">memory</span>
+</div>
+<p class="text-slate-400 text-xs font-montserrat uppercase tracking-wider">Tareas Ejecutadas</p>
+<div class="flex items-end justify-between mt-2">
+<h3 class="font-michroma text-3xl text-white">12,850</h3>
+<span class="text-rose-400 text-xs font-bold bg-rose-400/10 px-2 py-1 rounded">-5%</span>
+</div>
+</div>
+<div class="bg-card-bg p-6 border border-slate-700 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-cyan-400">schedule</span>
+</div>
+<p class="text-slate-400 text-xs font-montserrat uppercase tracking-wider">Tiempo Ahorrado</p>
+<div class="flex items-end justify-between mt-2">
+<h3 class="font-michroma text-3xl text-white">450h</h3>
+<span class="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-1 rounded">+18%</span>
+</div>
+</div>
+<div class="bg-card-bg p-6 border border-slate-700 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-amber-400">build</span>
+</div>
+<p class="text-slate-400 text-xs font-montserrat uppercase tracking-wider">Próximo Mantenimiento</p>
+<div class="flex items-end justify-between mt-2">
+<h3 class="font-michroma text-3xl text-white">12 Oct</h3>
+<span class="text-slate-500 text-xs font-bold">Programado</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- ACTIVITY CHART & TABLE -->
+<div class="lg:col-span-2 space-y-8">
+<!-- CHART -->
+<div class="bg-card-bg border border-slate-700 p-6 rounded-lg">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h4 class="text-white font-bold text-lg">Actividad de Automatización</h4>
+<p class="text-slate-400 text-sm">Pings registrados en los últimos 30 días</p>
+</div>
+<select class="bg-slate-800 border-slate-700 text-xs rounded text-slate-300">
+<option>Últimos 30 días</option>
+<option>Últimos 7 días</option>
+</select>
+</div>
+<div class="h-64 relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-10">
+<div class="border-t border-slate-100 w-full h-px"></div>
+<div class="border-t border-slate-100 w-full h-px"></div>
+<div class="border-t border-slate-100 w-full h-px"></div>
+<div class="border-t border-slate-100 w-full h-px"></div>
+<div class="border-t border-slate-100 w-full h-px"></div>
+</div>
+<!-- Chart Line (SVG Simulation) -->
+<svg class="w-full h-full relative z-10" preserveaspectratio="none" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#0d0df2" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#0d0df2" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,150 Q100,80 200,120 T400,60 T600,140 T800,40 L1000,90 L1000,200 L0,200 Z" fill="url(#chartGradient)"></path>
+<path d="M0,150 Q100,80 200,120 T400,60 T600,140 T800,40 L1000,90" fill="none" stroke="#0d0df2" stroke-width="3"></path>
+</svg>
+<div class="flex justify-between mt-4 text-[10px] font-montserrat text-slate-500 uppercase tracking-tighter">
+<span>Semana 1</span>
+<span>Semana 2</span>
+<span>Semana 3</span>
+<span>Semana 4</span>
+</div>
+</div>
+</div>
+<!-- PROJECT TABLE -->
+<div class="bg-card-bg border border-slate-700 rounded-lg overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+<h4 class="text-white font-bold">Proyectos en Curso</h4>
+<button class="text-primary text-xs hover:underline">Ver todos</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="bg-slate-800/50 text-slate-400 text-xs uppercase font-montserrat">
+<tr>
+<th class="px-6 py-4">Proyecto</th>
+<th class="px-6 py-4">Estado</th>
+<th class="px-6 py-4">Progreso</th>
+<th class="px-6 py-4">Responsable</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-800">
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-medium text-white">CRM Automation Engine</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 uppercase">Activo</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-violet-500 w-[85%]"></div>
+</div>
+<span class="text-xs text-slate-400">85%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">Alex R.</td>
+</tr>
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-medium text-white">SAP Data Bridge</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20 uppercase">En Progreso</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-violet-500 w-[42%]"></div>
+</div>
+<span class="text-xs text-slate-400">42%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">Maria G.</td>
+</tr>
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-medium text-white">Legacy Scraper V2</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase">Pausado</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-slate-500 w-[100%]"></div>
+</div>
+<span class="text-xs text-slate-400">100%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">David L.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- SIDE PANELS: RECENT ACTIVITY & QUICK ACTIONS -->
+<div class="space-y-8">
+<!-- RECENT ACTIVITY -->
+<div class="bg-card-bg border border-slate-700 p-6 rounded-lg">
+<h4 class="text-white font-bold mb-6">Actividad Reciente</h4>
+<div class="space-y-6 relative">
+<div class="absolute left-[11px] top-2 bottom-2 w-px bg-slate-800"></div>
+<div class="relative flex gap-4">
+<div class="size-6 rounded-full bg-primary flex-shrink-0 z-10 border-4 border-card-bg"></div>
+<div>
+<p class="text-sm text-slate-100 font-medium">Backup completado</p>
+<p class="text-xs text-slate-500">Hace 15 min • CRM Automation</p>
+</div>
+</div>
+<div class="relative flex gap-4">
+<div class="size-6 rounded-full bg-violet-600 flex-shrink-0 z-10 border-4 border-card-bg"></div>
+<div>
+<p class="text-sm text-slate-100 font-medium">Nueva integración API</p>
+<p class="text-xs text-slate-500">Hace 2 horas • SAP Data Bridge</p>
+</div>
+</div>
+<div class="relative flex gap-4">
+<div class="size-6 rounded-full bg-emerald-500 flex-shrink-0 z-10 border-4 border-card-bg"></div>
+<div>
+<p class="text-sm text-slate-100 font-medium">Script optimizado</p>
+<p class="text-xs text-slate-500">Hace 5 horas • Legacy Scraper</p>
+</div>
+</div>
+<div class="relative flex gap-4">
+<div class="size-6 rounded-full bg-amber-500 flex-shrink-0 z-10 border-4 border-card-bg"></div>
+<div>
+<p class="text-sm text-slate-100 font-medium">Alerta de latencia</p>
+<p class="text-xs text-slate-500">Ayer • Global Node</p>
+</div>
+</div>
+</div>
+</div>
+<!-- QUICK ACTIONS -->
+<div class="bg-card-bg border border-slate-700 p-6 rounded-lg">
+<h4 class="text-white font-bold mb-6">Acciones Rápidas</h4>
+<div class="grid gap-3">
+<button class="w-full p-4 flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">support_agent</span>
+<span class="text-sm font-medium text-slate-200">Solicitar Soporte</span>
+</button>
+<button class="w-full p-4 flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800/30 hover:bg-slate-800/50 transition-all group">
+<span class="material-symbols-outlined text-violet-500 group-hover:scale-110 transition-transform">summarize</span>
+<span class="text-sm font-medium text-slate-200">Ver Reportes</span>
+</button>
+<button class="w-full p-4 flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800/30 hover:bg-slate-800/50 transition-all group">
+<span class="material-symbols-outlined text-cyan-400 group-hover:scale-110 transition-transform">add_link</span>
+<span class="text-sm font-medium text-slate-200">Agregar Integración</span>
+</button>
+</div>
+</div>
+<!-- HELP CARD -->
+<div class="relative overflow-hidden p-6 rounded-lg bg-gradient-to-br from-primary/80 to-violet-800">
+<div class="relative z-10">
+<h5 class="text-white font-bold mb-2">¿Necesitas ayuda?</h5>
+<p class="text-white/80 text-xs mb-4 leading-relaxed">Nuestros ingenieros de automatización están disponibles 24/7 para resolver tus dudas.</p>
+<button class="bg-white text-primary px-4 py-2 rounded text-xs font-bold hover:bg-slate-100 transition-colors uppercase tracking-wider">Contactar</button>
+</div>
+<div class="absolute -bottom-4 -right-4 size-24 opacity-20">
+<span class="material-symbols-outlined text-[100px] text-white">rocket_launch</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

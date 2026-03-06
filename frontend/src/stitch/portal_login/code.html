@@ -1,0 +1,129 @@
+<html class="dark"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Michroma&amp;family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#0d7ff2",
+            "background-light": "#f5f7f8",
+            "background-dark": "#0D1B2A",
+            "accent-violet": "#8b5cf6",
+          },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"],
+            "michroma": ["Michroma", "sans-serif"],
+            "montserrat": ["Montserrat", "sans-serif"],
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .circuit-pattern {
+      background-image: radial-gradient(circle at 2px 2px, rgba(13, 127, 242, 0.05) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+    .gradient-logo {
+      background: linear-gradient(135deg, #0d7ff2 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn-gradient {
+      background: linear-gradient(90deg, #0d7ff2 0%, #8b5cf6 100%);
+    }
+    .input-focus-glow:focus {
+      box-shadow: 0 0 10px rgba(13, 127, 242, 0.3);
+      border-color: #0d7ff2;
+    }
+  </style>
+</head>
+<body class="bg-background-dark font-display text-slate-100 antialiased min-h-screen flex flex-col">
+<div class="fixed inset-0 circuit-pattern pointer-events-none"></div>
+<header class="relative z-10 flex items-center justify-between px-6 py-4 lg:px-12 border-b border-white/10 bg-background-dark/50 backdrop-blur-md">
+<div class="flex items-center gap-2">
+<div class="size-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight font-michroma gradient-logo">JAV LABS</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">Services</a>
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">Contact</a>
+<button class="bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 px-5 py-2 rounded text-sm font-bold transition-all">
+        Support
+      </button>
+</div>
+</header>
+<main class="relative z-10 flex-1 flex items-center justify-center p-4">
+<div class="w-full max-w-[440px]">
+<div class="bg-black border border-white/5 p-8 md:p-12 shadow-2xl rounded-none">
+<div class="flex flex-col items-center mb-10">
+<div class="mb-6 flex items-center justify-center">
+<div class="relative">
+<span class="material-symbols-outlined text-6xl gradient-logo font-bold">account_tree</span>
+<div class="absolute -bottom-1 -right-1 size-4 bg-primary rounded-full animate-pulse"></div>
+</div>
+</div>
+<h1 class="text-2xl font-michroma text-white tracking-wider text-center">INICIAR SESIÓN</h1>
+<div class="h-1 w-12 bg-primary mt-4"></div>
+</div>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="block text-xs font-montserrat uppercase tracking-widest text-slate-400 font-semibold">Email Address</label>
+<div class="relative">
+<input class="w-full bg-[#1b2127] border border-[#555555] rounded-none px-4 py-4 text-white placeholder:text-slate-600 focus:outline-none input-focus-glow transition-all font-montserrat" placeholder="name@company.com" type="email"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 text-sm">mail</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-montserrat uppercase tracking-widest text-slate-400 font-semibold">Password</label>
+<div class="relative">
+<input class="w-full bg-[#1b2127] border border-[#555555] rounded-none px-4 py-4 text-white placeholder:text-slate-600 focus:outline-none input-focus-glow transition-all font-montserrat" placeholder="••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 text-sm">lock</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="size-4 border-[#555555] bg-[#1b2127] text-primary focus:ring-0 rounded-none" type="checkbox"/>
+<span class="text-xs font-montserrat text-slate-400 group-hover:text-slate-200 transition-colors">Remember me</span>
+</label>
+<a class="text-xs font-montserrat text-slate-400 hover:text-primary transition-colors" href="#">Forgot Password?</a>
+</div>
+<button class="w-full btn-gradient py-4 text-white font-montserrat font-bold uppercase tracking-widest text-sm hover:opacity-90 transition-opacity active:scale-[0.98] rounded-none mt-4" type="submit">
+            Entrar al Portal
+          </button>
+</form>
+<div class="mt-10 pt-8 border-t border-white/10 text-center">
+<p class="text-slate-500 text-xs font-montserrat">
+            Acceso restringido para clientes autorizados de <span class="text-primary">JAV LABS</span>.
+          </p>
+</div>
+</div>
+<div class="mt-8 flex justify-center gap-6">
+<a class="text-slate-500 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">public</span>
+</a>
+<a class="text-slate-500 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">share</span>
+</a>
+<a class="text-slate-500 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">help_outline</span>
+</a>
+</div>
+</div>
+</main>
+<footer class="relative z-10 px-6 py-6 text-center">
+<p class="text-[10px] font-montserrat uppercase tracking-[0.2em] text-slate-600">
+      © 2024 JAV LABS Automation Agency. All Rights Reserved.
+    </p>
+</footer>
+</body></html>

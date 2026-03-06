@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS - Error Analysis View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Michroma&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f20d80",
+                        "background-light": "#f8f5f7",
+                        "background-dark": "#050a14", // Deep Navy almost black
+                        "navy-muted": "#0f172a",
+                        "error-glow": "#ff0055"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "michroma": ["Michroma", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .code-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .code-scrollbar::-webkit-scrollbar-track {
+            background: #050a14;
+        }
+        .code-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .glow-diamond {
+            box-shadow: 0 0 15px rgba(242, 13, 128, 0.4);
+        }
+        .technical-grid {
+            background-size: 30px 30px;
+            background-image: linear-gradient(to right, rgba(242, 13, 128, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(242, 13, 128, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen selection:bg-primary selection:text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden technical-grid">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-slate-800 bg-background-dark/80 backdrop-blur-md px-8 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+<h2 class="font-michroma text-lg tracking-wider text-slate-100">JAV LABS</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="#">Terminal</a>
+<a class="text-xs uppercase tracking-widest text-primary border-b border-primary pb-1" href="#">Incidencias</a>
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="#">Nodos</a>
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="#">SLA</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-navy-muted border border-slate-800 px-3 py-1.5">
+<span class="material-symbols-outlined text-slate-500 text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs text-slate-100 placeholder:text-slate-600 w-48 p-0 uppercase tracking-tighter" placeholder="BUSCAR LOG ID..." type="text"/>
+</div>
+<button class="bg-gradient-to-r from-primary to-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-6 py-2.5 hover:opacity-90 transition-opacity">
+                    Contactar Soporte Técnico
+                </button>
+<div class="w-8 h-8 border border-primary p-0.5">
+<div class="w-full h-full bg-slate-800" data-alt="User avatar placeholder profile image"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col p-8 gap-8 max-w-[1600px] mx-auto w-full">
+<!-- Page Header -->
+<div class="flex flex-col gap-2">
+<h1 class="font-michroma text-4xl text-slate-100 tracking-tight uppercase">Análisis de Incidencias</h1>
+<div class="flex items-center gap-4">
+<span class="h-px w-12 bg-primary"></span>
+<p class="text-slate-500 text-xs uppercase tracking-[0.2em]">Technical precision error tracking for JAV LABS automation.</p>
+</div>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-navy-muted border-l-4 border-primary p-6 flex flex-col gap-1 group hover:bg-slate-900 transition-colors">
+<span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tasa de Error</span>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-slate-100">0.2%</span>
+<span class="text-emerald-500 text-xs mb-1">▼ 0.05%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 mt-4">
+<div class="bg-primary h-full w-[0.2%]"></div>
+</div>
+</div>
+<div class="bg-navy-muted border-l-4 border-slate-700 p-6 flex flex-col gap-1 group hover:bg-slate-900 transition-colors">
+<span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Promedio de Resolución</span>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-slate-100">14m 30s</span>
+</div>
+<div class="w-full bg-slate-800 h-1 mt-4">
+<div class="bg-slate-600 h-full w-[45%]"></div>
+</div>
+</div>
+<div class="bg-navy-muted border-l-4 border-error-glow p-6 flex flex-col gap-1 group hover:bg-slate-900 transition-colors">
+<span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Alertas Críticas</span>
+<div class="flex items-center gap-3">
+<span class="text-3xl font-bold text-slate-100">2 Active</span>
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error-glow opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-error-glow"></span>
+</span>
+</div>
+<div class="w-full bg-slate-800 h-1 mt-4">
+<div class="bg-error-glow h-full w-full"></div>
+</div>
+</div>
+</div>
+<!-- Main Analysis Area -->
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
+<!-- Log Timeline (40%) -->
+<div class="lg:col-span-4 flex flex-col gap-4">
+<h3 class="font-michroma text-[10px] text-slate-500 uppercase tracking-widest mb-2">Real-time Pings</h3>
+<div class="flex flex-col border-l border-slate-800 ml-3">
+<!-- Timeline Item - Error -->
+<div class="relative pl-8 pb-8 group">
+<div class="absolute left-[-6px] top-1 w-3 h-3 bg-primary rotate-45 glow-diamond"></div>
+<div class="bg-navy-muted/50 p-4 border border-primary/30">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-primary uppercase tracking-tighter">Error de Conexión API</span>
+<span class="text-[10px] font-mono text-slate-500 tracking-tighter">10:45:02:445</span>
+</div>
+<p class="text-[11px] text-slate-400 font-mono leading-relaxed">Critical timeout detected on gateway-cluster-04. Retrying in 500ms...</p>
+<div class="mt-3 flex gap-2">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold uppercase tracking-widest border border-primary/20">Critical</span>
+<span class="px-2 py-0.5 bg-slate-800 text-slate-400 text-[9px] font-bold uppercase tracking-widest border border-slate-700 font-mono">ID: 0x992B</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item - Error -->
+<div class="relative pl-8 pb-8 group">
+<div class="absolute left-[-6px] top-1 w-3 h-3 bg-primary rotate-45 glow-diamond"></div>
+<div class="bg-navy-muted/50 p-4 border border-primary/30">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-primary uppercase tracking-tighter">Timeout en Base de Datos</span>
+<span class="text-[10px] font-mono text-slate-500 tracking-tighter">10:42:15:102</span>
+</div>
+<p class="text-[11px] text-slate-400 font-mono leading-relaxed">Latency threshold exceeded (&gt;2500ms). DB Node 02 reported congestion.</p>
+<div class="mt-3 flex gap-2">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold uppercase tracking-widest border border-primary/20">Network</span>
+<span class="px-2 py-0.5 bg-slate-800 text-slate-400 text-[9px] font-bold uppercase tracking-widest border border-slate-700 font-mono">ID: 0x110F</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item - OK -->
+<div class="relative pl-8 pb-8 group opacity-60 hover:opacity-100 transition-opacity">
+<div class="absolute left-[-4px] top-1.5 w-2 h-2 bg-slate-600 rotate-45"></div>
+<div class="bg-transparent p-4 border border-slate-800">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-slate-300 uppercase tracking-tighter">Ping Exitoso</span>
+<span class="text-[10px] font-mono text-slate-500 tracking-tighter">10:35:00:000</span>
+</div>
+<p class="text-[11px] text-slate-500 font-mono leading-relaxed">System heartbeat acknowledged. All services reporting nominal status.</p>
+</div>
+</div>
+<!-- Timeline Item - OK -->
+<div class="relative pl-8 pb-8 group opacity-40 hover:opacity-100 transition-opacity">
+<div class="absolute left-[-4px] top-1.5 w-2 h-2 bg-slate-600 rotate-45"></div>
+<div class="bg-transparent p-4 border border-slate-800">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-slate-300 uppercase tracking-tighter">Autenticación Bypass</span>
+<span class="text-[10px] font-mono text-slate-500 tracking-tighter">10:30:12:881</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical View (60%) -->
+<div class="lg:col-span-6 flex flex-col gap-4 h-full">
+<div class="flex justify-between items-center mb-2">
+<h3 class="font-michroma text-[10px] text-slate-500 uppercase tracking-widest">Technical View: Input vs Output</h3>
+<div class="flex gap-4">
+<span class="flex items-center gap-2 text-[9px] text-emerald-500 uppercase font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live Stream</span>
+<span class="flex items-center gap-2 text-[9px] text-slate-500 uppercase font-bold">Node: EU-WEST-1</span>
+</div>
+</div>
+<div class="flex flex-col border border-slate-800 bg-background-dark h-[600px] overflow-hidden">
+<!-- Code Header -->
+<div class="flex divide-x divide-slate-800 border-b border-slate-800 bg-navy-muted">
+<div class="flex-1 px-4 py-2 flex items-center justify-between">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Request Body (Input)</span>
+<span class="material-symbols-outlined text-sm text-slate-600">code</span>
+</div>
+<div class="flex-1 px-4 py-2 flex items-center justify-between">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Server Response (Output)</span>
+<span class="material-symbols-outlined text-sm text-primary">error</span>
+</div>
+</div>
+<!-- Code Content -->
+<div class="flex-1 flex divide-x divide-slate-800 font-mono text-xs code-scrollbar overflow-y-auto">
+<!-- Input Pane -->
+<div class="flex-1 bg-background-dark p-4 flex gap-4">
+<div class="text-slate-700 text-right select-none pr-2 border-r border-slate-900/50">
+                                    1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15
+                                </div>
+<div class="text-slate-300 whitespace-pre">
+<span class="text-purple-400">{</span>
+<span class="text-slate-500">"header"</span>: <span class="text-emerald-400">{</span>
+<span class="text-slate-500">"agent"</span>: <span class="text-primary">"JAV_LABS_AUTO"</span>,
+    <span class="text-slate-500">"version"</span>: <span class="text-primary">"4.0.1"</span>
+<span class="text-emerald-400">}</span>,
+  <span class="text-slate-500">"payload"</span>: <span class="text-emerald-400">{</span>
+<span class="text-slate-500">"task_id"</span>: <span class="text-primary">"TX-9902"</span>,
+    <span class="text-slate-500">"action"</span>: <span class="text-primary">"DEPLOY_SEQUENCE"</span>,
+    <span class="text-slate-500">"params"</span>: <span class="text-emerald-400">{</span>
+<span class="text-slate-500">"retry"</span>: <span class="text-blue-400">true</span>,
+      <span class="text-slate-500">"timeout"</span>: <span class="text-blue-400">5000</span>
+<span class="text-emerald-400">}</span>
+<span class="text-emerald-400">}</span>
+<span class="text-purple-400">}</span></div>
+</div>
+<!-- Output Pane -->
+<div class="flex-1 bg-navy-muted/30 p-4 flex gap-4 relative">
+<div class="text-slate-700 text-right select-none pr-2 border-r border-slate-900/50">
+                                    1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15
+                                </div>
+<div class="text-slate-300 whitespace-pre relative z-10">
+<span class="text-error-glow font-bold">HTTP/1.1 504 Gateway Timeout</span>
+<span class="text-slate-500">Content-Type: application/json</span>
+<span class="text-purple-400">{</span>
+<span class="text-slate-500">"error"</span>: <span class="text-error-glow">"UPSTREAM_TIMEOUT"</span>,
+  <span class="text-slate-500">"message"</span>: <span class="text-slate-400">"Request to node-02
+  timed out after 5000ms."</span>,
+  <span class="text-slate-500">"trace_id"</span>: <span class="text-primary">"jav-778-992-aa"</span>
+<span class="text-purple-400">}</span></div>
+<!-- Error Highlight Overlay -->
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="absolute top-4 left-0 w-full h-5 bg-primary/20 border-y border-primary/40 pointer-events-none"></div>
+</div>
+</div>
+<!-- Code Footer -->
+<div class="bg-navy-muted border-t border-slate-800 px-4 py-2 flex justify-between items-center">
+<div class="flex gap-4">
+<span class="text-[9px] font-mono text-slate-500 uppercase">UTF-8</span>
+<span class="text-[9px] font-mono text-slate-500 uppercase">JSON</span>
+<span class="text-[9px] font-mono text-slate-500 uppercase">Lines: 15</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-slate-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+<button class="text-slate-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="mt-auto border-t border-slate-800 py-6 flex flex-wrap justify-between items-center gap-6">
+<div class="flex gap-12">
+<div class="flex flex-col">
+<span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Core Engine Status</span>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+<span class="text-xs text-slate-300 font-bold uppercase tracking-tighter">Operational</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Active Threads</span>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-300 font-bold font-mono tracking-tighter">1,204 / 2,000</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Uptime</span>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-300 font-bold font-mono tracking-tighter">99.98%</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 text-slate-500 text-[9px] uppercase tracking-widest">
+<span>© 2024 JAV LABS Automation Agency</span>
+<span class="h-4 w-px bg-slate-800"></span>
+<span>System v4.0.12-build-88</span>
+</div>
+</div>
+</main>
+</div>
+</body></html>

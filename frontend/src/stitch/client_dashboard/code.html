@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS Client Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Michroma&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9947e6",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#000000",
+                        "sidebar-dark": "#0D1B2A",
+                        "accent-blue": "#3a86ff",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "technical": ["Michroma", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .geometric-border {
+            border-top: 2px solid;
+            border-image: linear-gradient(to right, #9947e6, #3a86ff) 1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0D1B2A;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #312938;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased selection:bg-primary/30">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-sidebar-dark border-r border-slate-800 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3 border-b border-slate-800">
+<div class="size-10 bg-primary flex items-center justify-center font-technical text-white text-xl">
+                    JL
+                </div>
+<div class="flex flex-col">
+<h1 class="text-slate-100 text-sm font-bold tracking-widest font-technical uppercase">JAV LABS</h1>
+<p class="text-slate-400 text-[10px] uppercase tracking-tighter">Automation Agency</p>
+</div>
+</div>
+<nav class="flex-1 px-3 py-6 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 border-l-2 border-primary text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium uppercase tracking-wider">Resumen</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition-all border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+<span class="text-sm font-medium uppercase tracking-wider">Proyectos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition-all border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="text-sm font-medium uppercase tracking-wider">Reportes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition-all border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+<span class="text-sm font-medium uppercase tracking-wider">Soporte</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800">
+<div class="flex items-center gap-3 px-2">
+<div class="size-8 bg-slate-700" data-alt="User avatar placeholder"></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-xs font-bold text-slate-200 truncate uppercase tracking-tight">Admin Principal</p>
+<p class="text-[10px] text-slate-500 truncate">v.2.4.0-stable</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Top Header -->
+<header class="h-16 border-b border-slate-800 bg-background-dark px-8 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">terminal</span>
+<h2 class="text-slate-100 text-lg font-technical uppercase tracking-tight">BIENVENIDO, CLIENTE</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-slate-800"></div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-slate-400 uppercase tracking-widest">Estado: <span class="text-emerald-500">Online</span></span>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8">
+<!-- Metric Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-sidebar-dark p-6 geometric-border flex flex-col gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-[0.2em]">Operational Status</span>
+<p class="text-slate-400 text-xs uppercase font-medium">Procesos Activos</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-technical text-slate-100">12</h3>
+<span class="text-emerald-500 text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +2%
+                            </span>
+</div>
+</div>
+<div class="bg-sidebar-dark p-6 geometric-border flex flex-col gap-2">
+<span class="text-[10px] text-accent-blue font-bold uppercase tracking-[0.2em]">Resource Efficiency</span>
+<p class="text-slate-400 text-xs uppercase font-medium">Horas Ahorradas</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-technical text-slate-100">450<span class="text-sm ml-1 text-slate-500">h</span></h3>
+<span class="text-rose-500 text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_down</span> -5%
+                            </span>
+</div>
+</div>
+<div class="bg-sidebar-dark p-6 geometric-border flex flex-col gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-[0.2em]">Investment Return</span>
+<p class="text-slate-400 text-xs uppercase font-medium">ROI Mensual</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-technical text-slate-100">+24%</h3>
+<span class="text-emerald-500 text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +12%
+                            </span>
+</div>
+</div>
+</div>
+<!-- Technical Chart Section -->
+<div class="bg-sidebar-dark border border-slate-800 p-8">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-slate-100 text-lg font-technical uppercase">Efficiency over Time</h2>
+<p class="text-slate-500 text-xs mt-1">Live data feed from node-j5_automation_server</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-1 text-[10px] font-bold uppercase tracking-tighter border border-slate-700 hover:border-primary text-slate-400 hover:text-white transition-all">Daily</button>
+<button class="px-4 py-1 text-[10px] font-bold uppercase tracking-tighter border border-primary bg-primary/20 text-white">Weekly</button>
+</div>
+</div>
+<div class="relative h-64 w-full">
+<!-- Chart Placeholder -->
+<svg fill="none" height="100%" preserveaspectratio="none" viewbox="0 0 1000 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#9947e6" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#9947e6" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,150 L100,120 L200,140 L300,80 L400,100 L500,40 L600,60 L700,30 L800,50 L900,10 L1000,20 V200 H0 Z" fill="url(#chartGradient)"></path>
+<path d="M0,150 L100,120 L200,140 L300,80 L400,100 L500,40 L600,60 L700,30 L800,50 L900,10 L1000,20" stroke="#9947e6" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+<span>WK 01</span>
+<span>WK 02</span>
+<span>WK 03</span>
+<span>WK 04</span>
+<span>WK 05</span>
+</div>
+</div>
+<!-- Workflows Table -->
+<div class="bg-sidebar-dark border border-slate-800">
+<div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+<h2 class="text-slate-100 text-sm font-technical uppercase tracking-wider">Current Workflows</h2>
+<button class="text-xs text-primary font-bold uppercase tracking-widest flex items-center gap-2">
+                            View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-black/40 text-[10px] uppercase font-bold text-slate-500 tracking-[0.1em]">
+<tr>
+<th class="px-6 py-4">ID</th>
+<th class="px-6 py-4">Workflow Name</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Uptime</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-sm divide-y divide-slate-800">
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-technical text-[10px] text-slate-400">#JL-8842</td>
+<td class="px-6 py-4 text-slate-200 font-medium">CRM Lead Distribution</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+<span class="text-xs uppercase text-emerald-500 font-bold">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">99.98%</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-500 hover:text-white"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-technical text-[10px] text-slate-400">#JL-9021</td>
+<td class="px-6 py-4 text-slate-200 font-medium">Automatic Invoicing Node</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 bg-primary shadow-[0_0_8px_#9947e6]"></div>
+<span class="text-xs uppercase text-primary font-bold">Processing</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">94.12%</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-500 hover:text-white"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-technical text-[10px] text-slate-400">#JL-7733</td>
+<td class="px-6 py-4 text-slate-200 font-medium">Data Scraping ETL</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 bg-amber-500 shadow-[0_0_8px_#f59e0b]"></div>
+<span class="text-xs uppercase text-amber-500 font-bold">Pending</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">100.0%</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-500 hover:text-white"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-technical text-[10px] text-slate-400">#JL-4412</td>
+<td class="px-6 py-4 text-slate-200 font-medium">Slack Integration Webhook</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+<span class="text-xs uppercase text-emerald-500 font-bold">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400">99.45%</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-500 hover:text-white"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

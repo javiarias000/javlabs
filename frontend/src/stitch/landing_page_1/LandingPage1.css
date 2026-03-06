@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.gradient-text {
+            background: linear-gradient(90deg, #0d7ff2, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            border: 2px solid;
+            border-image: linear-gradient(90deg, #0d7ff2, #8b5cf6) 1;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 20px rgba(13, 127, 242, 0.3);
+            border-color: #8b5cf6;
+        }

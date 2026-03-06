@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.gradient-border-btn {
+            position: relative;
+            background: transparent;
+            border: 2px solid transparent;
+            background-image: linear-gradient(#101022, #101022), linear-gradient(to right, #0d0df2, #7c3aed);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        .focus-gradient:focus {
+            border-image: linear-gradient(to right, #0d0df2, #7c3aed) 1;
+            outline: none;
+        }

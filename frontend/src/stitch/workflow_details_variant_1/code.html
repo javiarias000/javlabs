@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS Workflow Details Variant 1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Michroma&amp;family=Montserrat:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "michroma": ["Michroma", "sans-serif"],
+                        "montserrat": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .workflow-line {
+            background: linear-gradient(to bottom, #2b6cee, transparent);
+            width: 2px;
+            height: 40px;
+            margin-left: 24px;
+        }
+        .gradient-top-border {
+            border-top: 2px solid #2b6cee;
+        }
+        .glow-dot {
+            box-shadow: 0 0 10px #2b6cee;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-8 py-4 bg-background-light dark:bg-background-dark">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white">bolt</span>
+</div>
+<h2 class="font-michroma text-lg tracking-wider text-slate-900 dark:text-slate-100">JAV LABS</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary text-sm font-medium" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary" href="#">Workflows</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary" href="#">Logs</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="bg-slate-100 dark:bg-slate-800 border-none pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary w-64" placeholder="Search workflow..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-10 bg-slate-200 dark:bg-slate-800" data-alt="User profile avatar placeholder">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtUNvDQ_XjlQ5tNkjbJESWubHoWfHnf3tqQ3kkrZRXkvThXUD_v9eBPMetm0XhdOkGjDmCbDbRjLOUnompPY1VTz9mwULX6pAslMg9JWQUQwwqpsskhkIqOZBBgoyoFwmnSxrYxjKqlghf-YHT4tWcLwCI2vqnuu72Si3caWAeY6RglugliqJm6Zvw5Kl41NAvovOgziyUQZXJ8LuMGiKjAl4k4rNYG2-PuD0YRJas7ysxbfhKj-nPEaYO2O_d6HNjbCEcWzFzAPQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="p-8 max-w-[1440px] mx-auto">
+<!-- Breadcrumbs & Header -->
+<div class="mb-8">
+<div class="flex items-center gap-2 font-montserrat text-sm text-slate-500 dark:text-slate-400 mb-2">
+<span>Proyectos</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">CRM Sync</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<h1 class="font-michroma text-2xl lg:text-3xl text-slate-900 dark:text-slate-100 uppercase tracking-tight">DETALLES DEL FLUJO: CRM SYNC</h1>
+<div class="flex items-center gap-3">
+<button class="px-6 py-2 bg-slate-200 dark:bg-slate-800 text-sm font-bold uppercase tracking-wider hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">Pausar</button>
+<button class="px-6 py-2 bg-primary text-white text-sm font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors">Editar Flujo</button>
+</div>
+</div>
+</div>
+<!-- Status Bar -->
+<div class="w-full border-y border-slate-200 dark:border-slate-800 py-3 mb-10 flex items-center justify-between px-4">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-primary glow-dot"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary">Estado: Activo</span>
+</div>
+<div class="text-[10px] text-slate-500 uppercase tracking-widest font-medium">Última sincronización: Hace 2 minutos</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Side: Flowchart -->
+<div class="lg:col-span-8">
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6">Visualización de Pasos</h3>
+<div class="flex flex-col">
+<!-- Step 1 -->
+<div class="w-full max-w-md bg-white dark:bg-black p-6 border border-slate-200 dark:border-slate-800 gradient-top-border">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Trigger</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">bolt</span>
+</div>
+<h4 class="font-michroma text-sm text-slate-900 dark:text-slate-100 mb-1">Nuevo Lead</h4>
+<p class="text-xs text-slate-500">Origen: Webhook / landing-page-main</p>
+</div>
+<div class="workflow-line"></div>
+<!-- Step 2 -->
+<div class="w-full max-w-md bg-white dark:bg-black p-6 border border-slate-200 dark:border-slate-800 gradient-top-border">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Filtro</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">filter_alt</span>
+</div>
+<h4 class="font-michroma text-sm text-slate-900 dark:text-slate-100 mb-1">Región: LATAM</h4>
+<p class="text-xs text-slate-500">Condición: country_code matches ['MX', 'CO', 'CL', 'PE']</p>
+</div>
+<div class="workflow-line"></div>
+<!-- Step 3 -->
+<div class="w-full max-w-md bg-white dark:bg-black p-6 border border-slate-200 dark:border-slate-800 gradient-top-border">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Acción</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">cloud_sync</span>
+</div>
+<h4 class="font-michroma text-sm text-slate-900 dark:text-slate-100 mb-1">Crear en Salesforce</h4>
+<p class="text-xs text-slate-500">Objeto: Lead / Mapping: Standard V2</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Technical Stats -->
+<div class="lg:col-span-4 flex flex-col gap-4">
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Métricas de Rendimiento</h3>
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6">
+<p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Ejecuciones Totales</p>
+<p class="font-michroma text-2xl text-slate-900 dark:text-slate-100">12,842</p>
+<div class="mt-4 h-1 bg-slate-200 dark:bg-slate-800">
+<div class="h-1 bg-primary w-3/4"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6">
+<p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Tasa de Éxito</p>
+<p class="font-michroma text-2xl text-slate-900 dark:text-slate-100">99.8%</p>
+<p class="text-[10px] text-primary mt-2 flex items-center gap-1 uppercase tracking-tighter">
+<span class="material-symbols-outlined text-xs">trending_up</span> +0.2% vs semana anterior
+                    </p>
+</div>
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6">
+<p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Tiempo Ahorrado</p>
+<p class="font-michroma text-2xl text-slate-900 dark:text-slate-100">420h</p>
+<p class="text-xs text-slate-500 mt-2">Calculado según proceso manual estándar.</p>
+</div>
+</div>
+</div>
+<!-- Logs Section -->
+<div class="mt-16">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Logs de Ejecución en Tiempo Real</h3>
+<button class="text-[10px] uppercase font-bold text-primary flex items-center gap-1">
+                    Ver todos los logs <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto border border-slate-200 dark:border-slate-800">
+<table class="w-full text-left border-collapse bg-white dark:bg-black">
+<thead>
+<tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+<th class="p-4 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Timestamp</th>
+<th class="p-4 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Execution ID</th>
+<th class="p-4 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Event</th>
+<th class="p-4 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Duration</th>
+<th class="p-4 text-[10px] uppercase font-bold text-slate-400 tracking-wider text-right">Status</th>
+</tr>
+</thead>
+<tbody class="text-xs font-montserrat">
+<tr class="border-b border-slate-100 dark:border-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+<td class="p-4 text-slate-500">2023-10-24 14:30:05</td>
+<td class="p-4 font-mono text-slate-400">#EXE-882190</td>
+<td class="p-4 dark:text-slate-300">Lead Conversion: Juan Perez</td>
+<td class="p-4 text-slate-500">1.2s</td>
+<td class="p-4 text-right">
+<span class="px-2 py-1 bg-emerald-500/10 text-emerald-500 font-bold uppercase text-[9px]">Success</span>
+</td>
+</tr>
+<tr class="border-b border-slate-100 dark:border-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+<td class="p-4 text-slate-500">2023-10-24 14:28:12</td>
+<td class="p-4 font-mono text-slate-400">#EXE-882189</td>
+<td class="p-4 dark:text-slate-300">Lead Conversion: Maria Garcia</td>
+<td class="p-4 text-slate-500">0.9s</td>
+<td class="p-4 text-right">
+<span class="px-2 py-1 bg-emerald-500/10 text-emerald-500 font-bold uppercase text-[9px]">Success</span>
+</td>
+</tr>
+<tr class="border-b border-slate-100 dark:border-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+<td class="p-4 text-slate-500">2023-10-24 14:25:01</td>
+<td class="p-4 font-mono text-slate-400">#EXE-882188</td>
+<td class="p-4 dark:text-slate-300">Filter Rejected: Out of Region</td>
+<td class="p-4 text-slate-500">0.1s</td>
+<td class="p-4 text-right">
+<span class="px-2 py-1 bg-slate-500/10 text-slate-500 font-bold uppercase text-[9px]">Skipped</span>
+</td>
+</tr>
+<tr class="border-b border-slate-100 dark:border-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+<td class="p-4 text-slate-500">2023-10-24 14:22:44</td>
+<td class="p-4 font-mono text-slate-400">#EXE-882187</td>
+<td class="p-4 dark:text-slate-300">API Timeout: Salesforce Auth</td>
+<td class="p-4 text-slate-500">15.0s</td>
+<td class="p-4 text-right">
+<span class="px-2 py-1 bg-rose-500/10 text-rose-500 font-bold uppercase text-[9px]">Error</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Footer Decoration -->
+<footer class="mt-20 border-t border-slate-200 dark:border-slate-800 p-8 flex justify-between items-center opacity-50">
+<div class="text-[10px] uppercase tracking-widest font-bold">JAV LABS AUTOMATION ENGINE v4.2.0</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="material-symbols-outlined text-sm">settings_ethernet</span>
+<span class="material-symbols-outlined text-sm">database</span>
+</div>
+</footer>
+</body></html>

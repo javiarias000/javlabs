@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.gradient-primary {
+            background: linear-gradient(135deg, #2547f4 0%, #8b5cf6 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #08080a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e293b;
+        }
+        .status-badge-success {
+            border-left: 3px solid #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .status-badge-warning {
+            border-left: 3px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .status-badge-error {
+            border-left: 3px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }

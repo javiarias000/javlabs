@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS Automation Management Table</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#08080a", // Pure dark for technical feel
+                        "accent-violet": "#8b5cf6",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .gradient-primary {
+            background: linear-gradient(135deg, #2547f4 0%, #8b5cf6 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #08080a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e293b;
+        }
+        .status-badge-success {
+            border-left: 3px solid #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .status-badge-warning {
+            border-left: 3px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .status-badge-error {
+            border-left: 3px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen overflow-x-hidden">
+<div class="flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="border-b border-slate-800 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-12">
+<div class="flex items-center gap-3">
+<div class="size-8 gradient-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">terminal</span>
+</div>
+<h1 class="text-xl font-bold tracking-tighter text-white">JAV LABS</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary font-medium text-sm tracking-widest uppercase" href="#">Dashboard</a>
+<a class="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="#">Automations</a>
+<a class="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="#">Infrastructure</a>
+<a class="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
+<input class="bg-slate-900 border border-slate-800 text-xs tracking-widest px-10 py-2 w-64 focus:border-primary focus:ring-0 outline-none uppercase" placeholder="CMD + K TO SEARCH" type="text"/>
+</div>
+<button class="gradient-primary px-6 py-2 text-xs font-bold tracking-widest uppercase text-white hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Nueva Automatización
+                    </button>
+<div class="size-8 bg-slate-800 border border-slate-700" data-alt="User avatar placeholder with geometric pattern"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-[1440px] mx-auto w-full px-6 py-8">
+<!-- Stats Strip -->
+<div class="grid grid-cols-4 gap-px bg-slate-800 border border-slate-800 mb-8">
+<div class="bg-background-dark p-4 flex flex-col gap-1">
+<span class="text-[10px] text-slate-500 font-bold tracking-[0.2em] uppercase">Global Throughput</span>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold text-white tracking-tighter">842.12 <span class="text-xs text-slate-500">REQ/S</span></span>
+<div class="h-6 w-16 bg-primary/10 flex items-end gap-0.5 px-1 pb-1">
+<div class="flex-1 bg-primary h-1/2"></div>
+<div class="flex-1 bg-primary h-3/4"></div>
+<div class="flex-1 bg-primary h-2/3"></div>
+<div class="flex-1 bg-primary h-full"></div>
+</div>
+</div>
+</div>
+<div class="bg-background-dark p-4 flex flex-col gap-1">
+<span class="text-[10px] text-slate-500 font-bold tracking-[0.2em] uppercase">Active Instances</span>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold text-white tracking-tighter">12,403</span>
+<span class="text-emerald-500 text-xs font-bold">+5.2%</span>
+</div>
+</div>
+<div class="bg-background-dark p-4 flex flex-col gap-1">
+<span class="text-[10px] text-slate-500 font-bold tracking-[0.2em] uppercase">System Health</span>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold text-white tracking-tighter">99.98<span class="text-xs text-slate-500">%</span></span>
+<div class="flex gap-1 h-1 w-20">
+<div class="h-full bg-emerald-500 flex-1"></div>
+<div class="h-full bg-emerald-500 flex-1"></div>
+<div class="h-full bg-emerald-500 flex-1"></div>
+<div class="h-full bg-slate-800 flex-1"></div>
+</div>
+</div>
+</div>
+<div class="bg-background-dark p-4 flex flex-col gap-1">
+<span class="text-[10px] text-slate-500 font-bold tracking-[0.2em] uppercase">Memory Usage</span>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold text-white tracking-tighter">4.2 <span class="text-xs text-slate-500">TB</span></span>
+<span class="text-primary text-xs font-bold">STABLE</span>
+</div>
+</div>
+</div>
+<!-- Management Table Container -->
+<div class="bg-background-dark border border-slate-800">
+<div class="p-4 border-b border-slate-800 flex justify-between items-center">
+<h2 class="text-xs font-bold tracking-[0.3em] uppercase text-slate-400">Active Automations Registry</h2>
+<div class="flex gap-2">
+<button class="p-1 hover:bg-slate-900 text-slate-500"><span class="material-symbols-outlined text-lg">filter_list</span></button>
+<button class="p-1 hover:bg-slate-900 text-slate-500"><span class="material-symbols-outlined text-lg">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-900/50">
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800">ID</th>
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800">Name</th>
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800">Trigger Type</th>
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800">Success Rate</th>
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800">Status</th>
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800">Last Run</th>
+<th class="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase border-b border-slate-800 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-900">
+<!-- Row 1 -->
+<tr class="group hover:bg-slate-900/30 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-slate-500 tracking-wider">0x4F2A</td>
+<td class="px-6 py-5 font-bold text-sm tracking-tight">Market Alpha Core</td>
+<td class="px-6 py-5">
+<span class="bg-slate-800 px-2 py-1 text-[10px] font-bold text-slate-300 tracking-widest">API_REST</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1 bg-slate-800">
+<div class="h-full gradient-primary w-[98%]"></div>
+</div>
+<span class="text-xs font-bold text-white">98%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="status-badge-success px-3 py-1 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Active</div>
+</td>
+<td class="px-6 py-5 text-xs text-slate-400">2023.10.24 14:22:01</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary text-[10px] font-bold tracking-widest uppercase hover:underline">Inspect</button>
+</td>
+</tr>
+<!-- Expanded Row State (Mock) -->
+<tr class="bg-slate-900/40">
+<td class="px-6 py-0 overflow-hidden" colspan="7">
+<div class="py-6 grid grid-cols-2 gap-8 border-t border-slate-800/50">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h4 class="text-[10px] font-bold text-slate-500 tracking-widest uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">code</span> Input Payload (JSON)
+                                                </h4>
+<span class="text-[9px] bg-slate-800 px-1 text-slate-400">application/json</span>
+</div>
+<div class="bg-black border border-slate-800 p-4 font-mono text-[11px] text-slate-400 leading-relaxed overflow-x-auto">
+<pre>{
+  "request_id": "0x4F2A-SYS-882",
+  "source": "alpha_vantage",
+  "symbol": "BTCUSD",
+  "metrics": ["volume", "close", "rsi"],
+  "interval": "1m"
+}</pre>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h4 class="text-[10px] font-bold text-slate-500 tracking-widest uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span> Output Log
+                                                </h4>
+<span class="text-[9px] text-emerald-500">STATUS_OK</span>
+</div>
+<div class="bg-black border border-slate-800 p-4 font-mono text-[11px] text-slate-400 leading-relaxed h-[116px] overflow-y-auto custom-scrollbar">
+<div class="text-slate-600 mb-1">[14:22:01] Initializing Market Alpha Core...</div>
+<div class="text-slate-600 mb-1">[14:22:02] Authenticating with AlphaVantage...</div>
+<div class="text-emerald-500/80 mb-1">[14:22:03] Payload delivered. Process: SUCCESS</div>
+<div class="text-slate-600">[14:22:04] Thread terminated safely.</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-slate-900/30 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-slate-500 tracking-wider">0x91BC</td>
+<td class="px-6 py-5 font-bold text-sm tracking-tight">Data Sync Beta</td>
+<td class="px-6 py-5">
+<span class="bg-slate-800 px-2 py-1 text-[10px] font-bold text-slate-300 tracking-widest">WEBHOOK</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1 bg-slate-800">
+<div class="h-full bg-amber-500 w-[92%]"></div>
+</div>
+<span class="text-xs font-bold text-white">92%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="status-badge-warning px-3 py-1 text-[10px] font-bold text-amber-500 uppercase tracking-widest">Latency High</div>
+</td>
+<td class="px-6 py-5 text-xs text-slate-400">2023.10.24 14:15:33</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary text-[10px] font-bold tracking-widest uppercase hover:underline">Inspect</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-slate-900/30 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-slate-500 tracking-wider">0x77DE</td>
+<td class="px-6 py-5 font-bold text-sm tracking-tight">System Cleanup Task</td>
+<td class="px-6 py-5">
+<span class="bg-slate-800 px-2 py-1 text-[10px] font-bold text-slate-300 tracking-widest">SCHEDULE</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1 bg-slate-800">
+<div class="h-full gradient-primary w-full"></div>
+</div>
+<span class="text-xs font-bold text-white">100%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="status-badge-success px-3 py-1 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Active</div>
+</td>
+<td class="px-6 py-5 text-xs text-slate-400">2023.10.24 12:00:00</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary text-[10px] font-bold tracking-widest uppercase hover:underline">Inspect</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-slate-900/30 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-slate-500 tracking-wider">0x33A1</td>
+<td class="px-6 py-5 font-bold text-sm tracking-tight">Auth Validator Proxy</td>
+<td class="px-6 py-5">
+<span class="bg-slate-800 px-2 py-1 text-[10px] font-bold text-slate-300 tracking-widest">API_REST</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1 bg-slate-800">
+<div class="h-full bg-red-500 w-[45%]"></div>
+</div>
+<span class="text-xs font-bold text-white">45%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="status-badge-error px-3 py-1 text-[10px] font-bold text-red-500 uppercase tracking-widest">Critical Error</div>
+</td>
+<td class="px-6 py-5 text-xs text-slate-400">2023.10.24 13:50:21</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary text-[10px] font-bold tracking-widest uppercase hover:underline">Inspect</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-500 font-bold tracking-widest uppercase">
+<span>Showing 4 of 1,280 Automations</span>
+<div class="flex gap-4">
+<button class="hover:text-white flex items-center gap-1"><span class="material-symbols-outlined text-sm">chevron_left</span> Previous</button>
+<div class="flex gap-2">
+<span class="text-white border-b border-primary px-1">1</span>
+<span class="hover:text-white cursor-pointer px-1">2</span>
+<span class="hover:text-white cursor-pointer px-1">3</span>
+<span>...</span>
+<span class="hover:text-white cursor-pointer px-1">128</span>
+</div>
+<button class="hover:text-white flex items-center gap-1">Next <span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Bottom Tools Bar -->
+<div class="mt-8 flex gap-4">
+<div class="flex-1 bg-slate-900 p-6 border border-slate-800">
+<h3 class="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase mb-4">Latest Infrastructure Logs</h3>
+<div class="space-y-3 font-mono text-[11px] text-slate-400">
+<div class="flex gap-4"><span class="text-slate-600">14:22:10</span> <span class="text-primary">INFO</span> Node us-east-1 deployed successfully.</div>
+<div class="flex gap-4"><span class="text-slate-600">14:22:15</span> <span class="text-amber-500">WARN</span> Memory pressure detected on cluster.B</div>
+<div class="flex gap-4"><span class="text-slate-600">14:22:20</span> <span class="text-primary">INFO</span> Auto-scaling event triggered for app-validator.</div>
+</div>
+</div>
+<div class="w-80 bg-slate-900 p-6 border border-slate-800 flex flex-col justify-between">
+<div>
+<h3 class="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase mb-4">Connection Health</h3>
+<div class="flex items-center gap-4 mb-2">
+<span class="text-[10px] text-slate-400 w-12">REDIS</span>
+<div class="h-1 flex-1 bg-slate-800"><div class="h-full bg-emerald-500 w-full"></div></div>
+<span class="text-[10px] font-bold text-white">ACTIVE</span>
+</div>
+<div class="flex items-center gap-4 mb-2">
+<span class="text-[10px] text-slate-400 w-12">DB_CL</span>
+<div class="h-1 flex-1 bg-slate-800"><div class="h-full bg-emerald-500 w-[80%]"></div></div>
+<span class="text-[10px] font-bold text-white">STABLE</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-slate-400 w-12">GATE</span>
+<div class="h-1 flex-1 bg-slate-800"><div class="h-full bg-amber-500 w-[40%]"></div></div>
+<span class="text-[10px] font-bold text-amber-500">DELAY</span>
+</div>
+</div>
+<button class="w-full border border-slate-700 py-2 text-[10px] font-bold tracking-widest uppercase hover:bg-slate-800 transition-colors">View All Connections</button>
+</div>
+</div>
+</main>
+</div>
+<footer class="mt-auto border-t border-slate-800 bg-background-dark py-6 px-6">
+<div class="max-w-[1440px] mx-auto flex justify-between items-center opacity-50">
+<div class="text-[10px] tracking-[0.3em] font-bold uppercase">© 2023 JAV LABS Automation Platform</div>
+<div class="flex gap-8 text-[10px] tracking-[0.3em] font-bold uppercase">
+<a class="hover:text-white" href="#">API Docs</a>
+<a class="hover:text-white" href="#">Status Page</a>
+<a class="hover:text-white" href="#">Support</a>
+</div>
+</div>
+</footer>
+</body></html>

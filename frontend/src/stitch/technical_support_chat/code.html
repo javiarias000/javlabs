@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS Technical Support Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                        "brand-accent": "#6366f1",
+                        "system-gray": "#1a1a2e",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0rem",
+                        "lg": "0rem",
+                        "xl": "0rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .resolution-path-line {
+            background: linear-gradient(to bottom, #0d0df2, #6366f1, #2e2e48);
+        }
+        .gradient-border {
+            border-image: linear-gradient(to right, transparent, #0d0df2, transparent) 1;
+        }
+        .glass-panel {
+            background: rgba(16, 16, 34, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="relative flex h-screen w-full flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-8 py-4 bg-background-light dark:bg-background-dark z-20">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-6 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">settings_input_component</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight uppercase italic">JAV LABS <span class="font-light not-italic text-slate-400">Support</span></h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors" href="#">Console</a>
+<a class="text-xs font-semibold uppercase tracking-widest text-white border-b-2 border-primary pb-1" href="#">Active Tickets</a>
+<a class="text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors" href="#">Nodes</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-slate-100 dark:bg-system-gray px-3 py-1.5 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-slate-400 text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-slate-500" placeholder="Search diagnostic logs..." type="text"/>
+</div>
+<div class="flex items-center gap-3 border-l border-slate-800 pl-6">
+<div class="text-right">
+<p class="text-xs font-bold">OPERATOR_042</p>
+<p class="text-[10px] text-primary uppercase font-bold tracking-tighter">Level 3 Engineer</p>
+</div>
+<div class="size-10 bg-slate-800 border border-slate-700" data-alt="Technical operator profile avatar">
+<img alt="Operator avatar" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ4dNCjH14HwJfSztVRkwrIAJiKkATkqWZkRbG2TuRw91Ioiy6o-0AU1mAtJBeiWH-d_0bR3IJtu-okXhp1ZpAQuv5UiFJUuCWEZBBZZp-bt4VHeS1Hqihg2S27mskkcD275tog0sUsSD8ALAJqXILmCSuQP5Pi83xDow9akmDhUxnzPB8t0SDeLaFhRmaosmItZh9XRxPREeIlabr3qt_aDN0EAN6uDtG2_AVnbHZJcvYteH8aH_jeZe7IYne1A7yb4ND61wPQ_8"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar: Case Details -->
+<aside class="w-80 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-[#0c0c1a] hidden xl:flex">
+<div class="p-6 border-b border-slate-800">
+<span class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] block mb-2">Case Registry</span>
+<h3 class="text-xl font-bold leading-tight">#82931-GAMMA</h3>
+<p class="text-sm text-slate-500 mt-1">Automation System Calibration: Node-04 Cluster</p>
+</div>
+<div class="p-6 space-y-6">
+<div>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-3">System Status</span>
+<div class="flex items-center gap-2 text-red-500">
+<span class="material-symbols-outlined fill-1 text-sm">error</span>
+<span class="text-xs font-mono font-bold uppercase">Critical Latency</span>
+</div>
+</div>
+<div>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-3">Target Node</span>
+<div class="bg-system-gray p-3 border-l-2 border-primary">
+<p class="text-xs font-mono">ID: JAV-NX-9902</p>
+<p class="text-xs font-mono text-slate-400 mt-1">LOC: US-EAST-1</p>
+</div>
+</div>
+</div>
+<div class="mt-auto p-6">
+<button class="w-full py-3 bg-transparent border border-slate-700 text-[10px] font-bold uppercase tracking-widest hover:bg-slate-800 transition-all">
+                        Terminate Session
+                    </button>
+</div>
+</aside>
+<!-- Main Chat Interface -->
+<main class="flex-1 flex flex-col relative bg-background-light dark:bg-background-dark">
+<!-- Resolution Path Container -->
+<div class="flex-1 overflow-y-auto p-8 relative scrollbar-hide">
+<!-- Vertical Resolution Path Line -->
+<div class="absolute left-12 top-0 bottom-0 w-px resolution-path-line opacity-30"></div>
+<div class="max-w-4xl mx-auto space-y-12 relative">
+<!-- Event 1: System Note -->
+<div class="relative pl-16">
+<div class="absolute left-[-22px] top-1 size-4 bg-background-dark border border-primary rounded-full z-10 flex items-center justify-center">
+<div class="size-1.5 bg-primary rounded-full"></div>
+</div>
+<div class="border-t border-b border-slate-800/50 py-4 mb-4">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary text-lg">terminal</span>
+<span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">System Event / 10:00:42 AM</span>
+</div>
+<div class="bg-system-gray/50 p-4 font-mono text-sm border border-slate-800/50">
+<span class="text-primary mr-2">&gt;</span> initializing_diagnostic_sequence --target=node-04
+                                    <br/>
+<span class="text-green-500 mr-2">&gt;</span> handshake_complete: status_ok
+                                </div>
+</div>
+</div>
+<!-- Event 2: User Message -->
+<div class="relative pl-16 group">
+<div class="absolute left-[-22px] top-1 size-4 bg-background-dark border border-slate-500 rounded-full z-10"></div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold uppercase tracking-tighter">Site_Lead_Alpha</span>
+<span class="text-[10px] text-slate-500 font-mono">10:05 AM</span>
+</div>
+<div class="bg-white dark:bg-slate-100 text-slate-900 p-5 max-w-xl shadow-2xl border-l-4 border-slate-300">
+<p class="text-sm font-medium leading-relaxed">The actuator on Node-04 is failing to meet the calibration baseline. We are seeing a 140ms delay in response timing. Need immediate override.</p>
+</div>
+</div>
+</div>
+<!-- Event 3: Technician Message -->
+<div class="relative pl-16 flex justify-end">
+<div class="flex flex-col gap-2 items-end">
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-slate-500 font-mono">10:08 AM</span>
+<span class="text-xs font-bold uppercase tracking-tighter text-primary">JAV_TECH_SUPPORT</span>
+</div>
+<div class="bg-primary text-white p-5 max-w-xl border-r-4 border-brand-accent">
+<p class="text-sm font-medium leading-relaxed">Acknowledged. Running a remote kernel sync to bypass the local controller latency. Please standby while I re-route the signal through the backup bus.</p>
+</div>
+</div>
+</div>
+<!-- Event 4: System Note (Monospace/Code Block) -->
+<div class="relative pl-16">
+<div class="absolute left-[-22px] top-1 size-4 bg-background-dark border border-primary rounded-full z-10 flex items-center justify-center shadow-[0_0_10px_rgba(13,13,242,0.5)]">
+<div class="size-1.5 bg-primary rounded-full"></div>
+</div>
+<div class="py-4">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-brand-accent text-lg">monitoring</span>
+<span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Diagnostic Output / 10:12:15 AM</span>
+</div>
+<div class="bg-black p-5 font-mono text-xs border border-slate-800 leading-relaxed overflow-hidden relative">
+<div class="absolute top-0 right-0 p-2 text-[8px] text-slate-700 font-bold uppercase">Live Log</div>
+<p class="text-slate-400">[INFO] Executing remote test on Actuator_ID: 04-B</p>
+<p class="text-yellow-500">[WARN] High impedance detected in secondary actuator coil</p>
+<p class="text-primary font-bold">[EXEC] Signal re-routing: Successful</p>
+<div class="mt-3 h-1 w-full bg-slate-900">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Event 5: User Message -->
+<div class="relative pl-16">
+<div class="absolute left-[-22px] top-1 size-4 bg-background-dark border border-slate-500 rounded-full z-10"></div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold uppercase tracking-tighter">Site_Lead_Alpha</span>
+<span class="text-[10px] text-slate-500 font-mono">10:15 AM</span>
+</div>
+<div class="bg-white dark:bg-slate-100 text-slate-900 p-5 max-w-xl border-l-4 border-slate-300">
+<p class="text-sm font-medium leading-relaxed">Latency just dropped to 12ms. Calibration is back within green parameters. Can you confirm if this is a permanent fix or a temporary bypass?</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Hovering Quick Actions Menu -->
+<div class="absolute right-8 bottom-32 z-30">
+<div class="flex flex-col gap-2">
+<div class="group relative flex items-center justify-end">
+<div class="bg-black/90 border border-slate-800 p-3 pr-10 -mr-8 opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto">
+<p class="text-[10px] font-bold uppercase tracking-widest text-white whitespace-nowrap">Share Live Screen</p>
+</div>
+<button class="size-12 bg-gradient-to-br from-primary to-brand-accent flex items-center justify-center shadow-xl hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white">screen_share</span>
+</button>
+</div>
+<div class="group relative flex items-center justify-end">
+<div class="bg-black/90 border border-slate-800 p-3 pr-10 -mr-8 opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto">
+<p class="text-[10px] font-bold uppercase tracking-widest text-white whitespace-nowrap">Request Video Call</p>
+</div>
+<button class="size-12 bg-gradient-to-br from-primary to-brand-accent flex items-center justify-center shadow-xl hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white">videocam</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Chat Input Area -->
+<div class="p-8 bg-background-light dark:bg-[#080814] border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-4xl mx-auto">
+<div class="relative flex items-center bg-white dark:bg-system-gray border border-slate-300 dark:border-slate-700 shadow-xl">
+<div class="px-4 text-slate-500">
+<span class="material-symbols-outlined">add_circle</span>
+</div>
+<textarea class="w-full bg-transparent border-none focus:ring-0 py-4 text-sm font-medium placeholder:text-slate-600 resize-none" placeholder="Enter technical command or message..." rows="1"></textarea>
+<div class="px-4 flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-500 cursor-pointer hover:text-white transition-colors">attach_file</span>
+<button class="bg-primary hover:bg-brand-accent px-6 py-2 text-[10px] font-bold uppercase tracking-widest text-white transition-colors">
+                                    Execute
+                                </button>
+</div>
+</div>
+<div class="flex justify-between items-center mt-3 px-1">
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5">
+<div class="size-1.5 bg-green-500 rounded-full animate-pulse"></div>
+<span class="text-[9px] font-bold text-slate-500 uppercase tracking-tighter">Secure_Channel_Active</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-[9px] font-bold text-slate-500 uppercase tracking-tighter">Encryption: AES-256</span>
+</div>
+</div>
+<span class="text-[9px] font-mono text-slate-600">CMD + ENTER TO SEND</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Sidebar: Diagnostics -->
+<aside class="w-72 border-l border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-[#0c0c1a] hidden lg:flex">
+<div class="p-6 border-b border-slate-800">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-4">Node Metrics</span>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[10px] font-mono mb-1">
+<span>CPU LOAD</span>
+<span class="text-primary">42.8%</span>
+</div>
+<div class="h-1 w-full bg-slate-800">
+<div class="h-full bg-primary w-[42.8%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-mono mb-1">
+<span>IO LATENCY</span>
+<span class="text-red-500">114ms</span>
+</div>
+<div class="h-1 w-full bg-slate-800">
+<div class="h-full bg-red-500 w-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 overflow-y-auto">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-4">Diagnostic Assets</span>
+<div class="grid grid-cols-2 gap-2">
+<div class="aspect-square bg-slate-800 border border-slate-700 flex flex-col items-center justify-center gap-2 hover:border-primary transition-colors cursor-pointer" data-alt="Technical schematic diagram thumbnail">
+<span class="material-symbols-outlined text-slate-500">architecture</span>
+<span class="text-[8px] font-bold uppercase text-slate-500">Schematic</span>
+</div>
+<div class="aspect-square bg-slate-800 border border-slate-700 flex flex-col items-center justify-center gap-2 hover:border-primary transition-colors cursor-pointer" data-alt="System log report thumbnail">
+<span class="material-symbols-outlined text-slate-500">description</span>
+<span class="text-[8px] font-bold uppercase text-slate-500">Logs_Node04</span>
+</div>
+<div class="aspect-square bg-slate-800 border border-slate-700 flex flex-col items-center justify-center gap-2 hover:border-primary transition-colors cursor-pointer" data-alt="Calibration data chart thumbnail">
+<span class="material-symbols-outlined text-slate-500">analytics</span>
+<span class="text-[8px] font-bold uppercase text-slate-500">Cal_Data</span>
+</div>
+<div class="aspect-square bg-slate-800 border border-slate-700 flex flex-col items-center justify-center gap-2 hover:border-primary transition-colors cursor-pointer" data-alt="Video feed thumbnail">
+<span class="material-symbols-outlined text-slate-500">videocam</span>
+<span class="text-[8px] font-bold uppercase text-slate-500">CAM_B_FEED</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAV LABS Ticket Conversation View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Michroma&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#000000",
+                        "navy-deep": "#0D1B2A",
+                        "accent-violet": "#8b5cf6",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "michroma": ["Michroma", "sans-serif"],
+                        "montserrat": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .circuit-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(13, 13, 242, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .violet-gradient-border {
+            border: 1px solid;
+            border-image-source: linear-gradient(90deg, #8b5cf6, #0d0df2);
+            border-image-slice: 1;
+        }
+        .tech-msg-border {
+            border-top: 2px solid;
+            border-image-source: linear-gradient(90deg, #8b5cf6, transparent);
+            border-image-slice: 1;
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-montserrat text-slate-100 selection:bg-primary/30">
+<div class="relative flex h-screen w-full flex-col overflow-hidden circuit-bg">
+<!-- HEADER -->
+<header class="flex items-center justify-between border-b border-white/10 bg-background-dark/80 backdrop-blur-md px-8 py-4 z-10">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+<h2 class="font-michroma text-lg tracking-wider text-white">JAV LABS</h2>
+</div>
+<div class="h-6 w-[1px] bg-white/10"></div>
+<div class="flex flex-col">
+<h1 class="font-michroma text-sm md:text-base text-white tracking-tight uppercase">TICKET #JL-1024: ERROR EN CRM SYNC</h1>
+</div>
+<div class="violet-gradient-border px-3 py-0.5 bg-accent-violet/10">
+<span class="text-[10px] font-bold tracking-[0.2em] text-accent-violet uppercase">En Progreso</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6 text-xs font-medium tracking-widest uppercase text-slate-400">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-white border-b border-primary" href="#">Tickets</a>
+<a class="hover:text-primary transition-colors" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-8 bg-primary/20 border border-primary/50 flex items-center justify-center">
+<span class="text-xs font-bold">JV</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- SIDEBAR: CONTEXT -->
+<aside class="w-80 bg-navy-deep border-r border-white/5 flex flex-col p-6 gap-8 overflow-y-auto">
+<section>
+<h3 class="text-[10px] font-bold tracking-[0.2em] text-slate-500 uppercase mb-4 italic">Ticket Metadata</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-sm">engineering</span>
+<div>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">Técnico Asignado</p>
+<p class="text-sm font-medium text-slate-200">Ing. Javier V.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-red-500 text-sm">priority_high</span>
+<div>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">Prioridad</p>
+<p class="text-sm font-medium text-red-400">Alta / Crítica</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-slate-400 text-sm">calendar_today</span>
+<div>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">Creado</p>
+<p class="text-sm font-medium text-slate-200">24 Oct 2023 - 14:30</p>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-black/40 border border-white/5 p-4">
+<h3 class="text-[10px] font-bold tracking-[0.2em] text-primary uppercase mb-3">Referencia de Error</h3>
+<div class="font-mono text-[11px] text-slate-400 bg-black/60 p-3 mb-3 break-all">
+                        ERR_SYNC_092: Authentication failed for CRM_API_GATEWAY (Node: US-EAST-1)
+                    </div>
+<a class="flex items-center justify-between text-[11px] text-primary hover:underline group" href="#">
+<span>Ver Automation Log Completo</span>
+<span class="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</section>
+<section class="mt-auto">
+<div class="p-4 border border-white/5 bg-primary/5">
+<p class="text-[10px] text-slate-400 mb-2">SLA DE RESPUESTA</p>
+<div class="w-full bg-white/10 h-1">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+<p class="text-[10px] text-right mt-1 text-primary">85% Restante</p>
+</div>
+</section>
+</aside>
+<!-- CHAT AREA -->
+<div class="flex-1 flex flex-col bg-background-dark relative">
+<div class="flex-1 overflow-y-auto p-8 space-y-8 scroll-smooth">
+<!-- Client Message -->
+<div class="flex flex-col items-start max-w-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Cliente Portal</span>
+<span class="text-[10px] text-slate-600">14:35 PM</span>
+</div>
+<div class="border border-primary/40 bg-primary/5 p-5 text-sm leading-relaxed text-slate-200">
+                            Hola equipo de JAV LABS. Notamos que desde las 14:00 los prospectos de Facebook Ads no se están sincronizando con nuestro CRM. El log del servidor muestra errores de autenticación repetitivos. ¿Pueden revisar la API Key?
+                        </div>
+</div>
+<!-- Tech Message -->
+<div class="flex flex-col items-end">
+<div class="max-w-2xl w-full">
+<div class="flex items-center justify-end gap-2 mb-2">
+<span class="text-[10px] text-slate-600">14:42 PM</span>
+<span class="text-[10px] font-bold tracking-widest text-accent-violet uppercase italic">Ing. Javier V. (JAV LABS)</span>
+</div>
+<div class="bg-white/5 p-5 text-sm leading-relaxed text-slate-200 tech-msg-border border-r border-b border-l border-white/5">
+                                Recibido. Estoy analizando los logs de la pasarela US-EAST-1. Parece que el token de portador ha expirado prematuramente o fue revocado por el proveedor. 
+                                <br/><br/>
+                                Estoy realizando una prueba de conexión manual con las nuevas credenciales ahora mismo.
+                            </div>
+</div>
+</div>
+<!-- Tech Message with Code -->
+<div class="flex flex-col items-end">
+<div class="max-w-2xl w-full">
+<div class="flex items-center justify-end gap-2 mb-2">
+<span class="text-[10px] text-slate-600">14:45 PM</span>
+<span class="text-[10px] font-bold tracking-widest text-accent-violet uppercase italic">Ing. Javier V. (JAV LABS)</span>
+</div>
+<div class="bg-white/5 p-5 text-sm leading-relaxed text-slate-200 tech-msg-border border-r border-b border-l border-white/5">
+                                Fragmento de la respuesta del servidor:
+                                <div class="mt-4 p-4 bg-black font-mono text-[12px] text-green-400 border border-white/5">
+                                    {<br/>
+                                      "status": "error",<br/>
+                                      "code": 401,<br/>
+                                      "message": "Unauthorized: API Key has been rotated"<br/>
+                                    }
+                                </div>
+<p class="mt-4">Por favor, confirmen si alguien del equipo de TI de su lado rotó las llaves hace poco.</p>
+</div>
+</div>
+</div>
+<!-- Client Message -->
+<div class="flex flex-col items-start max-w-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Cliente Portal</span>
+<span class="text-[10px] text-slate-600">14:48 PM</span>
+</div>
+<div class="border border-primary/40 bg-primary/5 p-5 text-sm leading-relaxed text-slate-200">
+                            Efectivamente, hubo un mantenimiento de seguridad hoy. Adjunto el nuevo log de acceso generado.
+                        </div>
+</div>
+</div>
+<!-- INPUT AREA -->
+<div class="p-6 border-t border-white/10 bg-black/60 backdrop-blur-sm">
+<div class="max-w-4xl mx-auto flex flex-col gap-4">
+<div class="flex items-center gap-2 text-slate-500 mb-1">
+<button class="flex items-center gap-2 px-3 py-1 hover:text-primary transition-colors border border-white/5 bg-white/5">
+<span class="material-symbols-outlined text-sm">attach_file</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter">Adjuntar Log</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1 hover:text-primary transition-colors border border-white/5 bg-white/5">
+<span class="material-symbols-outlined text-sm">code</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter">Insertar Fragmento de Código</span>
+</button>
+</div>
+<div class="relative">
+<textarea class="w-full bg-black border border-white/10 p-4 text-sm focus:border-primary focus:ring-1 focus:ring-primary/20 text-slate-100 placeholder:text-slate-600 resize-none min-h-[100px]" placeholder="Escribe un mensaje técnico..."></textarea>
+</div>
+<div class="flex justify-between items-center">
+<button class="border border-white/10 px-6 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all">
+                                Cerrar Ticket
+                            </button>
+<button class="bg-gradient-to-r from-primary to-accent-violet px-8 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:opacity-90 transition-opacity">
+                                Enviar Mensaje
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FOOTER BAR (Optional Stats) -->
+<footer class="h-8 bg-black border-t border-white/5 px-6 flex items-center justify-between">
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="size-1.5 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-[9px] text-slate-500 uppercase tracking-widest">Automation Engine: Online</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[9px] text-slate-500 uppercase tracking-widest">Latencia: 24ms</span>
+</div>
+</div>
+<div class="text-[9px] text-slate-600 uppercase tracking-widest">
+                © 2023 JAV LABS Automation Portal v2.4.0
+            </div>
+</footer>
+</div>
+</body></html>
