@@ -1,16 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-.workflow-line {
-            background: linear-gradient(to bottom, #2b6cee, transparent);
-            width: 2px;
-            height: 40px;
-            margin-left: 24px;
-        }
-        .gradient-top-border {
-            border-top: 2px solid #2b6cee;
-        }
-        .glow-dot {
-            box-shadow: 0 0 10px #2b6cee;
-        }

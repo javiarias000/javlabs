@@ -1,19 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: #0D1B2A;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #111827;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #0d0df2;
-        }
-        /* Overriding any default rounding for strict geometric look */
-        * { border-radius: 0 !important; }

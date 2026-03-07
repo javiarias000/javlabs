@@ -1,17 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-.geometric-border {
-            border-top: 2px solid;
-            border-image: linear-gradient(to right, #9947e6, #3a86ff) 1;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0D1B2A;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #312938;
-        }

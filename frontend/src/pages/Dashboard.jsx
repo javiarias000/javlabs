@@ -11,7 +11,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (!user) { navigate('/login'); return; }
     api.get('/dashboard').then(({ data }) => setData(data)).catch(console.error);
-  }, [user]);
+  }, [user, navigate]);
 
   const handleLogout = async () => { await logout(); navigate('/login'); };
 
@@ -64,4 +64,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

@@ -1,17 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-body { font-family: 'Space Grotesk', sans-serif; }
-        .logic-grid { background-image: radial-gradient(circle, rgba(140, 37, 244, 0.1) 1px, transparent 1px); background-size: 24px 24px; }
-        .gradient-arrow { position: relative; }
-        .gradient-arrow::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #8c25f4, #3b82f6);
-            top: 50%;
-            left: 0;
-            z-index: 0;
-        }

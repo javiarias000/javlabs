@@ -1,14 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-.resolution-path-line {
-            background: linear-gradient(to bottom, #0d0df2, #6366f1, #2e2e48);
-        }
-        .gradient-border {
-            border-image: linear-gradient(to right, transparent, #0d0df2, transparent) 1;
-        }
-        .glass-panel {
-            background: rgba(16, 16, 34, 0.8);
-            backdrop-filter: blur(12px);
-        }
