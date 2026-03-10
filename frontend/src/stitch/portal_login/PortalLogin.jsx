@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './PortalLogin.css';
 
 export default function PortalLogin() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,7 +18,8 @@ export default function PortalLogin() {
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/dashboard');
+      const from = location.state?.from?.pathname || '/dashboard/overview';
+      navigate(from, { replace: true });
     } catch (err) {
       setError('Credenciales incorrectas. Intenta de nuevo.');
     } finally {

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 
 import AboutPage from './stitch/about_page/AboutPage';
 import LandingPage1 from './stitch/landing_page_1/LandingPage1';
@@ -29,32 +30,45 @@ function ScrollToTop() {
   return null;
 }
 
+const P = ({ children }) => <PrivateRoute>{children}</PrivateRoute>;
+
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/"                          element={<LandingPage1 />} />
-          <Route path="/servicios"                 element={<ServicesPageVariant1 />} />
-          <Route path="/nosotros"                  element={<AboutPage />} />
-          <Route path="/contacto"                  element={<ContactPageVariant1 />} />
-          <Route path="/login"                     element={<PortalLogin />} />
-          <Route path="/dashboard"                 element={<ClientDashboard />} />
-          <Route path="/dashboard/overview"        element={<ClientDashboardOverview />} />
-          <Route path="/dashboard/performance"     element={<AutomationPerformanceDashboard />} />
-          <Route path="/automatizaciones"          element={<ActiveAutomationsListView />} />
-          <Route path="/automatizaciones/tabla"    element={<AutomationManagementTable />} />
-          <Route path="/automatizaciones/nueva"    element={<NewAutomationWizardStep1 />} />
-          <Route path="/automatizaciones/logica"   element={<AutomationLogicTestView />} />
-          <Route path="/automatizaciones/logs"     element={<AutomationLogsErrorTracking />} />
-          <Route path="/automatizaciones/errores"  element={<ErrorAnalysisView />} />
-          <Route path="/workflow/v1"               element={<WorkflowDetailsVariant1 />} />
-          <Route path="/workflow/v2"               element={<WorkflowDetailsVariant21 />} />
-          <Route path="/workflow/v2-2"             element={<WorkflowDetailsVariant22 />} />
-          <Route path="/workflow/v2-3"             element={<WorkflowDetailsVariant23 />} />
-          <Route path="/soporte/chat"              element={<TechnicalSupportChat />} />
-          <Route path="/soporte/ticket"            element={<TicketConversationView />} />
+          {/* PÚBLICO */}
+          <Route path="/"         element={<LandingPage1 />} />
+          <Route path="/servicios" element={<ServicesPageVariant1 />} />
+          <Route path="/nosotros"  element={<AboutPage />} />
+          <Route path="/contacto"  element={<ContactPageVariant1 />} />
+          <Route path="/login"     element={<PortalLogin />} />
+
+          {/* PRIVADO — Portal */}
+          <Route path="/dashboard"              element={<P><ClientDashboard /></P>} />
+          <Route path="/dashboard/overview"     element={<P><ClientDashboardOverview /></P>} />
+          <Route path="/dashboard/performance"  element={<P><AutomationPerformanceDashboard /></P>} />
+
+          {/* PRIVADO — Automatizaciones */}
+          <Route path="/automatizaciones"          element={<P><ActiveAutomationsListView /></P>} />
+          <Route path="/automatizaciones/tabla"    element={<P><AutomationManagementTable /></P>} />
+          <Route path="/automatizaciones/nueva"    element={<P><NewAutomationWizardStep1 /></P>} />
+          <Route path="/automatizaciones/logica"   element={<P><AutomationLogicTestView /></P>} />
+          <Route path="/automatizaciones/logs"     element={<P><AutomationLogsErrorTracking /></P>} />
+          <Route path="/automatizaciones/errores"  element={<P><ErrorAnalysisView /></P>} />
+
+          {/* PRIVADO — Workflows */}
+          <Route path="/workflow/v1"   element={<P><WorkflowDetailsVariant1 /></P>} />
+          <Route path="/workflow/v2"   element={<P><WorkflowDetailsVariant21 /></P>} />
+          <Route path="/workflow/v2-2" element={<P><WorkflowDetailsVariant22 /></P>} />
+          <Route path="/workflow/v2-3" element={<P><WorkflowDetailsVariant23 /></P>} />
+
+          {/* PRIVADO — Soporte */}
+          <Route path="/soporte/chat"   element={<P><TechnicalSupportChat /></P>} />
+          <Route path="/soporte/ticket" element={<P><TicketConversationView /></P>} />
+
+          {/* 404 */}
           <Route path="*" element={
             <div style={{ background: '#0D1B2A', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
               <div style={{ textAlign: 'center' }}>

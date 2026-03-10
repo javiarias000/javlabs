@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import './ClientDashboardOverview.css';
@@ -14,6 +14,7 @@ const STATUS_COLORS = {
 export default function ClientDashboardOverview() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,21 +48,20 @@ export default function ClientDashboardOverview() {
         </div>
         <nav className="flex-1 px-4 py-4 space-y-2 font-montserrat">
           {[
-            { icon: 'dashboard',     label: 'Dashboard',       path: '/dashboard/overview', active: true },
-            { icon: 'folder_open',   label: 'Mis Proyectos',   path: '/automatizaciones' },
-            { icon: 'bolt',          label: 'Automatizaciones',path: '/automatizaciones' },
-            { icon: 'analytics',     label: 'Reportes',        path: '/dashboard/performance' },
-            { icon: 'support_agent', label: 'Soporte',         path: '/soporte/chat' },
-            { icon: 'settings',      label: 'Configuración',   path: '/dashboard' },
+            { icon: 'dashboard',     label: 'Dashboard',        path: '/dashboard/overview' },
+            { icon: 'bolt',          label: 'Automatizaciones', path: '/automatizaciones' },
+            { icon: 'analytics',     label: 'Reportes',         path: '/dashboard/performance' },
+            { icon: 'support_agent', label: 'Soporte',          path: '/soporte/chat' },
+            { icon: 'admin_panel_settings', label: 'Admin',     path: '/dashboard' },
           ].map(item => (
             <button key={item.label} onClick={() => navigate(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 text-left ${
-                item.active
+                pathname === item.path
                   ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent'
                   : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'
               }`}>
-              <span className={`material-symbols-outlined ${item.active ? 'text-primary' : ''}`}>{item.icon}</span>
-              <span className={item.active ? 'bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold' : ''}>
+              <span className={`material-symbols-outlined ${pathname === item.path ? 'text-primary' : ''}`}>{item.icon}</span>
+              <span className={pathname === item.path ? 'bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold' : ''}>
                 {item.label}
               </span>
             </button>
