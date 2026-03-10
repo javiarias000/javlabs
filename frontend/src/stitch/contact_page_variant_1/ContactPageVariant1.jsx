@@ -1,168 +1,203 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 import './ContactPageVariant1.css';
 
 export default function ContactPageVariant1() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', service: '', message: '' });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await api.post('/contact', {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+        service: form.service,
+        phone: form.phone,
+        company: form.company
+      });
+      setSuccess(true);
+    } catch (err) {
+      setError('Hubo un error al enviar. Intenta de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="relative flex min-h-screen flex-col overflow-x-hidden">
-<header className="w-full border-b border-slate-800 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
-<div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-<div className="flex items-center gap-3">
-<div className="size-8 bg-primary flex items-center justify-center">
-<span className="material-symbols-outlined text-white text-xl">settings_input_component</span>
-</div>
-<h2 className="font-heading text-white text-lg tracking-wider">JAV LABS</h2>
-</div>
-<nav className="hidden md:flex items-center gap-10">
-<Link to="/servicios" className="text-sm font-medium hover:text-primary transition-colors">Servicios</Link>
-<a className="text-sm font-medium hover:text-primary transition-colors" href="/">Proyectos</a>
-<a className="text-sm font-medium hover:text-primary transition-colors" href="/">Nosotros</a>
-<Link to="/contacto" className="text-sm font-medium text-primary">Contacto</Link>
-</nav>
-<button className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 text-xs font-bold uppercase tracking-widest transition-all">
-                    Agendar Llamada
-                </button>
-</div>
-</header>
-<main className="flex-grow">
+        <header className="w-full border-b border-slate-800 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="size-8 bg-primary flex items-center justify-center">
+                <span className="material-symbols-outlined text-white text-xl">settings_input_component</span>
+              </div>
+              <h2 className="font-heading text-white text-lg tracking-wider">JAV LABS</h2>
+            </div>
+            <nav className="hidden md:flex items-center gap-10">
+              <Link to="/servicios" className="text-sm font-medium hover:text-primary transition-colors">Servicios</Link>
+              <Link to="/nosotros" className="text-sm font-medium hover:text-primary transition-colors">Nosotros</Link>
+              <Link to="/contacto" className="text-sm font-medium text-primary">Contacto</Link>
+            </nav>
+            <button className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 text-xs font-bold uppercase tracking-widest transition-all">
+              Agendar Llamada
+            </button>
+          </div>
+        </header>
 
-<section className="bg-navy-deep py-20 px-6 border-b border-slate-800">
-<div className="max-w-7xl mx-auto text-center">
-<h1 className="font-heading text-4xl md:text-6xl text-white mb-6 uppercase tracking-tighter">CONTÁCTANOS</h1>
-<p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
-                        Cuéntanos tu proyecto y te respondemos en menos de 24 horas
-                    </p>
-</div>
-</section>
+        <main className="flex-grow">
+          <section className="bg-navy-deep py-20 px-6 border-b border-slate-800">
+            <div className="max-w-7xl mx-auto text-center">
+              <h1 className="font-heading text-4xl md:text-6xl text-white mb-6 uppercase tracking-tighter">CONTÁCTANOS</h1>
+              <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                Cuéntanos tu proyecto y te respondemos en menos de 24 horas
+              </p>
+            </div>
+          </section>
 
-<section className="max-w-7xl mx-auto px-6 py-20">
-<div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <section className="max-w-7xl mx-auto px-6 py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+              <div className="lg:col-span-7">
 
-<div className="lg:col-span-7">
-<form className="space-y-6">
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div className="flex flex-col gap-2">
-<label className="text-xs font-bold uppercase tracking-widest text-slate-400">Nombre</label>
-<input className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600" placeholder="Tu nombre" type="text" />
-</div>
-<div className="flex flex-col gap-2">
-<label className="text-xs font-bold uppercase tracking-widest text-slate-400">Empresa</label>
-<input className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600" placeholder="Tu empresa" type="text" />
-</div>
-</div>
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div className="flex flex-col gap-2">
-<label className="text-xs font-bold uppercase tracking-widest text-slate-400">Email</label>
-<input className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600" placeholder="tu@email.com" type="email" />
-</div>
-<div className="flex flex-col gap-2">
-<label className="text-xs font-bold uppercase tracking-widest text-slate-400">Teléfono</label>
-<input className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600" placeholder="+34 000 000 000" type="tel" />
-</div>
-</div>
-<div className="flex flex-col gap-2">
-<label className="text-xs font-bold uppercase tracking-widest text-slate-400">Tipo de servicio</label>
-<select className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all appearance-none cursor-pointer">
-<option>Selecciona un servicio</option>
-<option>Automatización de Procesos</option>
-<option>IA &amp; Machine Learning</option>
-<option>Consultoría IT</option>
-<option>Desarrollo a Medida</option>
-</select>
-</div>
-<div className="flex flex-col gap-2">
-<label className="text-xs font-bold uppercase tracking-widest text-slate-400">Mensaje</label>
-<textarea className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600 resize-none" placeholder="Cuéntanos sobre tu proyecto..." rows="5"></textarea>
-</div>
-<button className="w-full bg-gradient-to-r from-primary to-violet-600 text-white font-bold py-5 uppercase tracking-[0.2em] hover:opacity-90 transition-opacity" type="submit">
-                                Enviar Mensaje
-                            </button>
-</form>
-</div>
+                {success ? (
+                  <div className="flex flex-col items-center justify-center h-full gap-6 py-20 text-center">
+                    <span className="material-symbols-outlined text-6xl text-primary">check_circle</span>
+                    <h2 className="font-heading text-2xl text-white uppercase">¡Mensaje enviado!</h2>
+                    <p className="text-slate-400">Te responderemos en menos de 24 horas.</p>
+                    <button
+                      onClick={() => { setSuccess(false); setForm({ name: '', company: '', email: '', phone: '', service: '', message: '' }); }}
+                      className="border border-primary text-primary px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                    >
+                      Enviar otro mensaje
+                    </button>
+                  </div>
+                ) : (
+                  <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Nombre</label>
+                        <input name="name" value={form.name} onChange={handleChange} required
+                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          placeholder="Tu nombre" type="text" />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Empresa</label>
+                        <input name="company" value={form.company} onChange={handleChange}
+                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          placeholder="Tu empresa" type="text" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Email</label>
+                        <input name="email" value={form.email} onChange={handleChange} required
+                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          placeholder="tu@email.com" type="email" />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Teléfono</label>
+                        <input name="phone" value={form.phone} onChange={handleChange}
+                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          placeholder="+34 000 000 000" type="tel" />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Tipo de servicio</label>
+                      <select name="service" value={form.service} onChange={handleChange}
+                        className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all appearance-none cursor-pointer">
+                        <option value="">Selecciona un servicio</option>
+                        <option>Automatización de Procesos</option>
+                        <option>IA &amp; Machine Learning</option>
+                        <option>Consultoría IT</option>
+                        <option>Desarrollo a Medida</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Mensaje</label>
+                      <textarea name="message" value={form.message} onChange={handleChange} required
+                        className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600 resize-none"
+                        placeholder="Cuéntanos sobre tu proyecto..." rows="5"></textarea>
+                    </div>
 
-<div className="lg:col-span-5 flex flex-col gap-12">
-<div className="space-y-8">
-<h3 className="font-heading text-xl text-white uppercase">Información de contacto</h3>
-<div className="space-y-6">
-<div className="flex items-start gap-5">
-<span className="material-symbols-outlined text-primary">mail</span>
-<div>
-<p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Email</p>
-<p className="text-white hover:text-primary transition-colors cursor-pointer">hello@javlabs.tech</p>
-</div>
-</div>
-<div className="flex items-start gap-5">
-<span className="material-symbols-outlined text-primary">call</span>
-<div>
-<p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Teléfono</p>
-<p className="text-white hover:text-primary transition-colors cursor-pointer">+34 910 000 000</p>
-</div>
-</div>
-<div className="flex items-start gap-5">
-<span className="material-symbols-outlined text-primary">location_on</span>
-<div>
-<p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Ubicación</p>
-<p className="text-white">Paseo de la Castellana, 259, Madrid, España</p>
-</div>
-</div>
-</div>
-<div className="flex items-center gap-6 pt-4">
-<a className="group" href="/">
-<div className="size-10 flex items-center justify-center border border-slate-800 group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-violet-600 transition-all duration-300">
-<svg className="size-5 fill-slate-400 group-hover:fill-white" viewbox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
-</div>
-</a>
-<a className="group" href="/">
-<div className="size-10 flex items-center justify-center border border-slate-800 group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-violet-600 transition-all duration-300">
-<svg className="size-5 fill-slate-400 group-hover:fill-white" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
-</div>
-</a>
-<a className="group" href="/">
-<div className="size-10 flex items-center justify-center border border-slate-800 group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-violet-600 transition-all duration-300">
-<svg className="size-5 fill-slate-400 group-hover:fill-white" viewbox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.224-3.32c1.54.914 3.04 1.403 4.626 1.405 5.235 0 9.497-4.263 9.499-9.498 0-2.541-.99-4.927-2.784-6.723s-4.183-2.783-6.717-2.783c-5.239 0-9.501 4.263-9.504 9.498 0 1.655.432 3.265 1.251 4.671l-1.008 3.679 3.763-.987zm11.334-7.461c-.302-.151-1.785-.881-2.063-.982-.277-.101-.48-.151-.68.151-.201.302-.777.982-.953 1.185-.177.202-.353.227-.655.076-.301-.151-1.274-.47-2.426-1.498-.897-.8-1.502-1.787-1.678-2.089-.177-.302-.019-.465.132-.615.136-.135.302-.353.453-.529.151-.177.202-.302.302-.504.101-.202.05-.378-.026-.529-.076-.151-.68-1.64-.932-2.245-.245-.59-.494-.51-.68-.519-.177-.01-.378-.012-.58-.012s-.529.076-.806.378c-.278.303-1.059 1.034-1.059 2.522s1.084 2.926 1.235 3.128c.151.202 2.133 3.257 5.168 4.565.722.311 1.285.497 1.724.636.725.23 1.385.197 1.906.12.581-.086 1.785-.73 2.037-1.436.252-.706.252-1.311.176-1.436-.076-.126-.277-.202-.579-.353z"></path></svg>
-</div>
-</a>
-</div>
-</div>
+                    {error && <p className="text-red-400 text-xs font-montserrat">{error}</p>}
 
-<div className="w-full h-80 bg-slate-900 border border-slate-800 overflow-hidden relative grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-<img className="w-full h-full object-cover" data-alt="Dark minimalist urban map of Madrid" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFs0QxxJOsw7MYs6eho8i9JaNcYCYROW-m0BhdS49Xiw4Jcqr-B6pVb_otPuYHPP7iUMzW-sAvgXCmPF8GuGZfOoeufwFLGXJRJ2yaXUKhv_p4Ar1yAyIMM7S9pOIohDgGorcRcq8UEzYM2vxLfIZTJZxyO7RTpZ8sPXZNKhR-GdMc92df_zYkDNyJMDcpx3f2o889FMN08v3NToSFMEe7R2_SrD6dZeVAdbwbjh-upr9ELKD_exFvd_4l3A8hizTKOcnRQX3lDUE" />
-<div className="absolute inset-0 bg-primary/10 pointer-events-none"></div>
-<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-<span className="material-symbols-outlined text-primary text-5xl fill-1">location_on</span>
-</div>
-<div className="absolute bottom-4 left-4 bg-background-dark/90 p-3 border border-slate-800">
-<p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">JAV LABS HQ</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-</main>
+                    <button
+                      className="w-full text-white font-bold py-5 uppercase tracking-[0.2em] hover:opacity-90 transition-opacity disabled:opacity-50"
+                      style={{ background: 'linear-gradient(to right, #0d7ff2, #7c3aed)' }}
+                      type="submit"
+                      disabled={loading}
+                    >
+                      {loading ? 'Enviando...' : 'Enviar Mensaje'}
+                    </button>
+                  </form>
+                )}
+              </div>
 
-<footer className="w-full border-t border-slate-800 bg-background-dark py-8 px-6">
-<div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-<div className="flex items-center gap-4">
-<span className="material-symbols-outlined text-primary">schedule</span>
-<p className="text-sm font-medium tracking-wide">¿Prefieres una llamada rápida?</p>
-</div>
-<button className="gradient-border-btn text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity">
-                    Agendar llamada en Calendly
-                </button>
-</div>
-</footer>
+              <div className="lg:col-span-5 flex flex-col gap-12">
+                <div className="space-y-8">
+                  <h3 className="font-heading text-xl text-white uppercase">Información de contacto</h3>
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-5">
+                      <span className="material-symbols-outlined text-primary">mail</span>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Email</p>
+                        <p className="text-white hover:text-primary transition-colors cursor-pointer">hello@javlabs.tech</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-5">
+                      <span className="material-symbols-outlined text-primary">call</span>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Teléfono</p>
+                        <p className="text-white hover:text-primary transition-colors cursor-pointer">+34 910 000 000</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-5">
+                      <span className="material-symbols-outlined text-primary">location_on</span>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Ubicación</p>
+                        <p className="text-white">Paseo de la Castellana, 259, Madrid, España</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
 
-<div className="w-full bg-black py-4 px-6">
-<div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-<p>© 2024 JAV LABS. Todos los derechos reservados.</p>
-<div className="flex gap-8">
-<a className="hover:text-primary" href="/">Legal</a>
-<a className="hover:text-primary" href="/">Privacidad</a>
-<a className="hover:text-primary" href="/">Cookies</a>
-</div>
-</div>
-</div>
-</div>
+        <footer className="w-full border-t border-slate-800 bg-background-dark py-8 px-6">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <span className="material-symbols-outlined text-primary">schedule</span>
+              <p className="text-sm font-medium tracking-wide">¿Prefieres una llamada rápida?</p>
+            </div>
+            <button className="gradient-border-btn text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity">
+              Agendar llamada en Calendly
+            </button>
+          </div>
+        </footer>
+
+        <div className="w-full bg-black py-4 px-6">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-600">
+            <p>© 2024 JAV LABS. Todos los derechos reservados.</p>
+            <div className="flex gap-8">
+              <a className="hover:text-primary" href="/">Legal</a>
+              <a className="hover:text-primary" href="/">Privacidad</a>
+              <a className="hover:text-primary" href="/">Cookies</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
