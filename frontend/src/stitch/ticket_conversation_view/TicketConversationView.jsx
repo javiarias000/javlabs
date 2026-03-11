@@ -71,7 +71,7 @@ export default function TicketConversationView() {
 <div className="font-mono text-[11px] text-slate-400 bg-black/60 p-3 mb-3 break-all">
                         ERR_SYNC_092: Authentication failed for CRM_API_GATEWAY (Node: US-EAST-1)
                     </div>
-<a className="flex items-center justify-between text-[11px] text-primary hover:underline group" href="/">
+<a className="flex items-center justify-between text-[11px] text-primary hover:underline group" href="/automatizaciones/logs">
 <span>Ver Automation Log Completo</span>
 <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </a>

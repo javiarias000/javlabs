@@ -25,7 +25,7 @@ export default function ErrorAnalysisView() {
 <span className="material-symbols-outlined text-slate-500 text-sm mr-2">search</span>
 <input className="bg-transparent border-none focus:ring-0 text-xs text-slate-100 placeholder:text-slate-600 w-48 p-0 uppercase tracking-tighter" placeholder="BUSCAR LOG ID..." type="text" />
 </div>
-<button className="bg-gradient-to-r from-primary to-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-6 py-2.5 hover:opacity-90 transition-opacity" onClick={() => navigate('/contacto')}>Contactar Soporte Técnico</button>
+<button className="bg-gradient-to-r from-primary to-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-6 py-2.5 hover:opacity-90 transition-opacity" onClick={() => navigate('/soporte/chat')}>Contactar Soporte Técnico</button>
 <div className="w-8 h-8 border border-primary p-0.5">
 <div className="w-full h-full bg-slate-800" data-alt="User avatar placeholder profile image"></div>
 </div>

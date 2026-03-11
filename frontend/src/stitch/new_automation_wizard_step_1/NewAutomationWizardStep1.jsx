@@ -5,7 +5,7 @@ export default function NewAutomationWizardStep1() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+      <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-dark">
 <div className="layout-container flex h-full grow flex-col">
 
 <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-space-gray px-10 py-4 bg-wizard-black">

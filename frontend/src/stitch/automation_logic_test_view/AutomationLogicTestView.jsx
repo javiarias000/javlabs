@@ -5,7 +5,7 @@ export default function AutomationLogicTestView() {
   const navigate = useNavigate();
   return (
     <>
-      <header className="flex items-center justify-between border-b border-primary/20 px-6 py-4 bg-background-light dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="flex items-center justify-between border-b border-primary/20 px-6 py-4 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
 <div className="flex items-center gap-4">
 <div className="text-primary">
 <span className="material-symbols-outlined text-4xl">rocket_launch</span>

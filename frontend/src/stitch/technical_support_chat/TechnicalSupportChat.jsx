@@ -38,7 +38,7 @@ export default function TechnicalSupportChat() {
 </header>
 <div className="flex flex-1 overflow-hidden">
 
-<aside className="w-80 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-[#0c0c1a] hidden xl:flex">
+<aside className="w-80 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-background-dark dark:bg-[#0c0c1a] hidden xl:flex">
 <div className="p-6 border-b border-slate-800">
 <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] block mb-2">Case Registry</span>
 <h3 className="text-xl font-bold leading-tight">#82931-GAMMA</h3>
@@ -98,7 +98,7 @@ export default function TechnicalSupportChat() {
 <span className="text-xs font-bold uppercase tracking-tighter">Site_Lead_Alpha</span>
 <span className="text-[10px] text-slate-500 font-mono">10:05 AM</span>
 </div>
-<div className="bg-white dark:bg-slate-100 text-slate-900 p-5 max-w-xl shadow-2xl border-l-4 border-slate-300">
+<div className="bg-slate-900 dark:bg-slate-100 text-slate-900 p-5 max-w-xl shadow-2xl border-l-4 border-slate-300">
 <p className="text-sm font-medium leading-relaxed">The actuator on Node-04 is failing to meet the calibration baseline. We are seeing a 140ms delay in response timing. Need immediate override.</p>
 </div>
 </div>
@@ -144,7 +144,7 @@ export default function TechnicalSupportChat() {
 <span className="text-xs font-bold uppercase tracking-tighter">Site_Lead_Alpha</span>
 <span className="text-[10px] text-slate-500 font-mono">10:15 AM</span>
 </div>
-<div className="bg-white dark:bg-slate-100 text-slate-900 p-5 max-w-xl border-l-4 border-slate-300">
+<div className="bg-slate-900 dark:bg-slate-100 text-slate-900 p-5 max-w-xl border-l-4 border-slate-300">
 <p className="text-sm font-medium leading-relaxed">Latency just dropped to 12ms. Calibration is back within green parameters. Can you confirm if this is a permanent fix or a temporary bypass?</p>
 </div>
 </div>
@@ -175,7 +175,7 @@ export default function TechnicalSupportChat() {
 
 <div className="p-8 bg-background-light dark:bg-[#080814] border-t border-slate-200 dark:border-slate-800">
 <div className="max-w-4xl mx-auto">
-<div className="relative flex items-center bg-white dark:bg-system-gray border border-slate-300 dark:border-slate-700 shadow-xl">
+<div className="relative flex items-center bg-slate-900 dark:bg-system-gray border border-slate-300 dark:border-slate-700 shadow-xl">
 <div className="px-4 text-slate-500">
 <span className="material-symbols-outlined">add_circle</span>
 </div>
@@ -203,7 +203,7 @@ export default function TechnicalSupportChat() {
 </div>
 </main>
 
-<aside className="w-72 border-l border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-[#0c0c1a] hidden lg:flex">
+<aside className="w-72 border-l border-slate-200 dark:border-slate-800 flex flex-col bg-background-dark dark:bg-[#0c0c1a] hidden lg:flex">
 <div className="p-6 border-b border-slate-800">
 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-4">Node Metrics</span>
 <div className="space-y-4">
