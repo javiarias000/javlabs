@@ -18,9 +18,6 @@ import AutomationLogsErrorTracking from './stitch/automation_logs_error_tracking
 import NewAutomationWizardStep1 from './stitch/new_automation_wizard_step_1/NewAutomationWizardStep1';
 import ErrorAnalysisView from './stitch/error_analysis_view/ErrorAnalysisView';
 import WorkflowDetailsVariant1 from './stitch/workflow_details_variant_1/WorkflowDetailsVariant1';
-import WorkflowDetailsVariant21 from './stitch/workflow_details_variant_2_1/WorkflowDetailsVariant21';
-import WorkflowDetailsVariant22 from './stitch/workflow_details_variant_2_2/WorkflowDetailsVariant22';
-import WorkflowDetailsVariant23 from './stitch/workflow_details_variant_2_3/WorkflowDetailsVariant23';
 import TechnicalSupportChat from './stitch/technical_support_chat/TechnicalSupportChat';
 import TicketConversationView from './stitch/ticket_conversation_view/TicketConversationView';
 
@@ -60,9 +57,6 @@ export default function App() {
 
           {/* PRIVADO — Workflows */}
           <Route path="/workflow/v1"   element={<P><WorkflowDetailsVariant1 /></P>} />
-          <Route path="/workflow/v2"   element={<P><WorkflowDetailsVariant21 /></P>} />
-          <Route path="/workflow/v2-2" element={<P><WorkflowDetailsVariant22 /></P>} />
-          <Route path="/workflow/v2-3" element={<P><WorkflowDetailsVariant23 /></P>} />
 
           {/* PRIVADO — Soporte */}
           <Route path="/soporte/chat"   element={<P><TechnicalSupportChat /></P>} />

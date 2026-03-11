@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './NewAutomationWizardStep1.css';
 
 export default function NewAutomationWizardStep1() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
@@ -131,10 +132,10 @@ export default function NewAutomationWizardStep1() {
 </div>
 
 <div className="mt-8 flex justify-end gap-4">
-<button className="px-8 py-3 text-slate-400 hover:text-white font-bold uppercase tracking-widest transition-colors">
+<button onClick={() => navigate('/automatizaciones')} className="px-8 py-3 text-slate-400 hover:text-white font-bold uppercase tracking-widest transition-colors">
                             Atrás
                         </button>
-<button className="px-8 py-3 bg-gradient-to-r from-primary to-blue-700 text-white font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
+<button onClick={() => navigate('/automatizaciones/logica')} className="px-8 py-3 bg-gradient-to-r from-primary to-blue-700 text-white font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
                             Siguiente Paso
                         </button>
 </div>

@@ -16,7 +16,7 @@ export default function AutomationLogicTestView() {
 <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</Link>
 <Link to="/workflow/v1" className="text-sm font-medium text-primary border-b-2 border-primary">Workflows</Link>
 <Link to="/automatizaciones/logs" className="text-sm font-medium hover:text-primary transition-colors">Logs</Link>
-<a className="text-sm font-medium hover:text-primary transition-colors" href="/">Settings</a>
+<a className="text-sm font-medium hover:text-primary transition-colors" href="/dashboard/overview">Settings</a>
 </nav>
 <div className="flex items-center gap-4">
 <button className="bg-primary hover:bg-primary/90 text-white text-sm font-bold px-6 py-2 rounded shadow-lg shadow-primary/20 transition-all" onClick={() => navigate('/automatizaciones/nueva')}>New Automation</button>

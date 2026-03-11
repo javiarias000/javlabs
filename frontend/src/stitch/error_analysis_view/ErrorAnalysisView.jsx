@@ -14,10 +14,10 @@ export default function ErrorAnalysisView() {
 <h2 className="font-michroma text-lg tracking-wider text-slate-100">JAV LABS</h2>
 </div>
 <nav className="hidden md:flex items-center gap-6">
-<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="/">Terminal</a>
-<a className="text-xs uppercase tracking-widest text-primary border-b border-primary pb-1" href="/">Incidencias</a>
-<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="/">Nodos</a>
-<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="/">SLA</a>
+<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="/automatizaciones/logs">Terminal</a>
+<a className="text-xs uppercase tracking-widest text-primary border-b border-primary pb-1" href="/automatizaciones/errores">Incidencias</a>
+<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="/automatizaciones">Nodos</a>
+<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors" href="/dashboard/performance">SLA</a>
 </nav>
 </div>
 <div className="flex items-center gap-6">

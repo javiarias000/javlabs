@@ -18,8 +18,8 @@ export default function AutomationManagementTable() {
 <nav className="hidden md:flex items-center gap-8">
 <Link to="/dashboard" className="text-primary font-medium text-sm tracking-widest uppercase">Dashboard</Link>
 <Link to="/automatizaciones" className="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors">Automations</Link>
-<a className="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="/">Infrastructure</a>
-<a className="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="/">Analytics</a>
+<a className="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="/dashboard/performance">Infrastructure</a>
+<a className="text-slate-400 hover:text-white font-medium text-sm tracking-widest uppercase transition-colors" href="/dashboard/performance">Analytics</a>
 </nav>
 </div>
 <div className="flex items-center gap-6">
@@ -286,8 +286,8 @@ export default function AutomationManagementTable() {
 <div className="max-w-[1440px] mx-auto flex justify-between items-center opacity-50">
 <div className="text-[10px] tracking-[0.3em] font-bold uppercase">© 2023 JAV LABS Automation Platform</div>
 <div className="flex gap-8 text-[10px] tracking-[0.3em] font-bold uppercase">
-<a className="hover:text-white" href="/">API Docs</a>
-<a className="hover:text-white" href="/">Status Page</a>
+<a className="hover:text-white" href="/dashboard/overview">API Docs</a>
+<a className="hover:text-white" href="/automatizaciones">Status Page</a>
 <Link to="/soporte/chat" className="hover:text-white">Support</Link>
 </div>
 </div>

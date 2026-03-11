@@ -16,7 +16,7 @@ export default function WorkflowDetailsVariant1() {
 <Link to="/dashboard" className="text-primary text-sm font-medium">Dashboard</Link>
 <Link to="/workflow/v1" className="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary">Workflows</Link>
 <Link to="/automatizaciones/logs" className="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary">Logs</Link>
-<a className="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary" href="/">Settings</a>
+<a className="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary" href="/dashboard/overview">Settings</a>
 </nav>
 </div>
 <div className="flex items-center gap-6">

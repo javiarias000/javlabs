@@ -16,7 +16,7 @@ export default function AutomationLogsErrorTracking() {
 <nav className="flex gap-6">
 <Link to="/automatizaciones/logs" className="text-xs uppercase tracking-widest text-primary font-bold">Logs</Link>
 <Link to="/dashboard" className="text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Dashboard</Link>
-<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors" href="/">Configuración</a>
+<a className="text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors" href="/dashboard/overview">Configuración</a>
 </nav>
 </div>
 <div className="flex items-center gap-4">

@@ -1,8 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './AutomationPerformanceDashboard.css';
 
 export default function AutomationPerformanceDashboard() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
     <>
       <div className="flex h-screen overflow-hidden">
@@ -24,28 +25,28 @@ export default function AutomationPerformanceDashboard() {
 <span className="material-symbols-outlined">dashboard</span>
 <span className="text-sm font-medium">Dashboard</span>
 </div>
-<div className="px-3 py-2 flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+<div className={`px-3 py-2 flex items-center gap-3 transition-colors cursor-pointer ${pathname === "/dashboard/overview" ? "text-white bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"}`} onClick={() => navigate("/dashboard/overview")}>  
 <span className="material-symbols-outlined">memory</span>
 <span className="text-sm font-medium">Automations</span>
 </div>
-<div className="px-3 py-2 flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+<div className={`px-3 py-2 flex items-center gap-3 transition-colors cursor-pointer ${pathname === "/automatizaciones" ? "text-white bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"}`} onClick={() => navigate("/automatizaciones")}>  
 <span className="material-symbols-outlined">analytics</span>
 <span className="text-sm font-medium">Performance</span>
 </div>
-<div className="px-3 py-2 flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+<div className={`px-3 py-2 flex items-center gap-3 transition-colors cursor-pointer ${pathname === "/dashboard/performance" ? "text-white bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"}`} onClick={() => navigate("/dashboard/performance")}>  
 <span className="material-symbols-outlined">terminal</span>
 <span className="text-sm font-medium">System Logs</span>
 </div>
-<div className="px-3 py-2 flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+<div className={`px-3 py-2 flex items-center gap-3 transition-colors cursor-pointer ${pathname === "/automatizaciones/logs" ? "text-white bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"}`} onClick={() => navigate("/automatizaciones/logs")}>  
 <span className="material-symbols-outlined">hub</span>
 <span className="text-sm font-medium">Integrations</span>
 </div>
 <div className="mt-8 pt-4 border-t border-white/5">
-<div className="px-3 py-2 flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+<div className={`px-3 py-2 flex items-center gap-3 transition-colors cursor-pointer ${pathname === "/automatizaciones" ? "text-white bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"}`} onClick={() => navigate("/automatizaciones")}>  
 <span className="material-symbols-outlined">settings</span>
 <span className="text-sm font-medium">Settings</span>
 </div>
-<div className="px-3 py-2 flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+<div className={`px-3 py-2 flex items-center gap-3 transition-colors cursor-pointer ${pathname === "/dashboard/overview" ? "text-white bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"}`} onClick={() => navigate("/dashboard/overview")}>  
 <span className="material-symbols-outlined">support</span>
 <span className="text-sm font-medium">Agent Support</span>
 </div>

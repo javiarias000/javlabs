@@ -191,9 +191,9 @@ export default function ContactPageVariant1() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-600">
             <p>© 2024 JAV LABS. Todos los derechos reservados.</p>
             <div className="flex gap-8">
-              <a className="hover:text-primary" href="/">Legal</a>
-              <a className="hover:text-primary" href="/">Privacidad</a>
-              <a className="hover:text-primary" href="/">Cookies</a>
+              <a className="hover:text-primary" href="/nosotros">Legal</a>
+              <a className="hover:text-primary" href="/nosotros">Privacidad</a>
+              <a className="hover:text-primary" href="/nosotros">Cookies</a>
             </div>
           </div>
         </div>

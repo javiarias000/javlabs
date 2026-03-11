@@ -15,9 +15,9 @@ export default function TechnicalSupportChat() {
 <h2 className="text-lg font-bold tracking-tight uppercase italic">JAV LABS <span className="font-light not-italic text-slate-400">Support</span></h2>
 </div>
 <nav className="hidden md:flex items-center gap-6">
-<a className="text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors" href="/">Console</a>
+<a className="text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors" href="/automatizaciones/logs">Console</a>
 <Link to="/soporte/ticket" className="text-xs font-semibold uppercase tracking-widest text-white border-b-2 border-primary pb-1">Active Tickets</Link>
-<a className="text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors" href="/">Nodes</a>
+<a className="text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors" href="/automatizaciones">Nodes</a>
 </nav>
 </div>
 <div className="flex items-center gap-6">
