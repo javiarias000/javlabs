@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import PublicNavbar from '../../components/PublicNavbar';
 import './AboutPage.css';
 
 export default function AboutPage() {
@@ -7,29 +8,7 @@ export default function AboutPage() {
   return (
     <>
       {/* ───── HEADER ───── */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-background-dark/90 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-10 bg-gradient-to-br from-primary to-accent flex items-center justify-center rounded-lg">
-              <span className="text-white font-michroma text-xl font-bold">J/V</span>
-            </div>
-            <h2 className="text-white text-xl font-michroma tracking-tighter ml-2">JAV LABS</h2>
-          </div>
-          <nav className="hidden md:flex items-center gap-10">
-            <Link to="/servicios" className="text-slate-300 hover:text-primary text-sm font-medium transition-colors">Servicios</Link>
-            <Link to="/nosotros"  className="text-primary text-sm font-medium transition-colors">Nosotros</Link>
-            <Link to="/contacto"  className="text-slate-300 hover:text-primary text-sm font-medium transition-colors">Contacto</Link>
-            <Link to="/login"     className="text-slate-300 hover:text-primary text-sm font-medium transition-colors border-l border-slate-700 pl-10">Portal</Link>
-          </nav>
-          <button
-            onClick={() => navigate('/contacto')}
-            className="px-6 py-2 text-sm font-bold text-white uppercase tracking-widest hover:bg-white/5 transition-all"
-            style={{ border: '2px solid', borderImage: 'linear-gradient(90deg, #0d7ff2, #8b5cf6) 1' }}
-          >
-            Agendar Demo
-          </button>
-        </div>
-      </header>
+        <PublicNavbar />
 
       {/* ───── HERO ───── */}
       <section className="relative overflow-hidden pt-24 pb-32 bg-background-dark">

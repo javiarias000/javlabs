@@ -7,6 +7,7 @@ import AboutPage from './stitch/about_page/AboutPage';
 import LandingPage1 from './stitch/landing_page_1/LandingPage1';
 import ServicesPageVariant1 from './stitch/services_page_variant_1/ServicesPageVariant1';
 import ContactPageVariant1 from './stitch/contact_page_variant_1/ContactPageVariant1';
+import PricingPage from './stitch/pricing_page/PricingPage';
 import PortalLogin from './stitch/portal_login/PortalLogin';
 import ClientDashboard from './stitch/client_dashboard/ClientDashboard';
 import ClientDashboardOverview from './stitch/client_dashboard_overview/ClientDashboardOverview';
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/servicios" element={<ServicesPageVariant1 />} />
           <Route path="/nosotros"  element={<AboutPage />} />
           <Route path="/contacto"  element={<ContactPageVariant1 />} />
+          <Route path="/precios"  element={<PricingPage />} />
           <Route path="/login"     element={<PortalLogin />} />
 
           {/* PRIVADO — Portal */}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import PublicNavbar from '../../components/PublicNavbar';
 import './ServicesPageVariant1.css';
 
 export default function ServicesPageVariant1() {
@@ -29,24 +30,7 @@ export default function ServicesPageVariant1() {
       <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
 
         {/* ───── HEADER ───── */}
-        <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-800 px-10 py-4 bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
-          <div className="flex items-center gap-4">
-            <div className="size-6 text-primary">
-              <span className="material-symbols-outlined text-3xl">settings_input_component</span>
-            </div>
-            <h2 className="text-white text-xl font-michroma tracking-wider">JAV LABS</h2>
-          </div>
-          <nav className="hidden md:flex flex-1 justify-end gap-8 items-center">
-            <div className="flex items-center gap-9 font-montserrat">
-              <Link to="/servicios" className="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest">Servicios</Link>
-              <Link to="/nosotros" className="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest">Nosotros</Link>
-              <Link to="/contacto" className="text-slate-300 hover:text-primary transition-colors text-xs uppercase tracking-widest">Contacto</Link>
-            </div>
-            <button className="bg-primary hover:bg-primary/80 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 transition-all">
-              Agendar Diagnóstico
-            </button>
-          </nav>
-        </header>
+        <PublicNavbar />
 
         <main className="flex-1">
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import PublicNavbar from '../../components/PublicNavbar';
 import api from '../../services/api';
 import './ContactPageVariant1.css';
 
@@ -36,24 +37,7 @@ export default function ContactPageVariant1() {
   return (
     <>
       <div className="relative flex min-h-screen flex-col overflow-x-hidden">
-        <header className="w-full border-b border-slate-800 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="size-8 bg-primary flex items-center justify-center">
-                <span className="material-symbols-outlined text-white text-xl">settings_input_component</span>
-              </div>
-              <h2 className="font-heading text-white text-lg tracking-wider">JAV LABS</h2>
-            </div>
-            <nav className="hidden md:flex items-center gap-10">
-              <Link to="/servicios" className="text-sm font-medium hover:text-primary transition-colors">Servicios</Link>
-              <Link to="/nosotros" className="text-sm font-medium hover:text-primary transition-colors">Nosotros</Link>
-              <Link to="/contacto" className="text-sm font-medium text-primary">Contacto</Link>
-            </nav>
-            <button className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 text-xs font-bold uppercase tracking-widest transition-all">
-              Agendar Llamada
-            </button>
-          </div>
-        </header>
+        <PublicNavbar />
 
         <main className="flex-grow">
           <section className="bg-navy-deep py-20 px-6 border-b border-slate-800">
