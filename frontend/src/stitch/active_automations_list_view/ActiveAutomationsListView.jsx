@@ -1,51 +1,11 @@
+import PortalLayout from '../../components/PortalLayout';
 import { Link, useNavigate } from 'react-router-dom';
 import './ActiveAutomationsListView.css';
 
 export default function ActiveAutomationsListView() {
   const navigate = useNavigate();
   return (
-    <div className="flex h-screen bg-background-dark">
-      <aside className="w-64 border-r border-slate-800 flex flex-col h-screen sticky top-0 bg-background-dark">
-        <div className="p-6 flex flex-col gap-8 h-full">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded bg-primary flex items-center justify-center text-white">
-              <span className="material-symbols-outlined">biotech</span>
-            </div>
-            <div>
-              <h2 className="text-lg font-bold tracking-tight uppercase text-white">JAV LABS</h2>
-              <p className="text-xs text-slate-400">Portal de Cliente</p>
-            </div>
-          </div>
-          <nav className="flex flex-col gap-2">
-            <button onClick={() => navigate('/dashboard/overview')} className="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-left">
-              <span className="material-symbols-outlined text-[20px]">dashboard</span>
-              <span className="text-sm font-medium">Dashboard</span>
-            </button>
-            <button className="flex items-center gap-3 px-3 py-2 rounded bg-primary/10 text-primary transition-colors text-left">
-              <span className="material-symbols-outlined text-[20px]">settings_input_component</span>
-              <span className="text-sm font-medium">Automatizaciones</span>
-            </button>
-            <button onClick={() => navigate('/automatizaciones/logs')} className="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-left">
-              <span className="material-symbols-outlined text-[20px]">terminal</span>
-              <span className="text-sm font-medium">Logs de Ejecución</span>
-            </button>
-            <button onClick={() => navigate('/automatizaciones/tabla')} className="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-left">
-              <span className="material-symbols-outlined text-[20px]">corporate_fare</span>
-              <span className="text-sm font-medium">Tabla</span>
-            </button>
-          </nav>
-          <div className="mt-auto pt-6 border-t border-slate-800 flex flex-col gap-2">
-            <button onClick={() => navigate('/soporte/chat')} className="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-left">
-              <span className="material-symbols-outlined text-[20px]">help_center</span>
-              <span className="text-sm font-medium">Soporte</span>
-            </button>
-            <button onClick={() => navigate('/dashboard')} className="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-left">
-              <span className="material-symbols-outlined text-[20px]">settings</span>
-              <span className="text-sm font-medium">Configuración</span>
-            </button>
-          </div>
-        </div>
-      </aside>
+    <PortalLayout>
 
       <main className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-end mb-10">
@@ -141,6 +101,6 @@ export default function ActiveAutomationsListView() {
           </div>
         </footer>
       </main>
-    </div>
+    </PortalLayout>
   );
 }

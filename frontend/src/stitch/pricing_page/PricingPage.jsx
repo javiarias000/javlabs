@@ -106,7 +106,7 @@ export default function PricingPage() {
               </ul>
               <button onClick={() => navigate('/contacto')}
                 className="mt-8 w-full border border-slate-700 text-slate-300 py-3 text-xs font-bold uppercase tracking-widest hover:border-accent hover:text-accent transition-all font-montserrat rounded">
-                Contactar
+                Comenzar
               </button>
             </div>
           </div>

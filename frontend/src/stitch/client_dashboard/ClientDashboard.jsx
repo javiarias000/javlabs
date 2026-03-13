@@ -1,3 +1,4 @@
+import PortalLayout from '../../components/PortalLayout';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -38,50 +39,6 @@ export default function ClientDashboard() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-sidebar-dark border-r border-slate-800 flex flex-col shrink-0">
-        <div className="p-6 flex items-center gap-3 border-b border-slate-800">
-          <div className="size-10 bg-primary flex items-center justify-center font-technical text-white text-xl">JL</div>
-          <div className="flex flex-col">
-            <h1 className="text-slate-100 text-sm font-bold tracking-widest font-technical uppercase">JAV LABS</h1>
-            <p className="text-slate-400 text-[10px] uppercase tracking-tighter">Automation Agency</p>
-          </div>
-        </div>
-        <nav className="flex-1 px-3 py-6 space-y-2">
-          {[
-            { icon: 'dashboard',     label: 'Resumen',    path: '/dashboard/overview' },
-            { icon: 'mail',          label: 'Contactos',  path: null },
-            { icon: 'account_tree',  label: 'Proyectos',  path: '/automatizaciones' },
-            { icon: 'analytics',     label: 'Reportes',   path: '/dashboard/performance' },
-            { icon: 'support_agent', label: 'Soporte',    path: '/soporte/chat' },
-          ].map(item => (
-            <button key={item.label}
-              onClick={() => item.path ? navigate(item.path) : null}
-              className={`w-full flex items-center gap-3 px-4 py-3 transition-all border-l-2 text-left ${
-                item.label === 'Contactos'
-                  ? 'bg-primary/10 border-primary text-primary'
-                  : 'border-transparent text-slate-400 hover:text-slate-100 hover:bg-slate-800/50'
-              }`}>
-              <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
-              <span className="text-sm font-medium uppercase tracking-wider">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-        <div className="p-4 border-t border-slate-800">
-          <div className="flex items-center gap-3 px-2 mb-3">
-            <div className="size-8 bg-primary flex items-center justify-center text-white text-xs font-bold">
-              {user?.name?.[0]?.toUpperCase() || 'A'}
-            </div>
-            <div className="flex flex-col overflow-hidden">
-              <p className="text-xs font-bold text-slate-200 truncate uppercase tracking-tight">{user?.name || 'Admin'}</p>
-              <p className="text-[10px] text-slate-500 truncate">{user?.role}</p>
-            </div>
-          </div>
-          <button onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-2 py-2 text-slate-500 hover:text-red-400 transition-colors text-xs uppercase tracking-widest">
-            <span className="material-symbols-outlined text-sm">logout</span> Cerrar sesión
-          </button>
-        </div>
-      </aside>
 
       {/* Main */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
