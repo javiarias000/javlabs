@@ -37,6 +37,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth',        authRoutes);
 app.use('/api/users',       userRoutes);
 app.use('/api/projects',    projectRoutes);
+app.use('/api/n8n',         require('./routes/n8n.routes'));
 app.use('/api/automations', automationRoutes);
 app.use('/api/contact',     contactRoutes);
 app.use('/api/dashboard',   dashboardRoutes);
