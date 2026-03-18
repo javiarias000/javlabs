@@ -7,7 +7,8 @@ export default function PublicNavbar() {
   const links = [
     { to: '/servicios', label: 'Servicios' },
     { to: '/nosotros', label: 'Nosotros' },
-    { to: '/contacto', label: 'Contacto' },
+    { to: '/precios', label: 'Precios' },
+    { to: '/contacto', label: 'Contacto'},
   ];
 
   return (
@@ -25,10 +26,6 @@ export default function PublicNavbar() {
               {label}
             </Link>
           ))}
-          <Link to="/precios"
-            className={`text-sm font-medium transition-colors ${pathname === '/precios' ? 'text-primary' : 'text-slate-300 hover:text-primary'}`}>
-            Precios
-          </Link>
           <Link to="/login"
             className="text-sm font-medium text-slate-300 hover:text-primary transition-colors border-l border-slate-700 pl-10">
             Login

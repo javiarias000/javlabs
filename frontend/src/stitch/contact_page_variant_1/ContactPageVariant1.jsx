@@ -142,7 +142,7 @@ export default function ContactPageVariant1() {
                       <span className="material-symbols-outlined text-primary">call</span>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Teléfono</p>
-                        <p className="text-white hover:text-primary transition-colors cursor-pointer">+593984865981</p>
+                        <p className="text-white hover:text-primary transition-colors cursor-pointer">+593967685172</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-5">

@@ -6,23 +6,29 @@ import api from '../../services/api';
 import './ClientDashboardOverview.css';
 
 export default function ClientDashboardOverview() {
-  const { user }    = useAuth();
-  const navigate    = useNavigate();
-  const [n8nData,   setN8nData]   = useState(null);
-  const [dbData,    setDbData]    = useState(null);
-  const [loading,   setLoading]   = useState(true);
+  const { user, accessToken, loading: authLoading } = useAuth(); // ✅ FIX
+  const navigate = useNavigate();
+  const [n8nData, setN8nData] = useState(null);
+  const [dbData, setDbData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [projName,  setProjName]  = useState('');
-  const [projDesc,  setProjDesc]  = useState('');
+  const [projName, setProjName] = useState('');
+  const [projDesc, setProjDesc] = useState('');
   const [projLoading, setProjLoading] = useState(false);
-  const [projError,   setProjError]   = useState('');
+  const [projError, setProjError] = useState('');
 
   const fetchAll = async () => {
+    if (!accessToken) return; // ✅ FIX
+
     setLoading(true);
     try {
       const [n8n, db] = await Promise.all([
-        api.get('/n8n/projects'),
-        api.get('/dashboard'),
+        api.get('/n8n/projects', {
+          headers: { Authorization: `Bearer ${accessToken}` }, // ✅ FIX
+        }),
+        api.get('/dashboard', {
+          headers: { Authorization: `Bearer ${accessToken}` }, // ✅ FIX
+        }),
       ]);
       setN8nData(n8n.data);
       setDbData(db.data);
@@ -33,14 +39,26 @@ export default function ClientDashboardOverview() {
     }
   };
 
-  useEffect(() => { fetchAll(); }, []);
+  // ✅ FIX: evitar llamadas sin auth
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken) return;
+
+    fetchAll();
+  }, [authLoading, accessToken]);
 
   const handleCreateProject = async () => {
     if (!projName.trim()) return setProjError('El nombre es obligatorio.');
     setProjLoading(true);
     setProjError('');
     try {
-      await api.post('/projects', { name: projName.trim(), description: projDesc.trim(), status: 'ACTIVE' });
+      await api.post(
+        '/projects',
+        { name: projName.trim(), description: projDesc.trim(), status: 'ACTIVE' },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` }, // ✅ FIX
+        }
+      );
       setShowModal(false);
       setProjName('');
       setProjDesc('');
@@ -52,15 +70,14 @@ export default function ClientDashboardOverview() {
     }
   };
 
-  const projects   = n8nData?.projects || [];
+  const projects = n8nData?.projects || [];
   const activities = dbData?.recentActivities || [];
-  const kpis       = dbData?.kpis || {};
+  const kpis = dbData?.kpis || {};
 
-  // KPIs combinados: DB + n8n
   const totalExecutions = projects.reduce((s, p) => s + p.executions, 0);
-  const totalErrors     = projects.reduce((s, p) => s + p.errors, 0);
+  const totalErrors = projects.reduce((s, p) => s + p.errors, 0);
   const activeWorkflows = projects.reduce((s, p) => s + p.active, 0);
-  const successRate     = totalExecutions > 0
+  const successRate = totalExecutions > 0
     ? Math.round(((totalExecutions - totalErrors) / totalExecutions) * 100)
     : 0;
 
@@ -96,19 +113,19 @@ export default function ClientDashboardOverview() {
         </header>
 
         <div className="p-8 space-y-8 overflow-y-auto">
-          {loading ? (
+          {(loading || authLoading) ? ( // ✅ FIX
             <div className="flex items-center justify-center h-64 text-slate-500">
               <span className="material-symbols-outlined animate-spin mr-2">progress_activity</span> Cargando datos...
             </div>
           ) : (
             <>
-              {/* KPIs reales de n8n */}
+              {/* KPIs */}
               <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                  { label: 'Workflows Activos',    value: activeWorkflows,                icon: 'hub',            color: 'text-primary'   },
-                  { label: 'Total Ejecuciones',    value: totalExecutions.toLocaleString(), icon: 'memory',        color: 'text-violet-500' },
-                  { label: 'Tasa de Exito',        value: `${successRate}%`,              icon: 'verified',       color: 'text-emerald-400' },
-                  { label: 'Errores Recientes',    value: totalErrors,                    icon: 'error',          color: 'text-red-400'    },
+                  { label: 'Workflows Activos', value: activeWorkflows, icon: 'hub', color: 'text-primary' },
+                  { label: 'Total Ejecuciones', value: totalExecutions.toLocaleString(), icon: 'memory', color: 'text-violet-500' },
+                  { label: 'Tasa de Exito', value: `${successRate}%`, icon: 'verified', color: 'text-emerald-400' },
+                  { label: 'Errores Recientes', value: totalErrors, icon: 'error', color: 'text-red-400' },
                 ].map(kpi => (
                   <div key={kpi.label} className="bg-card-bg p-6 border border-slate-700 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-100 transition-opacity">
@@ -119,7 +136,6 @@ export default function ClientDashboardOverview() {
                   </div>
                 ))}
               </section>
-
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-8">
 
@@ -161,11 +177,10 @@ export default function ClientDashboardOverview() {
                                 onClick={() => navigate('/automatizaciones/logica')}>
                                 <td className="px-6 py-4 font-medium text-white">{p.name}</td>
                                 <td className="px-6 py-4">
-                                  <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
-                                    p.status === 'ACTIVE'
+                                  <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${p.status === 'ACTIVE'
                                       ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
                                       : 'bg-slate-500/10 text-slate-500 border border-slate-500/20'
-                                  }`}>
+                                    }`}>
                                     {p.status === 'ACTIVE' ? 'Activo' : 'Inactivo'}
                                   </span>
                                 </td>
