@@ -56,9 +56,6 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'JAV LABS API', timestamp: new Date() });
 });
 
-app.get('/', (req, res) => {
-  res.send('JAV LABS API funcionando 🚀');
-});
 // 🔹 Rutas API
 app.use('/api/auth',        authRoutes);
 app.use('/api/users',       userRoutes);
