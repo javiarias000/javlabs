@@ -17,7 +17,20 @@ const { errorHandler } = require('./middlewares/error.middleware');
 const app = express();
 
 // 🔹 Seguridad y logging
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:     ["'self'"],
+      scriptSrc:      ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc:       ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+      imgSrc:         ["'self'", "data:", "https:", "http:"],
+      connectSrc:     ["'self'", "https:", "http:"],
+      fontSrc:        ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+      workerSrc:      ["'self'", "blob:"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 app.use(morgan('dev'));
 
 // 🔹 CORS
