@@ -278,7 +278,7 @@ export default function ServicesPageVariant1() {
             </div>
           </div>
           <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-600 text-xs font-montserrat">© 2024 JAV LABS. Todos los derechos reservados.</p>
+            <p className="text-slate-600 text-xs font-montserrat">© 2026 JAV LABS. Todos los derechos reservados.</p>
             <p className="text-slate-600 text-xs font-montserrat uppercase tracking-widest">Pioneering Efficiency.</p>
           </div>
         </footer>

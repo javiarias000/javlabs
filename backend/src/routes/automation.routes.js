@@ -25,6 +25,17 @@ router.post('/', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const automation = await prisma.automation.findUnique({
+      where: { id: req.params.id },
+      include: { project: { select: { id: true, name: true } } },
+    });
+    if (!automation) return res.status(404).json({ error: 'No encontrado.' });
+    res.json(automation);
+  } catch (err) { next(err); }
+});
+
 router.patch('/:id', async (req, res, next) => {
   try {
     const { status, name, description, webhookUrl } = req.body;

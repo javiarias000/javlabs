@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <>
       {/* ───── HEADER ───── */}
-        <PublicNavbar />
+      <PublicNavbar />
 
       {/* ───── HERO ───── */}
       <section className="relative overflow-hidden pt-24 pb-32 bg-background-dark">
@@ -30,8 +30,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="font-montserrat text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Somos un laboratorio de automatización e inteligencia artificial fundado con una sola convicción:
-            la tecnología debe trabajar para las personas, no al revés.
+            Somos un laboratorio de automatización e inteligencia artificial con una convicción clara: la tecnología debe simplificar el trabajo, liberar tiempo y potenciar a las personas dentro de cada negocio.
           </p>
 
           {/* Línea decorativa */}
@@ -59,7 +58,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-5 font-montserrat text-slate-400 text-base leading-relaxed">
                 <p>
-                  JAV LABS nació en 2022 cuando su fundador, tras años en consultoría tecnológica,
+                  JAV LABS nació en 2025 cuando su fundador, tras años en consultoría tecnológica,
                   identificó un patrón repetitivo: empresas con enorme potencial perdiendo cientos de horas
                   semanales en tareas manuales que podían automatizarse.
                 </p>
@@ -69,8 +68,7 @@ export default function AboutPage() {
                   innecesaria ni costos desproporcionados.
                 </p>
                 <p>
-                  Hoy trabajamos con empresas en toda Latinoamérica, ayudándolas a recuperar su tiempo
-                  más valioso y redirigirlo hacia lo que realmente importa.
+                  Hoy trabajamos con empresas locales, ayudándolas a optimizar sus procesos, recuperar tiempo valioso y enfocarse en lo que realmente impulsa su negocio.
                 </p>
               </div>
             </div>
@@ -78,10 +76,10 @@ export default function AboutPage() {
             {/* Visual — timeline */}
             <div className="relative">
               {[
-                { year: '2022', label: 'Fundación',         desc: 'Primeras automatizaciones para clientes locales.',        color: '#0d7ff2' },
-                { year: '2023', label: 'Expansión IA',      desc: 'Integración de modelos de lenguaje en flujos de trabajo.', color: '#8b5cf6' },
-                { year: '2024', label: 'Escala Regional',   desc: 'Más de 120 clientes activos en 8 países.',                color: '#0d7ff2' },
-                { year: '2025', label: 'JAV LABS Platform', desc: 'Lanzamiento de plataforma propia de gestión.',            color: '#8b5cf6' },
+                { year: '2025', label: 'Fundación', desc: 'Primeras automatizaciones para clientes locales.', color: '#0d7ff2' },
+                { year: '2025', label: 'Expansión IA', desc: 'Integración de modelos de lenguaje en flujos de trabajo.', color: '#8b5cf6' },
+                { year: '2026', label: 'Actualización', desc: 'Constante capacitación sobre las nuevas tegnologias', color: '#0d7ff2' },
+                { year: '2026', label: 'JAV LABS Platform', desc: 'Lanzamiento de plataforma propia de gestión.', color: '#8b5cf6' },
               ].map((item, i) => (
                 <div key={item.year} className="flex gap-6 mb-8 last:mb-0">
                   <div className="flex flex-col items-center flex-shrink-0">
@@ -157,10 +155,10 @@ export default function AboutPage() {
       <div className="bg-navy-darker border-y border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
           {[
-            { label: 'Años de Experiencia', value: '3+' },
-            { label: 'Clientes Activos',    value: '120+' },
-            { label: 'Países',              value: '8'    },
-            { label: 'Horas Ahorradas',     value: '50K+' },
+            { label: 'Años de Experiencia', value: '4+' },
+            { label: 'Clientes Activos', value: '5+' },
+            { label: 'Países', value: '1' },
+            { label: 'Horas Ahorradas', value: '50K+' },
           ].map((stat, i) => (
             <div key={stat.label} className="flex items-center gap-8 w-full md:w-auto">
               {i > 0 && <div className="hidden md:block w-px h-12 bg-gradient-to-b from-primary to-accent" />}
@@ -204,10 +202,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <div className="size-8 bg-gradient-to-br from-primary to-accent flex items-center justify-center rounded">
-                <span className="text-white font-michroma text-sm font-bold">J/V</span>
-              </div>
-              <h2 className="text-white text-lg font-michroma tracking-tighter">JAV LABS</h2>
+              <Link to="/" className="flex items-center gap-4">
+                <img src="/Logo3.png" alt="Javlabs Logo" className="h-24 w-auto object-contain" />
+                <h2 className="text-white text-lg font-michroma tracking-wider"> JAV LABS</h2>
+              </Link>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Sistemas de automatización de alta gama para empresas con visión de futuro.
@@ -225,9 +223,9 @@ export default function AboutPage() {
             <h4 className="text-white font-michroma text-sm uppercase mb-6">Soporte</h4>
             <ul className="flex flex-col gap-4 text-slate-400 text-sm">
               <li><Link to="/contacto" className="hover:text-primary transition-colors">Contacto</Link></li>
-              <li><Link to="/login"    className="hover:text-primary transition-colors">Portal de Clientes</Link></li>
-              <li><a href="/"          className="hover:text-primary transition-colors">Documentación</a></li>
-              <li><a href="/"          className="hover:text-primary transition-colors">FAQ</a></li>
+              <li><Link to="/login" className="hover:text-primary transition-colors">Portal de Clientes</Link></li>
+              <li><a href="/" className="hover:text-primary transition-colors">Documentación</a></li>
+              <li><a href="/" className="hover:text-primary transition-colors">FAQ</a></li>
             </ul>
           </div>
           <div>
@@ -249,7 +247,7 @@ export default function AboutPage() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-xs">© 2024 JAV LABS. Todos los derechos reservados.</p>
+          <p className="text-slate-500 text-xs">© 2026 JAV LABS. Todos los derechos reservados.</p>
           <div className="flex gap-8 text-slate-500 text-xs">
             {['Privacidad', 'Términos', 'Cookies'].map((item) => (
               <a key={item} href="/" className="hover:text-slate-300 transition-colors">{item}</a>

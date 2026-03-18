@@ -58,7 +58,7 @@ export default function App() {
           <Route path="/automatizaciones/errores"  element={<P><ErrorAnalysisView /></P>} />
 
           {/* PRIVADO — Workflows */}
-          <Route path="/workflow/v1"   element={<P><WorkflowDetailsVariant1 /></P>} />
+          <Route path="/workflow/:id"   element={<P><WorkflowDetailsVariant1 /></P>} />
 
           {/* PRIVADO — Soporte */}
           <Route path="/soporte/chat"   element={<P><TechnicalSupportChat /></P>} />

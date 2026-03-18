@@ -49,4 +49,191 @@ router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+
+// GET /api/n8n/projects — agrupar workflows por proyecto
+router.get('/projects', async (req, res, next) => {
+  try {
+    const [wfRes, execRes] = await Promise.all([
+      n8n.get('/workflows'),
+      n8n.get('/executions?limit=100&includeData=false'),
+    ]);
+
+    const workflows  = wfRes.data.data  || wfRes.data;
+    const executions = execRes.data.data || execRes.data;
+
+    // Reglas de agrupacion por nombre
+    const PROJECT_RULES = [
+      { key: 'dentilook',   project: 'DentiLook',       keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
+      { key: 'sama_shala',  project: 'Sama Shala',      keywords: ['sama_shala', 'sama shala'] },
+      { key: 'facturas',    project: 'Datos & Facturas', keywords: ['factura', 'datos_facturas'] },
+      { key: 'violin',      project: 'Clases Violin',   keywords: ['violin', 'clases_magistrales'] },
+    ];
+
+    const getProjectInfo = (name) => {
+      const lower = name.toLowerCase();
+      // Primero por keywords especificas
+      for (const rule of PROJECT_RULES) {
+        if (rule.keywords.some(k => lower.includes(k))) {
+          return { key: rule.key, name: rule.project };
+        }
+      }
+      // Separar por " — " o " - "
+      if (name.includes(' — ') || name.includes(' - ')) {
+        const sep   = name.includes(' — ') ? ' — ' : ' - ';
+        const parts = name.split(sep);
+        if (parts.length > 1) {
+          const proj = parts[0].trim().replace(/\p{Emoji}/gu, '').trim();
+          return { key: proj.toLowerCase().replace(/\s+/g, '_'), name: proj };
+        }
+      }
+      // Si tiene _ usar el prefijo
+      if (name.includes('_')) {
+        const parts = name.split('_');
+        const proj  = parts[0].replace(/_/g, ' ').trim();
+        return { key: proj.toLowerCase().replace(/\s+/g, '_'), name: proj };
+      }
+      return { key: 'general', name: 'General' };
+    };
+
+    // Agrupar workflows por proyecto
+    const projectMap = {};
+    for (const wf of workflows) {
+      const projInfo = getProjectInfo(wf.name);
+      const projName = projInfo.name;
+      const projKey  = projInfo.key;
+      if (!projectMap[projName]) {
+        projectMap[projName] = {
+          key:        projKey,
+          name:       projName,
+          workflows:  [],
+          executions: 0,
+          success:    0,
+          errors:     0,
+          active:     0,
+        };
+      }
+      projectMap[projName].workflows.push({
+        id:     wf.id,
+        name:   wf.name,
+        active: wf.active,
+      });
+      if (wf.active) projectMap[projName].active++;
+    }
+
+    // Agregar metricas de ejecuciones
+    for (const exec of executions) {
+      for (const proj of Object.values(projectMap)) {
+        const wfIds = proj.workflows.map(w => w.id);
+        if (wfIds.includes(exec.workflowId)) {
+          proj.executions++;
+          if (exec.status === 'success') proj.success++;
+          if (exec.status === 'error')   proj.errors++;
+        }
+      }
+    }
+
+    const projects = Object.values(projectMap).map(p => ({
+      ...p,
+      successRate:    p.executions > 0 ? Math.round((p.success / p.executions) * 100) : 0,
+      totalWorkflows: p.workflows.length,
+      status:         p.active > 0 ? 'ACTIVE' : 'INACTIVE',
+    })).sort((a, b) => b.executions - a.executions);
+
+    res.json({ projects, total: projects.length });
+  } catch (err) { next(err); }
+});
+
+
+// GET /api/n8n/projects/:key — detalle de proyecto con metricas en tiempo real
+router.get('/projects/:key', async (req, res, next) => {
+  try {
+    const key = req.params.key;
+    const [wfRes, execRes, customName] = await Promise.all([
+      n8n.get('/workflows'),
+      n8n.get('/executions?limit=200&includeData=false'),
+      prisma.n8nProject.findUnique({ where: { key } }).catch(() => null),
+    ]);
+
+    const workflows  = wfRes.data.data  || wfRes.data;
+    const executions = execRes.data.data || execRes.data;
+
+    // Filtrar workflows de este proyecto
+    const PROJECT_RULES = [
+      { key: 'dentilook',  keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
+      { key: 'sama_shala', keywords: ['sama_shala', 'sama shala'] },
+      { key: 'facturas',   keywords: ['factura', 'datos_facturas'] },
+      { key: 'violin',     keywords: ['violin', 'clases_magistrales'] },
+    ];
+
+    const getKey = (name) => {
+      const lower = name.toLowerCase();
+      for (const rule of PROJECT_RULES) {
+        if (rule.keywords.some(k => lower.includes(k))) return rule.key;
+      }
+      if (name.includes(' — ') || name.includes(' - ')) {
+        const sep   = name.includes(' — ') ? ' — ' : ' - ';
+        const parts = name.split(sep);
+        if (parts.length > 1) return parts[0].trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+      }
+      if (name.includes('_')) return name.split('_')[0].toLowerCase();
+      return 'general';
+    };
+
+    const projectWorkflows = workflows.filter(w => getKey(w.name) === key);
+    const wfIds = projectWorkflows.map(w => w.id);
+    const projectExecs = executions.filter(e => wfIds.includes(e.workflowId));
+
+    const total   = projectExecs.length;
+    const success = projectExecs.filter(e => e.status === 'success').length;
+    const errors  = projectExecs.filter(e => e.status === 'error').length;
+    const running = projectExecs.filter(e => e.status === 'running').length;
+    const active  = projectWorkflows.filter(w => w.active).length;
+
+    // Calcular tiempo promedio de ejecucion
+    const withTime = projectExecs.filter(e => e.startedAt && e.stoppedAt);
+    const avgTime  = withTime.length > 0
+      ? Math.round(withTime.reduce((s, e) => s + (new Date(e.stoppedAt) - new Date(e.startedAt)), 0) / withTime.length / 1000)
+      : 0;
+
+    // Ultimas 20 ejecuciones con detalle
+    const recentExecs = projectExecs.slice(0, 20).map(e => ({
+      id:         e.id,
+      status:     e.status,
+      startedAt:  e.startedAt,
+      stoppedAt:  e.stoppedAt,
+      workflowId: e.workflowId,
+      workflowName: projectWorkflows.find(w => w.id === e.workflowId)?.name || e.workflowId,
+    }));
+
+    res.json({
+      key,
+      name:            customName?.name || key.replace(/_/g, ' '),
+      description:     customName?.description || null,
+      color:           customName?.color || null,
+      workflows:       projectWorkflows.map(w => ({ id: w.id, name: w.name, active: w.active })),
+      totalWorkflows:  projectWorkflows.length,
+      activeWorkflows: active,
+      stats: {
+        total, success, errors, running,
+        successRate: total > 0 ? Math.round((success / total) * 100) : 0,
+        avgTimeSeconds: avgTime,
+      },
+      recentExecutions: recentExecs,
+    });
+  } catch (err) { next(err); }
+});
+
+// PATCH /api/n8n/projects/:key — renombrar proyecto
+router.patch('/projects/:key', async (req, res, next) => {
+  try {
+    const { name, description, color } = req.body;
+    const project = await prisma.n8nProject.upsert({
+      where:  { key: req.params.key },
+      update: { ...(name && { name }), ...(description !== undefined && { description }), ...(color && { color }) },
+      create: { key: req.params.key, name: name || req.params.key, description, color },
+    });
+    res.json(project);
+  } catch (err) { next(err); }
+});
+
 module.exports = router;

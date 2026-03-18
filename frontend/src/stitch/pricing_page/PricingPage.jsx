@@ -117,7 +117,7 @@ export default function PricingPage() {
 
       {/* Footer simple */}
       <footer className="border-t border-slate-800 py-8 text-center">
-        <p className="text-slate-500 text-xs font-montserrat">© 2024 JAV LABS. Todos los derechos reservados.</p>
+        <p className="text-slate-500 text-xs font-montserrat">© 2026 JAV LABS. Todos los derechos reservados.</p>
       </footer>
     </div>
   );

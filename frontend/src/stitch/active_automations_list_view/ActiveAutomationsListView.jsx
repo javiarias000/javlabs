@@ -186,7 +186,7 @@ export default function ActiveAutomationsListView() {
                         }`}>
                         {isBusy ? '...' : isPaused ? 'Reanudar' : 'Pausar'}
                       </button>
-                      <Link to="/automatizaciones/logs"
+                      <Link to={`/workflow/${item.id}`}
                         className="text-xs font-bold uppercase tracking-widest text-primary hover:underline">
                         Ver Logs
                       </Link>

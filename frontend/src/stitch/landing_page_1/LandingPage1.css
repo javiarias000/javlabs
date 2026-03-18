@@ -1,1 +1,75 @@
+/* ============================= */
+/* MARQUEE ANIMACIÓN */
+/* ============================= */
 
+@keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+  
+  /* ============================= */
+  /* LOGOS TECNOLOGÍAS */
+  /* ============================= */
+  
+  .tech-logo {
+    height: 70px;
+    min-width: 120px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    opacity: 0.9;
+    transition: all 0.3s ease;
+  }
+  
+  .tech-logo img {
+    max-height: 45px;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  .tech-logo:hover {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  
+  /* ============================= */
+  /* GLOW HOVER GLOBAL */
+  /* ============================= */
+  
+  .glow-hover:hover {
+    box-shadow: 0 0 40px rgba(13, 127, 242, 0.25);
+  }
+  
+  /* ============================= */
+  /* BOTONES PREMIUM */
+  /* ============================= */
+  
+  .btn-premium {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-premium::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.08);
+    opacity: 0;
+    transition: 0.3s;
+  }
+  
+  .btn-premium:hover::after {
+    opacity: 1;
+  }

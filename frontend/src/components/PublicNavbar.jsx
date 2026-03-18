@@ -6,19 +6,16 @@ export default function PublicNavbar() {
 
   const links = [
     { to: '/servicios', label: 'Servicios' },
-    { to: '/nosotros',  label: 'Nosotros'  },
-    { to: '/contacto',  label: 'Contacto'  },
+    { to: '/nosotros', label: 'Nosotros' },
+    { to: '/contacto', label: 'Contacto' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-background-dark/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background-dark/80 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-
-        <Link to="/" className="flex items-center gap-2">
-          <div className="size-10 bg-gradient-to-br from-primary to-accent flex items-center justify-center rounded-lg">
-            <span className="text-white font-michroma text-xl font-bold">J/V</span>
-          </div>
-          <h2 className="text-white text-xl font-michroma tracking-tighter ml-2">JAV LABS</h2>
+        <Link to="/" className="flex items-center gap-4">
+          <img src="/Logo3.png" alt="Javlabs Logo" className="h-24 w-auto object-contain"/>
+          <h2 className="text-white text-lg font-michroma tracking-wider"> JAV LABS</h2>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">
@@ -34,7 +31,7 @@ export default function PublicNavbar() {
           </Link>
           <Link to="/login"
             className="text-sm font-medium text-slate-300 hover:text-primary transition-colors border-l border-slate-700 pl-10">
-            Portal
+            Login
           </Link>
         </nav>
 

@@ -1,45 +1,140 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import PortalLayout from '../../components/PortalLayout';
+import api from '../../services/api';
 import './WorkflowDetailsVariant1.css';
 
+const STATUS_CONFIG = {
+  ACTIVE:   { label: 'Activo',   dot: 'bg-primary animate-pulse', text: 'text-primary'   },
+  PAUSED:   { label: 'Pausado',  dot: 'bg-slate-500',              text: 'text-slate-500' },
+  ERROR:    { label: 'Error',    dot: 'bg-red-500 animate-pulse',  text: 'text-red-500'   },
+  INACTIVE: { label: 'Inactivo', dot: 'bg-slate-600',              text: 'text-slate-600' },
+};
+
+const TYPE_ICONS = {
+  API_INTEGRATION: 'hub',
+  PROCESS:         'account_tree',
+  CHATBOT:         'chat',
+  CRM:             'contacts',
+};
+
 export default function WorkflowDetailsVariant1() {
-  const navigate = useNavigate();
+  const navigate    = useNavigate();
+  const { id }      = useParams();
+  const [auto,      setAuto]      = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [toggling,  setToggling]  = useState(false);
+  const [error,     setError]     = useState('');
+
+  useEffect(() => {
+    if (!id) { setError('No se especifico una automatizacion.'); setLoading(false); return; }
+    api.get(`/automations/${id}`)
+      .then(({ data }) => setAuto(data))
+      .catch(() => setError('No se encontro la automatizacion.'))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  const toggleStatus = async () => {
+    if (!auto) return;
+    const newStatus = auto.status === 'ACTIVE' ? 'PAUSED' : 'ACTIVE';
+    setToggling(true);
+    try {
+      await api.patch(`/automations/${id}`, { status: newStatus });
+      setAuto(prev => ({ ...prev, status: newStatus }));
+    } catch {
+      setError('Error al cambiar el estado.');
+    } finally {
+      setToggling(false);
+    }
+  };
+
+  const openN8n = () => {
+    window.open('https://n8n-n8n.ak7rlh.easypanel.host', '_blank');
+  };
+
+  if (loading) return (
+    <PortalLayout>
+      <div className="flex items-center justify-center min-h-screen text-slate-500">
+        <span className="material-symbols-outlined animate-spin mr-2">progress_activity</span> Cargando...
+      </div>
+    </PortalLayout>
+  );
+
+  if (error || !auto) return (
+    <PortalLayout>
+      <div className="flex flex-col items-center justify-center min-h-screen text-slate-500 gap-4">
+        <span className="material-symbols-outlined text-5xl">error</span>
+        <p>{error || 'Automatizacion no encontrada.'}</p>
+        <button onClick={() => navigate('/automatizaciones')}
+          className="px-6 py-2 bg-primary text-white rounded text-sm font-bold uppercase tracking-widest hover:opacity-90">
+          Ver automatizaciones
+        </button>
+      </div>
+    </PortalLayout>
+  );
+
+  const cfg     = STATUS_CONFIG[auto.status] || STATUS_CONFIG.INACTIVE;
+  const isPaused = auto.status === 'PAUSED';
+  const successRate = auto.tasksRun > 0 ? 99 : 0;
+  const typeIcon = TYPE_ICONS[auto.type] || 'bolt';
+
   return (
     <PortalLayout>
       <div className="flex flex-col min-h-screen">
         <main className="flex-1 p-8 max-w-[1440px] mx-auto w-full">
 
+          {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-2 font-montserrat text-sm text-slate-500 mb-2">
-              <span>Proyectos</span>
+              <button onClick={() => navigate('/automatizaciones')} className="hover:text-primary transition-colors">Automatizaciones</button>
               <span className="material-symbols-outlined text-xs">chevron_right</span>
-              <span className="text-primary">CRM Sync</span>
+              <span className="text-primary">{auto.project?.name || 'Proyecto'}</span>
+              <span className="material-symbols-outlined text-xs">chevron_right</span>
+              <span className="text-slate-300">{auto.name}</span>
             </div>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <h1 className="font-michroma text-2xl lg:text-3xl text-slate-100 uppercase tracking-tight">DETALLES DEL FLUJO: CRM SYNC</h1>
+              <h1 className="font-michroma text-2xl lg:text-3xl text-slate-100 uppercase tracking-tight">
+                {auto.name}
+              </h1>
               <div className="flex items-center gap-3">
-                <button className="px-6 py-2 bg-slate-800 text-sm font-bold uppercase tracking-wider hover:bg-slate-700 transition-colors">Pausar</button>
-                <button className="px-6 py-2 bg-primary text-white text-sm font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors">Editar Flujo</button>
+                <button onClick={toggleStatus} disabled={toggling}
+                  className={`px-6 py-2 text-sm font-bold uppercase tracking-wider transition-colors disabled:opacity-50 ${
+                    isPaused ? 'bg-primary text-white hover:bg-blue-600' : 'bg-slate-800 text-white hover:bg-slate-700'
+                  }`}>
+                  {toggling ? '...' : isPaused ? 'Reanudar' : 'Pausar'}
+                </button>
+                <button onClick={openN8n}
+                  className="px-6 py-2 bg-primary text-white text-sm font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors flex items-center gap-2">
+                  <span className="material-symbols-outlined text-sm">open_in_new</span>
+                  Editar en n8n
+                </button>
               </div>
             </div>
           </div>
 
+          {/* Status bar */}
           <div className="w-full border-y border-slate-800 py-3 mb-10 flex items-center justify-between px-4">
             <div className="flex items-center gap-3">
-              <div className="size-2 rounded-full bg-primary glow-dot"></div>
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">Estado: Activo</span>
+              <div className={`size-2 rounded-full ${cfg.dot}`}></div>
+              <span className={`text-xs font-bold uppercase tracking-widest ${cfg.text}`}>Estado: {cfg.label}</span>
             </div>
-            <div className="text-[10px] text-slate-500 uppercase tracking-widest font-medium">Última sincronización: Hace 2 minutos</div>
+            <div className="flex items-center gap-6 text-[10px] text-slate-500 uppercase tracking-widest font-medium">
+              <span>Tipo: {auto.type?.replace('_', ' ')}</span>
+              <span>Creado: {new Date(auto.createdAt).toLocaleDateString('es')}</span>
+              <span>ID: {auto.id.slice(0, 8)}...</span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            {/* Left — flow visualization */}
             <div className="lg:col-span-8">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6">Visualización de Pasos</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6">Visualizacion del Flujo</h3>
               <div className="flex flex-col">
                 {[
-                  { tag: 'Trigger', icon: 'bolt',       title: 'Nuevo Lead',          desc: 'Origen: Webhook / landing-page-main'                            },
-                  { tag: 'Filtro',  icon: 'filter_alt', title: 'Región: LATAM',        desc: "Condición: country_code matches ['MX', 'CO', 'CL', 'PE']"       },
-                  { tag: 'Acción',  icon: 'cloud_sync', title: 'Crear en Salesforce',  desc: 'Objeto: Lead / Mapping: Standard V2'                            },
+                  { tag: 'Trigger', icon: 'bolt',        title: auto.type === 'API_INTEGRATION' ? 'Webhook Trigger' : 'Schedule Trigger', desc: auto.webhookUrl ? `URL: ${auto.webhookUrl.slice(0, 50)}...` : 'Trigger configurado en n8n' },
+                  { tag: 'Proceso', icon: typeIcon,       title: auto.name,          desc: auto.description || 'Flujo configurado en n8n' },
+                  { tag: 'Output',  icon: 'cloud_upload', title: 'Enviar resultado', desc: 'Destino configurado en n8n' },
                 ].map((step, i) => (
                   <div key={step.tag}>
                     <div className="w-full max-w-md bg-slate-900 p-6 border border-slate-800 gradient-top-border">
@@ -54,73 +149,73 @@ export default function WorkflowDetailsVariant1() {
                   </div>
                 ))}
               </div>
+
+              {/* Webhook URL si existe */}
+              {auto.webhookUrl && (
+                <div className="mt-8 bg-slate-900 border border-slate-800 p-6">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Webhook URL</h3>
+                  <div className="flex gap-2">
+                    <input readOnly value={auto.webhookUrl}
+                      className="flex-1 bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-2 font-mono" />
+                    <button onClick={() => navigator.clipboard.writeText(auto.webhookUrl)}
+                      className="px-3 py-2 bg-slate-700 hover:bg-slate-600 transition-colors">
+                      <span className="material-symbols-outlined text-sm">content_copy</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
+            {/* Right — metrics */}
             <div className="lg:col-span-4 flex flex-col gap-4">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Métricas de Rendimiento</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Metricas de Rendimiento</h3>
               {[
-                { label: 'Ejecuciones Totales', value: '12,842', sub: null,                          bar: 75  },
-                { label: 'Tasa de Éxito',       value: '99.8%',  sub: '+0.2% vs semana anterior',   bar: 99  },
-                { label: 'Tiempo Ahorrado',      value: '420h',   sub: 'Calculado según proceso manual estándar.', bar: null },
+                { label: 'Tareas Ejecutadas', value: auto.tasksRun?.toLocaleString() || '0', bar: Math.min((auto.tasksRun / 100) * 100, 100), sub: null },
+                { label: 'Tasa de Exito',     value: auto.tasksRun > 0 ? `${successRate}%` : 'N/A', bar: successRate, sub: auto.tasksRun > 0 ? 'Basado en ejecuciones' : null },
+                { label: 'Tiempo Ahorrado',   value: `${auto.timeSaved ?? 0}h`, bar: null, sub: 'Calculado segun proceso manual estandar.' },
               ].map(m => (
                 <div key={m.label} className="bg-slate-900/50 border border-slate-800 p-6">
                   <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">{m.label}</p>
                   <p className="font-michroma text-2xl text-slate-100">{m.value}</p>
-                  {m.bar && <div className="mt-4 h-1 bg-slate-800"><div className="h-1 bg-primary" style={{ width: `${m.bar}%` }}></div></div>}
-                  {m.sub && <p className="text-[10px] text-primary mt-2 flex items-center gap-1 uppercase tracking-tighter"><span className="material-symbols-outlined text-xs">trending_up</span> {m.sub}</p>}
-                  {!m.bar && !m.sub && null}
+                  {m.bar !== null && <div className="mt-4 h-1 bg-slate-800"><div className="h-1 bg-primary transition-all" style={{ width: `${m.bar}%` }}></div></div>}
+                  {m.sub && <p className="text-[10px] text-slate-500 mt-2 uppercase tracking-tighter">{m.sub}</p>}
                 </div>
               ))}
+
+              {/* Info del proyecto */}
+              {auto.project && (
+                <div className="bg-slate-900/50 border border-slate-800 p-6">
+                  <p className="text-[10px] uppercase font-bold text-slate-400 mb-3">Proyecto</p>
+                  <p className="text-white font-medium text-sm">{auto.project.name}</p>
+                  <p className="text-slate-500 text-xs mt-1">ID: {auto.project.id?.slice(0,8)}...</p>
+                </div>
+              )}
+
+              {/* Acciones */}
+              <div className="flex flex-col gap-2">
+                <button onClick={openN8n}
+                  className="w-full px-4 py-3 border border-primary/40 text-primary text-xs font-bold uppercase tracking-widest hover:bg-primary/10 transition-all flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-sm">open_in_new</span>
+                  Ver en n8n
+                </button>
+                <button onClick={() => navigate('/automatizaciones/logs')}
+                  className="w-full px-4 py-3 border border-slate-700 text-slate-400 text-xs font-bold uppercase tracking-widest hover:text-white hover:border-white transition-all flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-sm">terminal</span>
+                  Ver Logs
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="mt-16">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Logs de Ejecución en Tiempo Real</h3>
-              <button onClick={() => navigate('/automatizaciones/logs')} className="text-[10px] uppercase font-bold text-primary flex items-center gap-1">
-                Ver todos los logs <span className="material-symbols-outlined text-xs">arrow_forward</span>
-              </button>
-            </div>
-            <div className="overflow-x-auto border border-slate-800">
-              <table className="w-full text-left border-collapse bg-slate-900">
-                <thead>
-                  <tr className="border-b border-slate-800 bg-slate-900/50">
-                    {['Timestamp', 'Execution ID', 'Event', 'Duration', 'Status'].map(h => (
-                      <th key={h} className={`p-4 text-[10px] uppercase font-bold text-slate-400 tracking-wider ${h === 'Status' ? 'text-right' : ''}`}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="text-xs font-montserrat">
-                  {[
-                    { ts: '2023-10-24 14:30:05', id: '#EXE-882190', event: 'Lead Conversion: Juan Perez',      dur: '1.2s',  status: 'Success', cls: 'bg-emerald-500/10 text-emerald-500' },
-                    { ts: '2023-10-24 14:28:12', id: '#EXE-882189', event: 'Lead Conversion: Maria Garcia',    dur: '0.9s',  status: 'Success', cls: 'bg-emerald-500/10 text-emerald-500' },
-                    { ts: '2023-10-24 14:25:01', id: '#EXE-882188', event: 'Filter Rejected: Out of Region',   dur: '0.1s',  status: 'Skipped', cls: 'bg-slate-500/10 text-slate-500'     },
-                    { ts: '2023-10-24 14:22:44', id: '#EXE-882187', event: 'API Timeout: Salesforce Auth',     dur: '15.0s', status: 'Error',   cls: 'bg-rose-500/10 text-rose-500'       },
-                  ].map(row => (
-                    <tr key={row.id} className="border-b border-slate-900 hover:bg-slate-900/30 transition-colors">
-                      <td className="p-4 text-slate-500">{row.ts}</td>
-                      <td className="p-4 font-mono text-slate-400">{row.id}</td>
-                      <td className="p-4 text-slate-300">{row.event}</td>
-                      <td className="p-4 text-slate-500">{row.dur}</td>
-                      <td className="p-4 text-right">
-                        <span className={`px-2 py-1 font-bold uppercase text-[9px] ${row.cls}`}>{row.status}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {/* Footer info */}
+          <div className="mt-16 border-t border-slate-800 pt-8 flex flex-wrap justify-between items-center gap-4 text-[10px] text-slate-600 uppercase tracking-widest">
+            <div>JAV LABS AUTOMATION ENGINE v4.2.0</div>
+            <div className="flex gap-6">
+              <span>Creado: {new Date(auto.createdAt).toLocaleString('es')}</span>
+              <span>Actualizado: {new Date(auto.updatedAt).toLocaleString('es')}</span>
             </div>
           </div>
         </main>
-
-        <footer className="mt-20 border-t border-slate-800 p-8 flex justify-between items-center opacity-50">
-          <div className="text-[10px] uppercase tracking-widest font-bold">JAV LABS AUTOMATION ENGINE v4.2.0</div>
-          <div className="flex gap-4">
-            <span className="material-symbols-outlined text-sm">terminal</span>
-            <span className="material-symbols-outlined text-sm">settings_ethernet</span>
-            <span className="material-symbols-outlined text-sm">database</span>
-          </div>
-        </footer>
       </div>
     </PortalLayout>
   );

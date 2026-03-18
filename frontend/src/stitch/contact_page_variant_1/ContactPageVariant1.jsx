@@ -135,21 +135,21 @@ export default function ContactPageVariant1() {
                       <span className="material-symbols-outlined text-primary">mail</span>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Email</p>
-                        <p className="text-white hover:text-primary transition-colors cursor-pointer">hello@javlabs.tech</p>
+                        <p className="text-white hover:text-primary transition-colors cursor-pointer">jorge.arias.amauta@gmail.com</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-5">
                       <span className="material-symbols-outlined text-primary">call</span>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Teléfono</p>
-                        <p className="text-white hover:text-primary transition-colors cursor-pointer">+34 910 000 000</p>
+                        <p className="text-white hover:text-primary transition-colors cursor-pointer">+593984865981</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-5">
                       <span className="material-symbols-outlined text-primary">location_on</span>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Ubicación</p>
-                        <p className="text-white">Paseo de la Castellana, 259, Madrid, España</p>
+                        <p className="text-white">Ambato, Ecuador</p>
                       </div>
                     </div>
                   </div>
@@ -173,7 +173,7 @@ export default function ContactPageVariant1() {
 
         <div className="w-full bg-black py-4 px-6">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-            <p>© 2024 JAV LABS. Todos los derechos reservados.</p>
+            <p>© 2026 JAV LABS. Todos los derechos reservados.</p>
             <div className="flex gap-8">
               <a className="hover:text-primary" href="/nosotros">Legal</a>
               <a className="hover:text-primary" href="/nosotros">Privacidad</a>

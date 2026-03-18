@@ -138,3 +138,15 @@ model Webhook {
   createdAt DateTime @default(now())
   @@map("webhooks")
 }
+
+model N8nProject {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  name        String
+  description String?
+  color       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("n8n_projects")
+}

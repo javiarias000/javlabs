@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './PortalLogin.css';
 
 export default function PortalLogin() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const location = useLocation();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,88 +29,120 @@ export default function PortalLogin() {
 
   return (
     <>
-      <div className="fixed inset-0 circuit-pattern pointer-events-none"></div>
-      <header className="relative z-10 flex items-center justify-between px-6 py-4 lg:px-12 border-b border-white/10 bg-background-dark/50 backdrop-blur-md">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary text-3xl">terminal</span>
-          <h2 className="text-xl font-bold tracking-tight font-michroma gradient-logo">JAV LABS</h2>
-        </div>
-        <div className="hidden md:flex items-center gap-8">
-          <Link to="/" className="text-slate-400 hover:text-white text-sm font-medium transition-colors">Home</Link>
-          <Link to="/servicios" className="text-slate-400 hover:text-white text-sm font-medium transition-colors">Services</Link>
-          <Link to="/contacto" className="text-slate-400 hover:text-white text-sm font-medium transition-colors">Contact</Link>
-          <button className="bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 px-5 py-2 rounded text-sm font-bold transition-all" onClick={() => navigate('/soporte/chat')}>Support</button>
-        </div>
+      {/* BACKGROUND */}
+      <div className="fixed inset-0 bg-gradient-to-br from-[#0b0f14] to-[#0f1720]"></div>
+
+      {/* HEADER */}
+      <header className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/40 backdrop-blur-lg">
+        <Link to="/" className="flex items-center gap-3">
+          <img src="/Logo3.png" alt="Javlabs" className="h-10" />
+          <span className="text-white font-michroma text-lg tracking-wider">JAV LABS</span>
+        </Link>
       </header>
 
-      <main className="relative z-10 flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-[440px]">
-          <div className="bg-black border border-white/5 p-8 md:p-12 shadow-2xl">
-            <div className="flex flex-col items-center mb-10">
-              <div className="mb-6 relative">
-                <span className="material-symbols-outlined text-6xl gradient-logo font-bold">account_tree</span>
-                <div className="absolute -bottom-1 -right-1 size-4 bg-primary rounded-full animate-pulse"></div>
-              </div>
-              <h1 className="text-2xl font-michroma text-white tracking-wider text-center">INICIAR SESIÓN</h1>
-              <div className="h-1 w-12 bg-primary mt-4"></div>
+      {/* MAIN */}
+      <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
+        <div className="w-full max-w-md">
+
+          <div className="bg-[#0f141a]/80 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl">
+
+            {/* LOGO */}
+            <div className="flex flex-col items-center mb-8">
+              <img src="/Logo3.png" className="h-24 mb-4" />
+              <h1 className="text-white text-xl font-michroma tracking-widest">
+                INICIAR SESIÓN
+              </h1>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <label className="block text-xs font-montserrat uppercase tracking-widest text-slate-400 font-semibold">Email Address</label>
-                <div className="relative">
-                  <input
-                    className="w-full bg-[#1b2127] border border-[#555555] px-4 py-4 text-white placeholder:text-slate-600 focus:outline-none input-focus-glow transition-all font-montserrat"
-                    placeholder="name@company.com"
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                  />
-                  <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 text-sm">mail</span>
-                </div>
+            {/* GOOGLE LOGIN */}
+            <button
+              className="w-full flex items-center justify-center gap-3 border border-white/10 bg-white/5 hover:bg-white/10 transition-all py-3 rounded-lg text-white text-sm font-medium"
+              onClick={() => console.log("Google login")}
+            >
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="h-5" />
+              Continuar con Google
+            </button>
+
+            {/* DIVIDER */}
+            <div className="flex items-center gap-3 my-6">
+              <div className="flex-1 h-px bg-white/10"></div>
+              <span className="text-xs text-slate-500">o</span>
+              <div className="flex-1 h-px bg-white/10"></div>
+            </div>
+
+            {/* FORM */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+
+              {/* EMAIL */}
+              <div>
+                <label className="text-xs text-slate-400 uppercase tracking-wider">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="name@empresa.com"
+                  className="w-full mt-2 px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-xs font-montserrat uppercase tracking-widest text-slate-400 font-semibold">Password</label>
-                <div className="relative">
-                  <input
-                    className="w-full bg-[#1b2127] border border-[#555555] px-4 py-4 text-white placeholder:text-slate-600 focus:outline-none input-focus-glow transition-all font-montserrat"
-                    placeholder="••••••••"
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    required
-                  />
-                  <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 text-sm">lock</span>
-                </div>
+              {/* PASSWORD */}
+              <div>
+                <label className="text-xs text-slate-400 uppercase tracking-wider">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full mt-2 px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
 
+              {/* FORGOT PASSWORD */}
+              <div className="flex justify-end">
+                <Link
+                  to="/recuperar"
+                  className="text-xs text-primary hover:underline"
+                >
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
+
+              {/* ERROR */}
               {error && (
-                <p className="text-red-400 text-xs font-montserrat text-center">{error}</p>
+                <p className="text-red-400 text-sm text-center">{error}</p>
               )}
 
+              {/* LOGIN BUTTON */}
               <button
-                className="w-full btn-gradient py-4 text-white font-montserrat font-bold uppercase tracking-widest text-sm hover:opacity-90 transition-opacity active:scale-[0.98] mt-4 disabled:opacity-50"
                 type="submit"
                 disabled={loading}
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-primary to-blue-500 text-white font-bold tracking-wide hover:opacity-90 transition-all disabled:opacity-50"
               >
-                {loading ? 'Entrando...' : 'Entrar al Portal'}
+                {loading ? 'Procesando...' : 'Ingresar'}
               </button>
             </form>
 
-            <div className="mt-10 pt-8 border-t border-white/10 text-center">
-              <p className="text-slate-500 text-xs font-montserrat">
-                Acceso restringido para clientes autorizados de <span className="text-primary">JAV LABS</span>.
+            {/* FOOTER */}
+            <div className="mt-6 text-center">
+              <p className="text-xs text-slate-500">
+                Acceso exclusivo para clientes de <span className="text-primary">Javlabs</span>
               </p>
             </div>
+
           </div>
         </div>
       </main>
 
-      <footer className="relative z-10 px-6 py-6 text-center">
-        <p className="text-[10px] font-montserrat uppercase tracking-[0.2em] text-slate-600">
-          © 2024 JAV LABS Automation Agency. All Rights Reserved.
+      {/* FOOTER */}
+      <footer className="relative z-10 text-center py-4">
+        <p className="text-[10px] text-slate-600">
+          © 2026 JAV LABS — Automatización & IA
         </p>
       </footer>
     </>

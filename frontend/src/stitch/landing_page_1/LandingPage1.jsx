@@ -53,9 +53,9 @@ export default function LandingPage1() {
                   <path d="M20,100 L180,100 M100,20 L100,180 M60,60 L140,140 M140,60 L60,140" fill="none" stroke="currentColor" strokeWidth="0.5" />
                   <circle cx="100" cy="100" fill="none" r="40" stroke="currentColor" strokeDasharray="4,4" strokeWidth="1" />
                   <rect fill="none" height="60" stroke="currentColor" strokeWidth="2" width="60" x="70" y="70" />
-                  <circle cx="20"  cy="100" fill="#8b5cf6" r="3" />
+                  <circle cx="20" cy="100" fill="#8b5cf6" r="3" />
                   <circle cx="180" cy="100" fill="#8b5cf6" r="3" />
-                  <circle cx="100" cy="20"  fill="#0d7ff2" r="3" />
+                  <circle cx="100" cy="20" fill="#0d7ff2" r="3" />
                   <circle cx="100" cy="180" fill="#0d7ff2" r="3" />
                 </svg>
               </div>
@@ -75,10 +75,10 @@ export default function LandingPage1() {
       <div className="bg-navy-darker border-y border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
           {[
-            { label: 'Procesos Optimizados', value: '500+' },
-            { label: 'Eficiencia Aumentada',  value: '95%'  },
-            { label: 'Clientes Satisfechos',  value: '120+' },
-            { label: 'Soporte 24/7',          value: '100%' },
+            { label: 'Procesos Optimizados', value: '5+' },
+            { label: 'Eficiencia Aumentada', value: '95%' },
+            { label: 'Clientes Satisfechos', value: '5+' },
+            { label: 'Soporte 24/7', value: '100%' },
           ].map((stat, i) => (
             <div key={stat.label} className="flex items-center gap-8 w-full md:w-auto">
               {i > 0 && <div className="hidden md:block w-px h-12 bg-gradient-to-b from-primary to-accent" />}
@@ -90,6 +90,63 @@ export default function LandingPage1() {
           ))}
         </div>
       </div>
+      <section className="py-20 bg-background-dark overflow-hidden border-y border-slate-800 relative">
+        <div className="max-w-7xl mx-auto px-6 text-center mb-12">
+          <p className="text-slate-500 text-xs uppercase tracking-[0.3em] mb-2">
+            Tecnologías que utilizamos
+          </p>
+          <h3 className="text-white font-michroma text-xl uppercase">
+            Infraestructura moderna y escalable
+          </h3>
+        </div>
+
+        <div className="relative w-full overflow-hidden">
+
+          {/* Fade izquierda */}
+          <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-background-dark to-transparent z-10" />
+
+          {/* Fade derecha */}
+          <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-background-dark to-transparent z-10" />
+
+          <div className="flex gap-16 animate-marquee items-center">
+
+            {[
+              '/logos/n8n.png',
+              '/logos/supabase.png',
+              '/logos/redis.png',
+              '/logos/docker.png',
+              '/logos/easypanel.png',
+              '/logos/hostinger.png',
+              '/logos/chatwoot.png',
+              '/logos/whatsapp.png',
+              '/logos/instagram.png',
+              '/logos/meta.png',
+              '/logos/messenger.png',
+              '/logos/python.png',
+              '/logos/json.png'
+            ].map((src, i) => (
+              <div key={i} className="tech-logo">
+                <img src={src} alt={`tech-${i}`} />
+              </div>
+            ))}
+
+            {/* DUPLICADO PARA LOOP INFINITO */}
+            {[
+              '/logos/n8n.png',
+              '/logos/supabase.png',
+              '/logos/redis.png',
+              '/logos/docker.png',
+              '/logos/easypanel.png',
+              '/logos/hostinger.png'
+            ].map((src, i) => (
+              <div key={`dup-${i}`} className="tech-logo">
+                <img src={src} alt={`tech-dup-${i}`} />
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </section>
 
       {/* ───── SERVICIOS ───── */}
       <section className="py-32 bg-background-dark">
@@ -101,11 +158,11 @@ export default function LandingPage1() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: 'account_tree', boxClass: 'bg-primary/10 border-primary/30 group-hover:bg-primary/20', iconClass: 'gradient-text', linkClass: 'text-primary', title: 'Automatización de Workflows',  desc: 'Eliminamos cuellos de botella mediante flujos de trabajo inteligentes que conectan todas tus herramientas de negocio.' },
-              { icon: 'psychology',   boxClass: 'bg-accent/10  border-accent/30  group-hover:bg-accent/20',  iconClass: 'text-accent',   linkClass: 'text-accent',  title: 'IA Generativa Aplicada',       desc: 'Implementación de LLMs y agentes autónomos para atención al cliente, creación de contenido y análisis de datos avanzado.' },
-              { icon: 'terminal',     boxClass: 'bg-primary/10 border-primary/30 group-hover:bg-primary/20', iconClass: 'gradient-text', linkClass: 'text-primary', title: 'Consultoría IT Estratégica',    desc: 'Diseñamos la hoja de ruta tecnológica para que tu infraestructura crezca al ritmo de tu visión empresarial.' },
+              { icon: 'account_tree', boxClass: 'bg-primary/10 border-primary/30 group-hover:bg-primary/20', iconClass: 'gradient-text', linkClass: 'text-primary', title: 'Automatización de Workflows', desc: 'Eliminamos cuellos de botella mediante flujos de trabajo inteligentes que conectan todas tus herramientas de negocio.' },
+              { icon: 'psychology', boxClass: 'bg-accent/10  border-accent/30  group-hover:bg-accent/20', iconClass: 'text-accent', linkClass: 'text-accent', title: 'IA Generativa Aplicada', desc: 'Implementación de LLMs y agentes autónomos para atención al cliente, creación de contenido y análisis de datos avanzado.' },
+              { icon: 'terminal', boxClass: 'bg-primary/10 border-primary/30 group-hover:bg-primary/20', iconClass: 'gradient-text', linkClass: 'text-primary', title: 'Consultoría IT Estratégica', desc: 'Diseñamos la hoja de ruta tecnológica para que tu infraestructura crezca al ritmo de tu visión empresarial.' },
             ].map((s) => (
-              <div key={s.title} className="group p-8 bg-navy-darker border border-slate-800 rounded-lg glow-hover transition-all duration-300">
+              <div key={s.title} className="group p-8 bg-navy-darker border border-slate-800 rounded-lg glow-hover transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]">
                 <div className={`w-14 h-14 mb-6 rounded flex items-center justify-center border transition-colors ${s.boxClass}`}>
                   <span className={`material-symbols-outlined text-3xl ${s.iconClass}`}>{s.icon}</span>
                 </div>
@@ -310,11 +367,11 @@ export default function LandingPage1() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
 
           <div className="col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="size-8 bg-gradient-to-br from-primary to-accent flex items-center justify-center rounded">
-                <span className="text-white font-michroma text-sm font-bold">J/V</span>
-              </div>
-              <h2 className="text-white text-lg font-michroma tracking-tighter">JAV LABS</h2>
+            <div className="flex items-center gap-4">
+              <img src="/Logo3.png" alt="Javlabs Logo" className="h-24 w-auto object-contain" />
+              <span className="text-white font-michroma text-xl font-bold tracking-widest">
+                JAVLABS
+              </span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Sistemas de automatización de alta gama para empresas con visión de futuro.
@@ -346,9 +403,9 @@ export default function LandingPage1() {
             <h4 className="text-white font-michroma text-sm uppercase mb-6">Soporte</h4>
             <ul className="flex flex-col gap-4 text-slate-400 text-sm">
               <li><Link to="/contacto" className="hover:text-primary transition-colors">Contacto</Link></li>
-              <li><Link to="/login"    className="hover:text-primary transition-colors">Portal de Clientes</Link></li>
-              <li><a href="/"          className="hover:text-primary transition-colors">Documentación</a></li>
-              <li><a href="/"          className="hover:text-primary transition-colors">FAQ</a></li>
+              <li><Link to="/login" className="hover:text-primary transition-colors">Portal de Clientes</Link></li>
+              <li><a href="/" className="hover:text-primary transition-colors">Documentación</a></li>
+              <li><a href="/" className="hover:text-primary transition-colors">FAQ</a></li>
             </ul>
           </div>
 
