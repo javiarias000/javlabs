@@ -16,7 +16,7 @@
     # Instalar dependencias de producción
     RUN cd backend && npm install --production
     
-    # 🔹 Copiar el prisma schema antes de generar el cliente
+    # Copiar Prisma schema antes de generar cliente
     COPY backend/prisma ./backend/prisma
     
     # Generar cliente Prisma
@@ -28,7 +28,7 @@
     # Copiar build del frontend
     COPY --from=frontend-build /app/frontend/dist ./backend/dist
     
-    # Variables de entorno opcionales
+    # Variables de entorno
     ENV PORT=3000
     
     EXPOSE 3000
