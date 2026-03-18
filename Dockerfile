@@ -10,14 +10,19 @@
     FROM node:20
     WORKDIR /app
     
-    # Backend
+    # Copiar package.json y package-lock.json del backend
     COPY backend/package*.json ./backend/
+    
+    # Instalar dependencias de producción
     RUN cd backend && npm install --production
+    
+    # 🔹 Copiar el prisma schema antes de generar el cliente
+    COPY backend/prisma ./backend/prisma
     
     # Generar cliente Prisma
     RUN cd backend && npx prisma generate
     
-    # Copiar código backend
+    # Copiar el resto del backend
     COPY backend/ ./backend/
     
     # Copiar build del frontend
@@ -28,4 +33,5 @@
     
     EXPOSE 3000
     
+    # Comando de inicio
     CMD ["node", "backend/src/index.js"]
