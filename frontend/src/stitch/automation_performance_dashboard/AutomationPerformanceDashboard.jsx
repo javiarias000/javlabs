@@ -219,6 +219,58 @@ export default function AutomationPerformanceDashboard() {
               {/* Left col — tabla + charts */}
               <div className="xl:col-span-2 space-y-6">
 
+
+                {/* Tabla de proyectos */}
+                <div className="bg-neutral-dark border border-primary/10 overflow-hidden">
+                  <div className="px-6 py-4 bg-primary/5 border-b border-primary/10 flex justify-between items-center">
+                    <h4 className="font-michroma text-xs text-white uppercase tracking-wider">Proyectos Overview</h4>
+                    <span className="text-[10px] text-primary font-bold uppercase tracking-widest">{projects.length} proyectos</span>
+                  </div>
+                  <table className="w-full text-left border-collapse">
+                    <thead className="bg-neutral-dark/80 font-michroma text-[10px] text-slate-500 uppercase border-b border-primary/10">
+                      <tr>
+                        <th className="px-6 py-3">Proyecto</th>
+                        <th className="px-6 py-3">Estado</th>
+                        <th className="px-6 py-3">Workflows</th>
+                        <th className="px-6 py-3">Ejecuciones</th>
+                        <th className="px-6 py-3">Exito</th>
+                        <th className="px-6 py-3">Errores</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-sm">
+                      {projects.map((p, i) => (
+                        <tr key={p.key}
+                          className={`border-b border-white/5 hover:bg-white/[0.05] transition-colors cursor-pointer ${i % 2 === 0 ? 'bg-white/[0.02]' : ''}`}
+                          onClick={() => navigate(`/proyectos/${p.key}`)}>
+                          <td className="px-6 py-4 font-bold text-slate-100">{p.name}</td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-bold border uppercase ${
+                              p.status === 'ACTIVE'
+                                ? 'bg-green-500/10 text-green-500 border-green-500/30'
+                                : 'bg-slate-500/10 text-slate-400 border-slate-500/30'
+                            }`}>
+                              <span className={`w-1 h-1 rounded-full ${p.status === 'ACTIVE' ? 'bg-green-500 animate-pulse' : 'bg-slate-500'}`}></span>
+                              {p.status === 'ACTIVE' ? 'Activo' : 'Inactivo'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-slate-400">{p.totalWorkflows}</td>
+                          <td className="px-6 py-4 text-slate-400">{fmt(p.executions)}</td>
+                          <td className="px-6 py-4">
+                            <span className={`font-bold text-sm ${p.successRate >= 80 ? 'text-emerald-400' : p.successRate >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                              {p.successRate}%
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`font-bold text-sm ${p.errors > 0 ? 'text-red-400' : 'text-slate-500'}`}>
+                              {p.errors}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
                 {/* Tabla de workflows */}
                 <div className="bg-neutral-dark border border-primary/10 overflow-hidden">
                   <div className="px-6 py-4 bg-primary/5 border-b border-primary/10 flex justify-between items-center">

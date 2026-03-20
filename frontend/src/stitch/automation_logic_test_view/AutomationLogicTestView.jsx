@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import PortalLayout from '../../components/PortalLayout';
 import api from '../../services/api';
@@ -29,6 +30,7 @@ const getProjectKey = (name) => {
 
 export default function AutomationLogicTestView() {
   const navigate       = useNavigate();
+  const { user }       = useAuth();
   const { key }        = useParams();
   const [workflows,    setWorkflows]    = useState([]);
   const [projectData,  setProjectData]  = useState(null);
@@ -41,6 +43,11 @@ export default function AutomationLogicTestView() {
   const [savingName,   setSavingName]   = useState(false);
 
   useEffect(() => {
+    // Si es CLIENT y no hay key, redirigir a su proyecto
+    if (!key && user?.role === 'CLIENT' && user?.n8nProjectKey) {
+      navigate(`/automatizaciones/logica/${user.n8nProjectKey}`, { replace: true });
+      return;
+    }
     setLoading(true);
     if (key) {
       // Cargar detalle de proyecto especifico

@@ -10,6 +10,8 @@ import ServicesPageVariant1 from './stitch/services_page_variant_1/ServicesPageV
 import ContactPageVariant1 from './stitch/contact_page_variant_1/ContactPageVariant1';
 import PricingPage from './stitch/pricing_page/PricingPage';
 import AuthCallback from './components/AuthCallback';
+import ProyectoDetalle from './stitch/proyecto_detalle/ProyectoDetalle';
+import AdminUsuarios from './stitch/admin_usuarios/AdminUsuarios';
 import PortalLogin from './stitch/portal_login/PortalLogin';
 import GoogleCallback from "./pages/GoogleCallback";
 
@@ -69,7 +71,9 @@ function AppRoutes() {
         <Route path="/login"                 element={<PortalLogin />} />
 
         {/* PRIVADO — Portal */}
-        <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
+        <Route path="/proyectos/:key" element={<P><ProyectoDetalle /></P>} />
+          <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
+          <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
         <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />
         <Route path="/dashboard/performance" element={<P><AutomationPerformanceDashboard /></P>} />
 
