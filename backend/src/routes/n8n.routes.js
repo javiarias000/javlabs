@@ -1,5 +1,7 @@
-const router  = require('express').Router();
-const axios   = require('axios');
+const router = require('express').Router();
+const axios  = require('axios');
+// ✅ FIX: prisma faltaba en el archivo original
+const prisma = require('../config/prisma');
 const { authenticate } = require('../middlewares/auth.middleware');
 
 router.use(authenticate);
@@ -9,7 +11,7 @@ const n8n = axios.create({
   headers: { 'X-N8N-API-KEY': process.env.N8N_API_KEY },
 });
 
-// GET /api/n8n/workflows — listar workflows
+// GET /api/n8n/workflows
 router.get('/workflows', async (req, res, next) => {
   try {
     const { data } = await n8n.get('/workflows');
@@ -17,7 +19,7 @@ router.get('/workflows', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// GET /api/n8n/workflows/:id — detalle
+// GET /api/n8n/workflows/:id
 router.get('/workflows/:id', async (req, res, next) => {
   try {
     const { data } = await n8n.get(`/workflows/${req.params.id}`);
@@ -25,7 +27,7 @@ router.get('/workflows/:id', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// POST /api/n8n/workflows — crear workflow
+// POST /api/n8n/workflows
 router.post('/workflows', async (req, res, next) => {
   try {
     const { data } = await n8n.post('/workflows', req.body);
@@ -33,7 +35,7 @@ router.post('/workflows', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// PATCH /api/n8n/workflows/:id/activate — activar
+// PATCH /api/n8n/workflows/:id/activate
 router.patch('/workflows/:id/activate', async (req, res, next) => {
   try {
     const { data } = await n8n.post(`/workflows/${req.params.id}/activate`);
@@ -41,7 +43,7 @@ router.patch('/workflows/:id/activate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// PATCH /api/n8n/workflows/:id/deactivate — desactivar
+// PATCH /api/n8n/workflows/:id/deactivate
 router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   try {
     const { data } = await n8n.post(`/workflows/${req.params.id}/deactivate`);
@@ -49,8 +51,7 @@ router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// GET /api/n8n/projects — agrupar workflows por proyecto
+// GET /api/n8n/projects
 router.get('/projects', async (req, res, next) => {
   try {
     const [wfRes, execRes] = await Promise.all([
@@ -61,23 +62,20 @@ router.get('/projects', async (req, res, next) => {
     const workflows  = wfRes.data.data  || wfRes.data;
     const executions = execRes.data.data || execRes.data;
 
-    // Reglas de agrupacion por nombre
     const PROJECT_RULES = [
-      { key: 'dentilook',   project: 'DentiLook',       keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
-      { key: 'sama_shala',  project: 'Sama Shala',      keywords: ['sama_shala', 'sama shala'] },
-      { key: 'facturas',    project: 'Datos & Facturas', keywords: ['factura', 'datos_facturas'] },
-      { key: 'violin',      project: 'Clases Violin',   keywords: ['violin', 'clases_magistrales'] },
+      { key: 'dentilook',  project: 'DentiLook',       keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
+      { key: 'sama_shala', project: 'Sama Shala',      keywords: ['sama_shala', 'sama shala'] },
+      { key: 'facturas',   project: 'Datos & Facturas', keywords: ['factura', 'datos_facturas'] },
+      { key: 'violin',     project: 'Clases Violin',   keywords: ['violin', 'clases_magistrales'] },
     ];
 
     const getProjectInfo = (name) => {
       const lower = name.toLowerCase();
-      // Primero por keywords especificas
       for (const rule of PROJECT_RULES) {
         if (rule.keywords.some(k => lower.includes(k))) {
           return { key: rule.key, name: rule.project };
         }
       }
-      // Separar por " — " o " - "
       if (name.includes(' — ') || name.includes(' - ')) {
         const sep   = name.includes(' — ') ? ' — ' : ' - ';
         const parts = name.split(sep);
@@ -86,7 +84,6 @@ router.get('/projects', async (req, res, next) => {
           return { key: proj.toLowerCase().replace(/\s+/g, '_'), name: proj };
         }
       }
-      // Si tiene _ usar el prefijo
       if (name.includes('_')) {
         const parts = name.split('_');
         const proj  = parts[0].replace(/_/g, ' ').trim();
@@ -95,36 +92,19 @@ router.get('/projects', async (req, res, next) => {
       return { key: 'general', name: 'General' };
     };
 
-    // Agrupar workflows por proyecto
     const projectMap = {};
     for (const wf of workflows) {
-      const projInfo = getProjectInfo(wf.name);
-      const projName = projInfo.name;
-      const projKey  = projInfo.key;
+      const { key: projKey, name: projName } = getProjectInfo(wf.name);
       if (!projectMap[projName]) {
-        projectMap[projName] = {
-          key:        projKey,
-          name:       projName,
-          workflows:  [],
-          executions: 0,
-          success:    0,
-          errors:     0,
-          active:     0,
-        };
+        projectMap[projName] = { key: projKey, name: projName, workflows: [], executions: 0, success: 0, errors: 0, active: 0 };
       }
-      projectMap[projName].workflows.push({
-        id:     wf.id,
-        name:   wf.name,
-        active: wf.active,
-      });
+      projectMap[projName].workflows.push({ id: wf.id, name: wf.name, active: wf.active });
       if (wf.active) projectMap[projName].active++;
     }
 
-    // Agregar metricas de ejecuciones
     for (const exec of executions) {
       for (const proj of Object.values(projectMap)) {
-        const wfIds = proj.workflows.map(w => w.id);
-        if (wfIds.includes(exec.workflowId)) {
+        if (proj.workflows.map(w => w.id).includes(exec.workflowId)) {
           proj.executions++;
           if (exec.status === 'success') proj.success++;
           if (exec.status === 'error')   proj.errors++;
@@ -143,8 +123,7 @@ router.get('/projects', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// GET /api/n8n/projects/:key — detalle de proyecto con metricas en tiempo real
+// GET /api/n8n/projects/:key
 router.get('/projects/:key', async (req, res, next) => {
   try {
     const key = req.params.key;
@@ -157,7 +136,6 @@ router.get('/projects/:key', async (req, res, next) => {
     const workflows  = wfRes.data.data  || wfRes.data;
     const executions = execRes.data.data || execRes.data;
 
-    // Filtrar workflows de este proyecto
     const PROJECT_RULES = [
       { key: 'dentilook',  keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
       { key: 'sama_shala', keywords: ['sama_shala', 'sama shala'] },
@@ -171,7 +149,7 @@ router.get('/projects/:key', async (req, res, next) => {
         if (rule.keywords.some(k => lower.includes(k))) return rule.key;
       }
       if (name.includes(' — ') || name.includes(' - ')) {
-        const sep   = name.includes(' — ') ? ' — ' : ' - ';
+        const sep = name.includes(' — ') ? ' — ' : ' - ';
         const parts = name.split(sep);
         if (parts.length > 1) return parts[0].trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
       }
@@ -189,19 +167,17 @@ router.get('/projects/:key', async (req, res, next) => {
     const running = projectExecs.filter(e => e.status === 'running').length;
     const active  = projectWorkflows.filter(w => w.active).length;
 
-    // Calcular tiempo promedio de ejecucion
     const withTime = projectExecs.filter(e => e.startedAt && e.stoppedAt);
     const avgTime  = withTime.length > 0
       ? Math.round(withTime.reduce((s, e) => s + (new Date(e.stoppedAt) - new Date(e.startedAt)), 0) / withTime.length / 1000)
       : 0;
 
-    // Ultimas 20 ejecuciones con detalle
     const recentExecs = projectExecs.slice(0, 20).map(e => ({
-      id:         e.id,
-      status:     e.status,
-      startedAt:  e.startedAt,
-      stoppedAt:  e.stoppedAt,
-      workflowId: e.workflowId,
+      id:           e.id,
+      status:       e.status,
+      startedAt:    e.startedAt,
+      stoppedAt:    e.stoppedAt,
+      workflowId:   e.workflowId,
       workflowName: projectWorkflows.find(w => w.id === e.workflowId)?.name || e.workflowId,
     }));
 
@@ -213,17 +189,13 @@ router.get('/projects/:key', async (req, res, next) => {
       workflows:       projectWorkflows.map(w => ({ id: w.id, name: w.name, active: w.active })),
       totalWorkflows:  projectWorkflows.length,
       activeWorkflows: active,
-      stats: {
-        total, success, errors, running,
-        successRate: total > 0 ? Math.round((success / total) * 100) : 0,
-        avgTimeSeconds: avgTime,
-      },
+      stats: { total, success, errors, running, successRate: total > 0 ? Math.round((success / total) * 100) : 0, avgTimeSeconds: avgTime },
       recentExecutions: recentExecs,
     });
   } catch (err) { next(err); }
 });
 
-// PATCH /api/n8n/projects/:key — renombrar proyecto
+// PATCH /api/n8n/projects/:key
 router.patch('/projects/:key', async (req, res, next) => {
   try {
     const { name, description, color } = req.body;

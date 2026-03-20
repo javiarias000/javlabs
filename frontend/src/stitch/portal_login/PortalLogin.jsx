@@ -38,11 +38,15 @@ export default function PortalLogin() {
       navigate(from, { replace: true });
 
     } catch (err) {
-      setError(
-        isRegister
-          ? 'Error al crear la cuenta.'
-          : 'Credenciales incorrectas.'
-      );
+      if (err.data?.errors) {
+        const pwdError = err.data.errors.find(e => e.path === 'password');
+        const emailError = err.data.errors.find(e => e.path === 'email');
+        if (pwdError) setError('La contrasena debe tener minimo 8 caracteres, una mayuscula y un numero.');
+        else if (emailError) setError('Email invalido.');
+        else setError(err.data.errors[0]?.msg || 'Datos invalidos.');
+      } else {
+        setError(isRegister ? 'Error al crear la cuenta.' : 'Credenciales incorrectas.');
+      }
     } finally {
       setLoading(false);
     }
@@ -98,7 +102,7 @@ export default function PortalLogin() {
             {/* GOOGLE */}
             <button
               className="w-full flex items-center justify-center gap-3 border border-white/10 bg-white/5 hover:bg-white/10 transition-all py-3 rounded-lg text-white text-sm font-medium"
-              onClick={() => console.log("Google login")}
+              onClick={() => window.location.href = (import.meta.env.VITE_API_URL || "http://localhost:3001/api") + "/auth/google"}
             >
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="h-5" />
               Continuar con Google
@@ -145,6 +149,13 @@ export default function PortalLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+
+              {/* PASSWORD HINT */}
+              {isRegister && (
+                <p className="text-[11px] text-slate-500 -mt-2">
+                  Minimo 8 caracteres, una mayuscula y un numero.
+                </p>
+              )}
 
               {/* CONFIRM PASSWORD */}
               {isRegister && (

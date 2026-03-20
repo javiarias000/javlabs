@@ -9,7 +9,9 @@ import LandingPage1 from './stitch/landing_page_1/LandingPage1';
 import ServicesPageVariant1 from './stitch/services_page_variant_1/ServicesPageVariant1';
 import ContactPageVariant1 from './stitch/contact_page_variant_1/ContactPageVariant1';
 import PricingPage from './stitch/pricing_page/PricingPage';
+import AuthCallback from './components/AuthCallback';
 import PortalLogin from './stitch/portal_login/PortalLogin';
+import GoogleCallback from "./pages/GoogleCallback";
 
 // Privadas
 import ClientDashboard from './stitch/client_dashboard/ClientDashboard';
@@ -67,6 +69,8 @@ function AppRoutes() {
         <Route path="/nosotros" element={<AboutPage />} />
         <Route path="/contacto" element={<ContactPageVariant1 />} />
         <Route path="/precios" element={<PricingPage />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
         <Route path="/login" element={<PortalLogin />} />
 
         {/* PRIVADO — Portal */}

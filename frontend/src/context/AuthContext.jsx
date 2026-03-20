@@ -4,161 +4,157 @@ const AuthContext = createContext();
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem("token")
-  );
-  const [loading, setLoading] = useState(true);
+// ✅ FIX: una sola constante para la key — evita el bug de "token" vs "accessToken"
+const TOKEN_KEY   = "accessToken";
+const REFRESH_KEY = "refreshToken";
 
-  // ================= LOGIN =================
+export const AuthProvider = ({ children }) => {
+  const [user, setUser]               = useState(null);
+  const [accessToken, setAccessToken] = useState(localStorage.getItem(TOKEN_KEY));
+  const [loading, setLoading]         = useState(true);
+
+  // ─── helpers ────────────────────────────────────────────────────
+  const saveTokens = (access, refresh) => {
+    localStorage.setItem(TOKEN_KEY, access);
+    if (refresh) localStorage.setItem(REFRESH_KEY, refresh);
+    setAccessToken(access);
+  };
+
+  const clearTokens = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_KEY);
+    setAccessToken(null);
+    setUser(null);
+  };
+
+  // ─── LOGIN ──────────────────────────────────────────────────────
   const login = async (email, password) => {
     const res = await fetch(`${API}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      method:      "POST",
+      headers:     { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ email, password }),
+      body:        JSON.stringify({ email, password }),
     });
 
     if (!res.ok) throw new Error("Login failed");
 
     const data = await res.json();
-
-    setAccessToken(data.accessToken);
-    localStorage.setItem("token", data.accessToken);
+    saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-
     return data;
   };
 
-  // ================= REGISTER =================
+  // ─── REGISTER ───────────────────────────────────────────────────
   const register = async (name, email, password) => {
     const res = await fetch(`${API}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      method:      "POST",
+      headers:     { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ name, email, password }),
+      body:        JSON.stringify({ name, email, password }),
     });
 
-    if (!res.ok) throw new Error("Register failed");
-
     const data = await res.json();
+    if (!res.ok) {
+      const err = new Error("Register failed");
+      err.data  = data;
+      throw err;
+    }
 
-    setAccessToken(data.accessToken);
-    localStorage.setItem("token", data.accessToken);
+    saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-
     return data;
   };
 
-  // ================= REFRESH =================
+  // ─── REFRESH ────────────────────────────────────────────────────
   const refreshToken = async () => {
     try {
+      const storedRefresh = localStorage.getItem(REFRESH_KEY);
+
       const res = await fetch(`${API}/auth/refresh`, {
-        method: "POST",
-        credentials: "include", // 🔥 CLAVE
+        method:      "POST",
+        headers:     { "Content-Type": "application/json" },
+        credentials: "include",
+        // ✅ enviamos el refresh tanto en cookie (automático) como en body (fallback)
+        body: JSON.stringify({ refreshToken: storedRefresh }),
       });
 
       if (!res.ok) throw new Error("Refresh failed");
 
       const data = await res.json();
-
-      setAccessToken(data.accessToken);
-      localStorage.setItem("token", data.accessToken);
-
+      saveTokens(data.accessToken, data.refreshToken);
       return data.accessToken;
+
     } catch (err) {
-      console.log("REFRESH ERROR:", err);
-
-      // 🔥 limpiar sesión si falla
-      localStorage.removeItem("token");
-      setAccessToken(null);
-      setUser(null);
-
+      console.warn("Refresh failed:", err.message);
+      clearTokens();
       return null;
     }
   };
 
-  // ================= GET USER =================
+  // ─── FETCH USER ─────────────────────────────────────────────────
   const fetchUser = async (token) => {
+    const res = await fetch(`${API}/auth/me`, {
+      headers:     { Authorization: `Bearer ${token}` },
+      credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("User fetch failed");
+
+    const data = await res.json();
+    setUser(data);
+    return data;
+  };
+
+  // ─── LOGIN WITH GOOGLE TOKENS ────────────────────────────────────
+  // Llamado desde la página /auth/google/callback
+  const loginWithTokens = async (token, refresh) => {
+    saveTokens(token, refresh);
     try {
-      const res = await fetch(`${API}/auth/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include", // 🔥 IMPORTANTE
-      });
-
-      if (!res.ok) throw new Error("User fetch failed");
-
-      const data = await res.json();
-      setUser(data);
-
-    } catch (err) {
-      console.log("FETCH USER ERROR:", err);
-
-      // 🔥 intenta 1 sola vez refresh
+      await fetchUser(token);
+    } catch {
       const newToken = await refreshToken();
-
-      if (newToken) {
-        const retryRes = await fetch(`${API}/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${newToken}`,
-          },
-          credentials: "include",
-        });
-
-        if (retryRes.ok) {
-          const retryData = await retryRes.json();
-          setUser(retryData);
-          return;
-        }
-      }
-
-      // ❌ si todo falla → logout limpio
-      localStorage.removeItem("token");
-      setAccessToken(null);
-      setUser(null);
+      if (newToken) await fetchUser(newToken);
     }
   };
 
-  // ================= LOGOUT =================
+  // ─── LOGOUT ─────────────────────────────────────────────────────
   const logout = async () => {
     try {
       await fetch(`${API}/auth/logout`, {
-        method: "POST",
+        method:      "POST",
         credentials: "include",
+        headers:     { "Content-Type": "application/json" },
+        body:        JSON.stringify({ refreshToken: localStorage.getItem(REFRESH_KEY) }),
       });
     } catch (err) {
-      console.log("LOGOUT ERROR:", err);
+      console.warn("Logout error:", err);
     }
-
-    localStorage.removeItem("token");
-    setAccessToken(null);
-    setUser(null);
+    clearTokens();
   };
 
-  // ================= INIT =================
+  // ─── INIT ────────────────────────────────────────────────────────
   useEffect(() => {
     const initAuth = async () => {
       try {
-        console.log("INIT AUTH");
+        const token = localStorage.getItem(TOKEN_KEY);
 
-        if (accessToken) {
-          await fetchUser(accessToken);
-        } else {
-          const newToken = await refreshToken();
-          if (newToken) {
-            await fetchUser(newToken);
+        if (token) {
+          try {
+            await fetchUser(token);
+          } catch {
+            // accessToken expirado → intenta refresh
+            const newToken = await refreshToken();
+            if (newToken) await fetchUser(newToken);
           }
+        } else {
+          // sin token → intenta refresh por cookie o refreshToken guardado
+          const newToken = await refreshToken();
+          if (newToken) await fetchUser(newToken);
         }
 
       } catch (err) {
-        console.log("INIT AUTH ERROR:", err);
+        console.warn("Init auth error:", err);
+        clearTokens();
       } finally {
         setLoading(false);
       }
@@ -168,20 +164,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        register,
-        logout,
-        loading,
-        accessToken,
-      }}
-    >
+    <AuthContext.Provider value={{ user, login, register, logout, loading, accessToken, loginWithTokens }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// ================= HOOK =================
 export const useAuth = () => useContext(AuthContext);
