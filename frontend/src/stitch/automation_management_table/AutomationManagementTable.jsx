@@ -121,7 +121,7 @@ export default function AutomationManagementTable() {
 
       <footer className="border-t border-slate-800 bg-background-dark py-6 px-6">
         <div className="max-w-[1440px] mx-auto flex justify-between items-center opacity-50">
-          <div className="text-[10px] tracking-[0.3em] font-bold uppercase">© 2024 JAV LABS Automation Platform</div>
+          <div className="text-[10px] tracking-[0.3em] font-bold uppercase">© 2026 JAV LABS Automation Platform</div>
           <div className="flex gap-8 text-[10px] tracking-[0.3em] font-bold uppercase">
             <Link to="/soporte/chat" className="hover:text-white">Soporte</Link>
           </div>

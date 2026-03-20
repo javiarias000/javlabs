@@ -21,16 +21,6 @@ export default function AutomationLogsErrorTracking() {
               <Link to="/dashboard/overview" className="text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Configuración</Link>
             </nav>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative w-72">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
-              <input className="w-full bg-slate-900/50 border border-slate-700 text-[10px] py-2 pl-10 pr-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none uppercase tracking-tighter" placeholder="BUSCAR POR ID O FLUJO..." type="text" />
-            </div>
-            <button className="flex items-center gap-2 px-4 py-2 border border-slate-700 bg-slate-900/50 hover:bg-slate-800 transition-colors">
-              <span className="material-symbols-outlined text-sm">account_circle</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest">JAV_ADMIN</span>
-            </button>
-          </div>
         </header>
 
         <div className="flex flex-1 overflow-hidden">

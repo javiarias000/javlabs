@@ -26,6 +26,8 @@ import ErrorAnalysisView from './stitch/error_analysis_view/ErrorAnalysisView';
 import WorkflowDetailsVariant1 from './stitch/workflow_details_variant_1/WorkflowDetailsVariant1';
 import TechnicalSupportChat from './stitch/technical_support_chat/TechnicalSupportChat';
 import TicketConversationView from './stitch/ticket_conversation_view/TicketConversationView';
+// ✅ Nueva página de detalle de proyecto n8n
+import ProjectDetailView from './pages/ProjectDetailView';
 
 // ================= SCROLL =================
 function ScrollToTop() {
@@ -37,22 +39,16 @@ function ScrollToTop() {
 // ================= WRAPPER PRIVADO =================
 const P = ({ children }) => {
   const { loading } = useAuth();
-
   if (loading) {
     return (
       <div style={{
-        background: '#0D1B2A',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fff'
+        background: '#0D1B2A', minHeight: '100vh',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
       }}>
         Cargando sesión...
       </div>
     );
   }
-
   return <PrivateRoute>{children}</PrivateRoute>;
 };
 
@@ -61,57 +57,49 @@ function AppRoutes() {
   return (
     <>
       <ScrollToTop />
-
       <Routes>
         {/* PÚBLICO */}
-        <Route path="/" element={<LandingPage1 />} />
-        <Route path="/servicios" element={<ServicesPageVariant1 />} />
-        <Route path="/nosotros" element={<AboutPage />} />
-        <Route path="/contacto" element={<ContactPageVariant1 />} />
-        <Route path="/precios" element={<PricingPage />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        <Route path="/login" element={<PortalLogin />} />
+        <Route path="/"                      element={<LandingPage1 />} />
+        <Route path="/servicios"             element={<ServicesPageVariant1 />} />
+        <Route path="/nosotros"              element={<AboutPage />} />
+        <Route path="/contacto"              element={<ContactPageVariant1 />} />
+        <Route path="/precios"               element={<PricingPage />} />
+        <Route path="/auth/callback"         element={<AuthCallback />} />
+        <Route path="/auth/google/callback"  element={<GoogleCallback />} />
+        <Route path="/login"                 element={<PortalLogin />} />
 
         {/* PRIVADO — Portal */}
-        <Route path="/dashboard" element={<P><ClientDashboard /></P>} />
-        <Route path="/dashboard/overview" element={<P><ClientDashboardOverview /></P>} />
+        <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
+        <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />
         <Route path="/dashboard/performance" element={<P><AutomationPerformanceDashboard /></P>} />
 
         {/* PRIVADO — Automatizaciones */}
-        <Route path="/automatizaciones" element={<P><ActiveAutomationsListView /></P>} />
-        <Route path="/automatizaciones/tabla" element={<P><AutomationManagementTable /></P>} />
-        <Route path="/automatizaciones/nueva" element={<P><NewAutomationWizardStep1 /></P>} />
-        <Route path="/automatizaciones/logica" element={<P><AutomationLogicTestView /></P>} />
-        <Route path="/automatizaciones/logs" element={<P><AutomationLogsErrorTracking /></P>} />
-        <Route path="/automatizaciones/errores" element={<P><ErrorAnalysisView /></P>} />
+        <Route path="/automatizaciones"              element={<P><ActiveAutomationsListView /></P>} />
+        <Route path="/automatizaciones/tabla"        element={<P><AutomationManagementTable /></P>} />
+        <Route path="/automatizaciones/nueva"        element={<P><NewAutomationWizardStep1 /></P>} />
+        <Route path="/automatizaciones/logica"       element={<P><AutomationLogicTestView /></P>} />
+        <Route path="/automatizaciones/logica/:key"  element={<P><AutomationLogicTestView /></P>} />
+        <Route path="/automatizaciones/logs"         element={<P><AutomationLogsErrorTracking /></P>} />
+        <Route path="/automatizaciones/errores"      element={<P><ErrorAnalysisView /></P>} />
+
+        {/* ✅ NUEVO — Detalle de proyecto n8n */}
+        <Route path="/proyectos/:key"  element={<P><ProjectDetailView /></P>} />
 
         {/* PRIVADO — Workflows */}
-        <Route path="/workflow/:id" element={<P><WorkflowDetailsVariant1 /></P>} />
+        <Route path="/workflow/:id"    element={<P><WorkflowDetailsVariant1 /></P>} />
 
         {/* PRIVADO — Soporte */}
-        <Route path="/soporte/chat" element={<P><TechnicalSupportChat /></P>} />
-        <Route path="/soporte/ticket" element={<P><TicketConversationView /></P>} />
+        <Route path="/soporte/chat"    element={<P><TechnicalSupportChat /></P>} />
+        <Route path="/soporte/ticket"  element={<P><TicketConversationView /></P>} />
 
         {/* 404 */}
         <Route path="*" element={
           <div style={{
-            background: '#0D1B2A',
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#fff'
+            background: '#0D1B2A', minHeight: '100vh',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
           }}>
             <div style={{ textAlign: 'center' }}>
-              <h1 style={{
-                fontSize: '4rem',
-                background: 'linear-gradient(90deg, #007BFF, #8A2BE2)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                404
-              </h1>
+              <h1 style={{ fontSize: '4rem', background: 'linear-gradient(90deg, #007BFF, #8A2BE2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>404</h1>
               <p style={{ color: '#94a3b8' }}>Página no encontrada</p>
               <a href="/" style={{ color: '#007BFF' }}>Volver al inicio</a>
             </div>
@@ -122,7 +110,6 @@ function AppRoutes() {
   );
 }
 
-// ================= ROOT =================
 export default function App() {
   return (
     <AuthProvider>
