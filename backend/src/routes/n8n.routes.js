@@ -51,6 +51,47 @@ router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+
+// GET /api/n8n/executions
+router.get('/executions', async (req, res, next) => {
+  try {
+    const limit      = req.query.limit      || 20;
+    const status     = req.query.status     || '';
+    const workflowId = req.query.workflowId || '';
+    let url = `/executions?limit=${limit}&includeData=false`;
+    if (status)     url += `&status=${status}`;
+    if (workflowId) url += `&workflowId=${workflowId}`;
+    const { data } = await n8n.get(url);
+    res.json(data);
+  } catch (err) { next(err); }
+});
+
+// GET /api/n8n/stats
+router.get('/stats', async (req, res, next) => {
+  try {
+    const [execs, workflows] = await Promise.all([
+      n8n.get('/executions?limit=100&includeData=false'),
+      n8n.get('/workflows'),
+    ]);
+    const execData = execs.data.data     || execs.data;
+    const wfData   = workflows.data.data || workflows.data;
+    const total   = execData.length;
+    const success = execData.filter(e => e.status === 'success').length;
+    const errors  = execData.filter(e => e.status === 'error').length;
+    const active  = wfData.filter(w => w.active).length;
+    res.json({
+      totalExecutions: total,
+      successCount:    success,
+      errorCount:      errors,
+      successRate:     total > 0 ? Math.round((success / total) * 100) : 0,
+      activeWorkflows: active,
+      totalWorkflows:  wfData.length,
+      recentExecutions: execData.slice(0, 10),
+      workflows: wfData.map(w => ({ id: w.id, name: w.name, active: w.active })),
+    });
+  } catch (err) { next(err); }
+});
+
 // GET /api/n8n/projects
 router.get('/projects', async (req, res, next) => {
   try {
@@ -120,6 +161,47 @@ router.get('/projects', async (req, res, next) => {
     })).sort((a, b) => b.executions - a.executions);
 
     res.json({ projects, total: projects.length });
+  } catch (err) { next(err); }
+});
+
+
+// GET /api/n8n/executions
+router.get('/executions', async (req, res, next) => {
+  try {
+    const limit      = req.query.limit      || 20;
+    const status     = req.query.status     || '';
+    const workflowId = req.query.workflowId || '';
+    let url = `/executions?limit=${limit}&includeData=false`;
+    if (status)     url += `&status=${status}`;
+    if (workflowId) url += `&workflowId=${workflowId}`;
+    const { data } = await n8n.get(url);
+    res.json(data);
+  } catch (err) { next(err); }
+});
+
+// GET /api/n8n/stats
+router.get('/stats', async (req, res, next) => {
+  try {
+    const [execs, workflows] = await Promise.all([
+      n8n.get('/executions?limit=100&includeData=false'),
+      n8n.get('/workflows'),
+    ]);
+    const execData = execs.data.data     || execs.data;
+    const wfData   = workflows.data.data || workflows.data;
+    const total   = execData.length;
+    const success = execData.filter(e => e.status === 'success').length;
+    const errors  = execData.filter(e => e.status === 'error').length;
+    const active  = wfData.filter(w => w.active).length;
+    res.json({
+      totalExecutions: total,
+      successCount:    success,
+      errorCount:      errors,
+      successRate:     total > 0 ? Math.round((success / total) * 100) : 0,
+      activeWorkflows: active,
+      totalWorkflows:  wfData.length,
+      recentExecutions: execData.slice(0, 10),
+      workflows: wfData.map(w => ({ id: w.id, name: w.name, active: w.active })),
+    });
   } catch (err) { next(err); }
 });
 
