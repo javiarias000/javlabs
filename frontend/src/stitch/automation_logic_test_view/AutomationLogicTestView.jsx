@@ -57,13 +57,19 @@ export default function AutomationLogicTestView() {
           setWorkflows(data.workflows || []);
           setNewName(data.name);
         })
-        .catch(() => setError('No se pudo cargar el proyecto.'))
+        .catch((err) => {
+          console.error('Error loading project:', err);
+          setError('No se pudo cargar el proyecto.');
+        })
         .finally(() => setLoading(false));
     } else {
       // Cargar todos los workflows
       api.get('/n8n/workflows')
         .then(({ data }) => setWorkflows(data.data || data))
-        .catch(() => setError('No se pudo conectar con n8n.'))
+        .catch((err) => {
+          console.error('Error loading workflows:', err);
+          setError('No se pudo conectar con n8n.');
+        })
         .finally(() => setLoading(false));
     }
   }, [key]);
@@ -72,10 +78,11 @@ export default function AutomationLogicTestView() {
     setToggling(wf.id);
     try {
       const action = wf.active ? 'deactivate' : 'activate';
-      await api.patch(`/n8n/workflows/${wf.id}/${action}`);
+      await api.post(`/n8n/workflows/${wf.id}/${action}`);
       setWorkflows(prev => prev.map(w => w.id === wf.id ? { ...w, active: !w.active } : w));
       if (selected?.id === wf.id) setSelected(prev => ({ ...prev, active: !prev.active }));
-    } catch {
+    } catch (err) {
+      console.error('Error toggling workflow:', err);
       setError('Error al cambiar el estado del workflow.');
     } finally {
       setToggling(null);
@@ -89,7 +96,8 @@ export default function AutomationLogicTestView() {
       await api.patch(`/n8n/projects/${key}`, { name: newName.trim() });
       setProjectData(prev => ({ ...prev, name: newName.trim() }));
       setEditingName(false);
-    } catch {
+    } catch (err) {
+      console.error('Error renaming project:', err);
       setError('Error al renombrar el proyecto.');
     } finally {
       setSavingName(false);

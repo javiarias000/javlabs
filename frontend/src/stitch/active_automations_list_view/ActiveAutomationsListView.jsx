@@ -18,6 +18,7 @@ export default function ActiveAutomationsListView() {
   const [search, setSearch]           = useState('');
   const [updating, setUpdating]       = useState(null);
   const [page, setPage]               = useState(1);
+  const [error, setError]             = useState(null);
   const PER_PAGE = 6;
 
   useEffect(() => {
@@ -25,12 +26,14 @@ export default function ActiveAutomationsListView() {
   }, []);
 
   const fetchAutomations = async () => {
+    setError(null);
     try {
       setLoading(true);
       const { data } = await api.get('/automations');
       setAutomations(data);
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching automations:', err);
+      setError('No se pudieron cargar las automatizaciones. Intenta de nuevo más tarde.');
     } finally {
       setLoading(false);
     }
@@ -45,7 +48,8 @@ export default function ActiveAutomationsListView() {
         prev.map(a => a.id === automation.id ? { ...a, status: newStatus } : a)
       );
     } catch (err) {
-      console.error(err);
+      console.error('Error updating automation status:', err);
+      alert('No se pudo cambiar el estado de la automatización. Intenta de nuevo.');
     } finally {
       setUpdating(null);
     }
@@ -82,6 +86,17 @@ export default function ActiveAutomationsListView() {
             Nueva Automatización
           </button>
         </header>
+
+        {/* Error banner */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded flex items-center gap-3">
+            <span className="material-symbols-outlined text-red-400">error</span>
+            <p className="text-sm text-red-400">{error}</p>
+            <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-300">
+              <span className="material-symbols-outlined text-sm">close</span>
+            </button>
+          </div>
+        )}
 
         {/* Search */}
         <div className="bg-slate-800/50 p-2 rounded-lg mb-8 flex flex-wrap gap-2 items-center">

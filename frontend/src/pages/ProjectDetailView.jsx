@@ -60,7 +60,7 @@ export default function ProjectDetailView() {
     setToggling(wf.id);
     try {
       const action = wf.active ? 'deactivate' : 'activate';
-      await api.patch(`/n8n/workflows/${wf.id}/${action}`);
+      await api.post(`/n8n/workflows/${wf.id}/${action}`);
       setData(prev => ({
         ...prev,
         workflows: prev.workflows.map(w =>

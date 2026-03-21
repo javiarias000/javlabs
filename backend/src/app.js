@@ -16,6 +16,7 @@ const automationRoutes = require('./routes/automation.routes');
 const contactRoutes    = require('./routes/contact.routes');
 const dashboardRoutes  = require('./routes/dashboard.routes');
 const webhookRoutes    = require('./routes/webhook.routes');
+const supportRoutes    = require('./routes/support.routes');
 const { errorHandler } = require('./middlewares/error.middleware');
 
 const app = express();
@@ -82,6 +83,8 @@ app.use('/api/n8n',         require('./routes/n8n.routes'));
 app.use('/api/automations', automationRoutes);
 app.use('/api/contact',     contactRoutes);
 app.use('/api/dashboard',   dashboardRoutes);
+app.use('/api/support',     supportRoutes); // Rutas autenticadas
+app.use('/api/support',     supportRoutes.webhook); // Webhook sin autenticación
 app.use('/api/webhooks',    webhookRoutes);
 
 // 🔹 Servir frontend compilado

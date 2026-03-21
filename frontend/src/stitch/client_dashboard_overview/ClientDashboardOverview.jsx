@@ -16,24 +16,23 @@ export default function ClientDashboardOverview() {
   const [projDesc, setProjDesc] = useState('');
   const [projLoading, setProjLoading] = useState(false);
   const [projError, setProjError] = useState('');
+  const [error, setError] = useState(null);
 
   const fetchAll = async () => {
     if (!accessToken) return; // ✅ FIX
 
+    setError(null);
     setLoading(true);
     try {
       const [n8n, db] = await Promise.all([
-        api.get('/n8n/projects', {
-          headers: { Authorization: `Bearer ${accessToken}` }, // ✅ FIX
-        }),
-        api.get('/dashboard', {
-          headers: { Authorization: `Bearer ${accessToken}` }, // ✅ FIX
-        }),
+        api.get('/n8n/projects'),
+        api.get('/dashboard'),
       ]);
       setN8nData(n8n.data);
       setDbData(db.data);
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching dashboard data:', err);
+      setError('No se pudieron cargar los datos del dashboard. Intenta de nuevo más tarde.');
     } finally {
       setLoading(false);
     }
@@ -54,16 +53,14 @@ export default function ClientDashboardOverview() {
     try {
       await api.post(
         '/projects',
-        { name: projName.trim(), description: projDesc.trim(), status: 'ACTIVE' },
-        {
-          headers: { Authorization: `Bearer ${accessToken}` }, // ✅ FIX
-        }
+        { name: projName.trim(), description: projDesc.trim(), status: 'ACTIVE' }
       );
       setShowModal(false);
       setProjName('');
       setProjDesc('');
       fetchAll();
     } catch (err) {
+      console.error('Error creating project:', err);
       setProjError(err.response?.data?.error || 'Error al crear el proyecto.');
     } finally {
       setProjLoading(false);
@@ -72,7 +69,6 @@ export default function ClientDashboardOverview() {
 
   const projects = n8nData?.projects || [];
   const activities = dbData?.recentActivities || [];
-  const kpis = dbData?.kpis || {};
 
   const totalExecutions = projects.reduce((s, p) => s + p.executions, 0);
   const totalErrors = projects.reduce((s, p) => s + p.errors, 0);
@@ -81,6 +77,7 @@ export default function ClientDashboardOverview() {
     ? Math.round(((totalExecutions - totalErrors) / totalExecutions) * 100)
     : 0;
 
+  const recentErrors   = dbData?.n8nStats?.recentErrors || [];
   const activityColors = ['bg-primary', 'bg-violet-600', 'bg-emerald-500', 'bg-amber-500', 'bg-cyan-500'];
 
   return (
@@ -88,6 +85,17 @@ export default function ClientDashboardOverview() {
       <main className="flex-1 flex flex-col min-w-0">
     
         <div className="p-8 space-y-8 overflow-y-auto">
+          {/* Error banner */}
+          {error && (
+            <div className="p-4 bg-red-500/10 border border-red-500/30 rounded flex items-center gap-3">
+              <span className="material-symbols-outlined text-red-400">error</span>
+              <p className="text-sm text-red-400">{error}</p>
+              <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-300">
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+          )}
+
           {(loading || authLoading) ? ( // ✅ FIX
             <div className="flex items-center justify-center h-64 text-slate-500">
               <span className="material-symbols-outlined animate-spin mr-2">progress_activity</span> Cargando datos...
@@ -205,6 +213,32 @@ export default function ClientDashboardOverview() {
                     )}
                   </div>
 
+
+                  {/* Errores recientes de n8n */}
+                  {recentErrors.length > 0 && (
+                    <div className="bg-card-bg border border-red-500/20 p-6 rounded-lg">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="text-white font-bold flex items-center gap-2">
+                          <span className="material-symbols-outlined text-red-400 text-sm">error</span>
+                          Errores Recientes
+                        </h4>
+                        <span className="text-[10px] text-red-400 font-bold uppercase tracking-widest">{recentErrors.length} errores</span>
+                      </div>
+                      <div className="space-y-3">
+                        {recentErrors.map(e => (
+                          <div key={e.id} className="flex items-start gap-3 p-3 bg-red-500/5 border border-red-500/10 rounded">
+                            <span className="material-symbols-outlined text-red-400 text-sm mt-0.5">error_outline</span>
+                            <div className="min-w-0">
+                              <p className="text-slate-300 text-xs font-medium truncate">{e.workflowName}</p>
+                              <p className="text-slate-600 text-[10px] mt-0.5">
+                                #{e.id} • {e.startedAt ? new Date(e.startedAt).toLocaleString('es', { dateStyle: 'short', timeStyle: 'short' }) : '—'}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   {/* Acciones rapidas */}
                   <div className="bg-card-bg border border-slate-700 p-6 rounded-lg">
                     <h4 className="text-white font-bold mb-6">Acciones Rapidas</h4>

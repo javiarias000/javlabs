@@ -10,7 +10,6 @@ import ServicesPageVariant1 from './stitch/services_page_variant_1/ServicesPageV
 import ContactPageVariant1 from './stitch/contact_page_variant_1/ContactPageVariant1';
 import PricingPage from './stitch/pricing_page/PricingPage';
 import AuthCallback from './components/AuthCallback';
-import ProyectoDetalle from './stitch/proyecto_detalle/ProyectoDetalle';
 import AdminUsuarios from './stitch/admin_usuarios/AdminUsuarios';
 import PortalLogin from './stitch/portal_login/PortalLogin';
 import GoogleCallback from "./pages/GoogleCallback";
@@ -28,6 +27,7 @@ import ErrorAnalysisView from './stitch/error_analysis_view/ErrorAnalysisView';
 import WorkflowDetailsVariant1 from './stitch/workflow_details_variant_1/WorkflowDetailsVariant1';
 import TechnicalSupportChat from './stitch/technical_support_chat/TechnicalSupportChat';
 import TicketConversationView from './stitch/ticket_conversation_view/TicketConversationView';
+import SupportTicketList from './stitch/support_ticket_list/SupportTicketList';
 // ✅ Nueva página de detalle de proyecto n8n
 import ProjectDetailView from './pages/ProjectDetailView';
 
@@ -71,7 +71,6 @@ function AppRoutes() {
         <Route path="/login"                 element={<PortalLogin />} />
 
         {/* PRIVADO — Portal */}
-        <Route path="/proyectos/:key" element={<P><ProyectoDetalle /></P>} />
           <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
           <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
         <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />
@@ -93,8 +92,9 @@ function AppRoutes() {
         <Route path="/workflow/:id"    element={<P><WorkflowDetailsVariant1 /></P>} />
 
         {/* PRIVADO — Soporte */}
+        <Route path="/soporte"         element={<P><SupportTicketList /></P>} />
         <Route path="/soporte/chat"    element={<P><TechnicalSupportChat /></P>} />
-        <Route path="/soporte/ticket"  element={<P><TicketConversationView /></P>} />
+        <Route path="/soporte/ticket/:id"  element={<P><TicketConversationView /></P>} />
 
         {/* 404 */}
         <Route path="*" element={
