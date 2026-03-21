@@ -3,6 +3,8 @@ const axios  = require('axios');
 // ✅ FIX: prisma faltaba en el archivo original
 const prisma = require('../config/prisma');
 const { authenticate } = require('../middlewares/auth.middleware');
+const { query, body } = require('express-validator');
+const { validate } = require('../middlewares/validate.middleware');
 
 router.use(authenticate);
 
@@ -28,7 +30,13 @@ router.get('/workflows/:id', async (req, res, next) => {
 });
 
 // POST /api/n8n/workflows
-router.post('/workflows', async (req, res, next) => {
+router.post('/workflows', [
+  // ✅ VALIDATION ADDED - N8N Workflow Create
+  body('name').optional().notEmpty().withMessage('Workflow name required'),
+  body('nodes').optional().isArray().withMessage('Nodes must be array'),
+  body('connections').optional().isObject().withMessage('Connections must be object'),
+  validate,
+], async (req, res, next) => {
   try {
     const { data } = await n8n.post('/workflows', req.body);
     res.status(201).json(data);
@@ -48,47 +56,6 @@ router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   try {
     const { data } = await n8n.post(`/workflows/${req.params.id}/deactivate`);
     res.json(data);
-  } catch (err) { next(err); }
-});
-
-
-// GET /api/n8n/executions
-router.get('/executions', async (req, res, next) => {
-  try {
-    const limit      = req.query.limit      || 20;
-    const status     = req.query.status     || '';
-    const workflowId = req.query.workflowId || '';
-    let url = `/executions?limit=${limit}&includeData=false`;
-    if (status)     url += `&status=${status}`;
-    if (workflowId) url += `&workflowId=${workflowId}`;
-    const { data } = await n8n.get(url);
-    res.json(data);
-  } catch (err) { next(err); }
-});
-
-// GET /api/n8n/stats
-router.get('/stats', async (req, res, next) => {
-  try {
-    const [execs, workflows] = await Promise.all([
-      n8n.get('/executions?limit=100&includeData=false'),
-      n8n.get('/workflows'),
-    ]);
-    const execData = execs.data.data     || execs.data;
-    const wfData   = workflows.data.data || workflows.data;
-    const total   = execData.length;
-    const success = execData.filter(e => e.status === 'success').length;
-    const errors  = execData.filter(e => e.status === 'error').length;
-    const active  = wfData.filter(w => w.active).length;
-    res.json({
-      totalExecutions: total,
-      successCount:    success,
-      errorCount:      errors,
-      successRate:     total > 0 ? Math.round((success / total) * 100) : 0,
-      activeWorkflows: active,
-      totalWorkflows:  wfData.length,
-      recentExecutions: execData.slice(0, 10),
-      workflows: wfData.map(w => ({ id: w.id, name: w.name, active: w.active })),
-    });
   } catch (err) { next(err); }
 });
 
@@ -165,8 +132,12 @@ router.get('/projects', async (req, res, next) => {
 });
 
 
-// GET /api/n8n/executions
-router.get('/executions', async (req, res, next) => {
+// ✅ VALIDATION ADDED - N8N Executions (duplicate route - both need validation)
+router.get('/executions', [
+  query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be 1-100'),
+  query('status').optional().isIn(['success', 'error', 'running', 'waiting']).withMessage('Invalid status'),
+  query('workflowId').optional().isUUID().withMessage('Invalid workflowId'),
+], async (req, res, next) => {
   try {
     const limit      = req.query.limit      || 20;
     const status     = req.query.status     || '';
@@ -277,8 +248,13 @@ router.get('/projects/:key', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// PATCH /api/n8n/projects/:key
-router.patch('/projects/:key', async (req, res, next) => {
+// ✅ VALIDATION ADDED - N8N Project Settings
+router.patch('/projects/:key', [
+  body('name').optional().notEmpty().isLength({ max: 200 }).withMessage('Name max 200 chars'),
+  body('description').optional().isLength({ max: 1000 }).withMessage('Description max 1000 chars'),
+  body('color').optional().matches(/^#[0-9A-Fa-f]{6}$/).withMessage('Color must be hex format #RRGGBB'),
+  validate,
+], async (req, res, next) => {
   try {
     const { name, description, color } = req.body;
     const project = await prisma.n8nProject.upsert({

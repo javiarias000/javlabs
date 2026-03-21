@@ -2,6 +2,8 @@ const router  = require('express').Router();
 const prisma  = require('../config/prisma');
 const bcrypt  = require('bcryptjs');
 const { authenticate } = require('../middlewares/auth.middleware');
+const { body } = require('express-validator');
+const { validate } = require('../middlewares/validate.middleware');
 
 router.use(authenticate);
 
@@ -21,8 +23,15 @@ router.get('/', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// PATCH /api/users/:id — actualizar usuario (solo admin)
-router.patch('/:id', async (req, res, next) => {
+// ✅ VALIDATION ADDED - Update User
+router.patch('/:id', [
+  body('name').optional().notEmpty().isLength({ max: 100 }).withMessage('Name max 100 characters'),
+  body('role').optional().isIn(['ADMIN', 'USER']).withMessage('Invalid role'),
+  body('isActive').optional().isBoolean().withMessage('isActive must be boolean'),
+  body('n8nProjectKey').optional().matches(/^[a-z0-9_]+$/).withMessage('Invalid n8nProjectKey format'),
+  body('company').optional().isLength({ max: 100 }).withMessage('Company max 100 characters'),
+  validate,
+], async (req, res, next) => {
   try {
     if (req.user.role !== 'ADMIN') return res.status(403).json({ error: 'Sin permisos.' });
     const { name, role, isActive, n8nProjectKey, company } = req.body;

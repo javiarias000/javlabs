@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const prisma = require('../config/prisma');
 const { authenticate } = require('../middlewares/auth.middleware');
+const { body } = require('express-validator');
+const { validate } = require('../middlewares/validate.middleware');
 
 router.use(authenticate);
 
@@ -16,7 +18,15 @@ router.get('/', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.post('/', async (req, res, next) => {
+// ✅ VALIDATION ADDED - Create Automation
+router.post('/', [
+  body('name').notEmpty().withMessage('Automation name is required'),
+  body('description').optional().isLength({ max: 1000 }).withMessage('Description too long (max 1000 chars)'),
+  body('type').isIn(['webhook', 'schedule', 'api']).withMessage('Invalid automation type'),
+  body('projectId').notEmpty().withMessage('Project ID is required'),
+  body('webhookUrl').optional().isURL().withMessage('Invalid webhook URL'),
+  validate,
+], async (req, res, next) => {
   try {
     const { name, description, type, projectId, webhookUrl } = req.body;
     const automation = await prisma.automation.create({ data: { name, description, type, projectId, webhookUrl } });
@@ -36,7 +46,14 @@ router.get('/:id', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.patch('/:id', async (req, res, next) => {
+// ✅ VALIDATION ADDED - Update Automation
+router.patch('/:id', [
+  body('status').optional().isIn(['active', 'inactive', 'paused']).withMessage('Invalid status'),
+  body('name').optional().notEmpty().withMessage('Name cannot be empty'),
+  body('description').optional().isLength({ max: 1000 }).withMessage('Description too long (max 1000 chars)'),
+  body('webhookUrl').optional().isURL().withMessage('Invalid webhook URL'),
+  validate,
+], async (req, res, next) => {
   try {
     const { status, name, description, webhookUrl } = req.body;
     const updated = await prisma.automation.update({

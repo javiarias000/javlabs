@@ -47,7 +47,7 @@ const register = async (req, res, next) => {
 
     const user = await prisma.user.create({
       data: { name, email, password: hashedPassword, company, phone },
-      select: { id: true, name: true, email: true, role: true, company: true },
+      select: { id: true, name: true, email: true, role: true, company: true, n8nProjectKey: true },
     });
 
     const { accessToken, refreshToken } = generateTokens(user.id, user.role);
