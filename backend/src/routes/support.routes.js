@@ -373,6 +373,32 @@ router.patch('/tickets/:id', [
   } catch (err) { next(err); }
 });
 
+// GET /api/support/tickets/:id/public - Endpoint público para n8n (sin autenticación)
+webhookRouter.get('/tickets/:id/public', [
+  param('id').isUUID()
+], async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ticket = await prisma.supportTicket.findUnique({
+      where: { id },
+      include: {
+        user: { select: { id: true, name: true, email: true, company: true } },
+        messages: {
+          orderBy: { createdAt: 'asc' },
+          take: 50
+        }
+      }
+    });
+    if (!ticket) {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    res.json(ticket);
+  } catch (err) {
+    console.error('Error fetching public ticket:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Exportar ambos routers: principal (autenticado) y webhook (público)
 module.exports = router;
 module.exports.webhook = webhookRouter;
