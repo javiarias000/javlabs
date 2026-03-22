@@ -83,8 +83,8 @@ app.use('/api/n8n',         require('./routes/n8n.routes'));
 app.use('/api/automations', automationRoutes);
 app.use('/api/contact',     contactRoutes);
 app.use('/api/dashboard',   dashboardRoutes);
-app.use('/api/support',     supportRoutes); // Rutas autenticadas
 app.use('/api/support',     supportRoutes.webhook); // Webhook sin autenticación
+app.use('/api/support',     supportRoutes); // Rutas autenticadas
 app.use('/api/webhooks',    webhookRoutes);
 
 // 🔹 Servir frontend compilado
