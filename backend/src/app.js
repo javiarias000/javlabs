@@ -38,9 +38,10 @@ app.use(helmet({
 }));
 app.use(morgan('dev'));
 
-// 🔹 CORS — ✅ FIX: incluye localhost para desarrollo
+// 🔹 CORS — ✅ FIX: incluye localhost para desarrollo y n8n para webhooks
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  process.env.N8N_URL, // Permitir requests desde n8n (server-to-server)
   'http://localhost:5173',
   'http://localhost:3000',
 ].filter(Boolean);
