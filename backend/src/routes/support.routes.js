@@ -13,7 +13,7 @@ const n8nClient = axios.create({
 });
 
 // Webhook URL que n8n debe llamar para responder (configurado en n8n workflow)
-const N8N_SUPPORT_WEBHOOK_URL = process.env.N8N_SUPPORT_WEBHOOK_URL || 'http://localhost:5678/webhook/support-response';
+const N8N_SUPPORT_WEBHOOK_URL = process.env.N8N_SUPPORT_WEBHOOK_URL || (process.env.N8N_URL ? `${process.env.N8N_URL.replace(/\/$/, '')}/webhook/support-response` : 'http://localhost:5678/webhook/support-response');
 
 /**
  * Notifica a n8n sobre un nuevo mensaje de usuario en un ticket en modo AUTOMATED
@@ -379,22 +379,57 @@ webhookRouter.get('/tickets/:id/public', [
 ], async (req, res) => {
   try {
     const { id } = req.params;
+
+    // OBTENER TICKET SIN RELACIONES FIRST
     const ticket = await prisma.supportTicket.findUnique({
       where: { id },
-      include: {
-        user: { select: { id: true, name: true, email: true, company: true } },
-        messages: {
-          orderBy: { createdAt: 'asc' },
-          take: 50
-        }
-      }
+      rejectOnNotFound: false
     });
+
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
     }
-    res.json(ticket);
+
+    // OBTENER MENSAJES SEPARADAMENTE (manejo de error más controlado)
+    const messages = await prisma.ticketMessage.findMany({
+      where: { ticketId: id },
+      orderBy: { createdAt: 'asc' },
+      take: 50
+    });
+
+    // OBTENER USUARIO (si existe) - puede ser null si usuario eliminado
+    const user = ticket.userId ? await prisma.user.findUnique({
+      where: { id: ticket.userId },
+      select: { id: true, name: true, email: true, company: true }
+    }).catch(() => null) : null;
+
+    // Responder con datos seguros y estructurados
+    res.json({
+      id: ticket.id,
+      userId: ticket.userId,
+      subject: ticket.subject,
+      description: ticket.description,
+      status: ticket.status,
+      priority: ticket.priority,
+      assignedAgentId: ticket.assignedAgentId,
+      lastMessageAt: ticket.lastMessageAt,
+      createdAt: ticket.createdAt,
+      updatedAt: ticket.updatedAt,
+      user: user,
+      messages: messages.map(msg => ({
+        id: msg.id,
+        ticketId: msg.ticketId,
+        senderType: msg.senderType,
+        senderId: msg.senderId,
+        content: msg.content,
+        metadata: msg.metadata,
+        createdAt: msg.createdAt
+      }))
+    });
+
   } catch (err) {
     console.error('Error fetching public ticket:', err);
+    // NO exponer detalles internos al cliente (n8n)
     res.status(500).json({ error: 'Internal server error' });
   }
 });
