@@ -1,5 +1,6 @@
-node_modules/
-.env
-logs/
-dist/
 .DS_Store
+.env
+.env.production
+dist/
+logs/
+node_modules/
