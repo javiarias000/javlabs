@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const navItems = [
   { icon: 'dashboard',            label: 'Dashboard',        path: '/dashboard/overview'      },
@@ -196,6 +197,7 @@ export default function PortalLayout({ children }) {
   const { user, logout }     = useAuth();
   const [showNotif, setShowNotif] = useState(false);
   const [showUser,  setShowUser]  = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     setShowUser(false);
@@ -215,10 +217,97 @@ export default function PortalLayout({ children }) {
         }
       `}</style>
 
+      {/* Mobile Overlay */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/60 z-40 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
       <div className="flex min-h-screen">
 
-        {/* ── Sidebar ── */}
-        <aside className="w-[240px] bg-nav-bg flex-shrink-0 flex flex-col border-r border-slate-800 sticky top-0 h-screen">
+        {/* ── Sidebar (Desktop: fixed, Mobile: drawer) ── */}
+        <AnimatePresence>
+          {/* Mobile Drawer */}
+          {sidebarOpen && (
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 z-50 w-[280px] bg-nav-bg flex flex-col border-r border-slate-800 md:hidden"
+            >
+              {/* Mobile Close Button */}
+              <div className="flex items-center justify-between p-4 border-b border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center rounded-lg shadow-lg shadow-primary/20">
+                    <span className="text-white font-michroma text-xl">JV</span>
+                  </div>
+                  <div>
+                    <h1 className="text-white font-michroma text-sm tracking-widest">JAV LABS</h1>
+                    <p className="text-slate-400 text-[10px] uppercase tracking-tighter font-montserrat">Automation Agency</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 text-slate-300 hover:text-white transition-colors"
+                >
+                  <span className="material-symbols-outlined text-2xl">close</span>
+                </button>
+              </div>
+
+              {/* Mobile Nav */}
+              <nav className="flex-1 px-4 py-4 space-y-1 font-montserrat overflow-y-auto">
+                {navItems.map(item => {
+                  const active = pathname === item.path || pathname.startsWith(item.path + '/');
+                  return (
+                    <button key={item.path} onClick={() => { navigate(item.path); setSidebarOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 text-left ${
+                        active
+                          ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent text-white'
+                          : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'
+                      }`}>
+                      <span className={`material-symbols-outlined text-xl ${active ? 'text-primary' : ''}`}>
+                        {item.icon}
+                      </span>
+                      <span className={active ? 'bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold' : ''}>
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </nav>
+
+              {/* Mobile Sidebar Footer */}
+              <div className="p-6 border-t border-slate-800 space-y-3">
+                <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-700">
+                  <p className="text-xs text-slate-400 font-montserrat mb-1 truncate">
+                    {user?.name || user?.email || 'Usuario'}
+                  </p>
+                  <p className="text-[10px] text-slate-600 font-montserrat uppercase tracking-widest">Plan Enterprise</p>
+                  <div className="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden mt-2">
+                    <div className="h-full bg-primary w-3/4" />
+                  </div>
+                </div>
+                <button onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-2 py-2 text-slate-500 hover:text-red-400 transition-colors text-xs uppercase tracking-widest font-montserrat">
+                  <span className="material-symbols-outlined text-sm">logout</span>
+                  Cerrar sesión
+                </button>
+              </div>
+            </motion.aside>
+          )}
+        </AnimatePresence>
+
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:flex flex-col w-64 lg:w-[240px] xl:w-[280px] bg-nav-bg flex-shrink-0 border-r border-slate-800 sticky top-0 h-screen">
 
           {/* Logo */}
           <div className="p-8 flex items-center gap-3">
@@ -239,7 +328,7 @@ export default function PortalLayout({ children }) {
                 <button key={item.path} onClick={() => navigate(item.path)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 text-left ${
                     active
-                      ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent'
+                      ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent text-white'
                       : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'
                   }`}>
                   <span className={`material-symbols-outlined text-xl ${active ? 'text-primary' : ''}`}>
@@ -266,7 +355,7 @@ export default function PortalLayout({ children }) {
             </div>
             <button onClick={handleLogout}
               className="w-full flex items-center gap-2 px-2 py-2 text-slate-500 hover:text-red-400 transition-colors text-xs uppercase tracking-widest font-montserrat">
-              <span className="material-symbols-outlined text-sm">logout</span>
+              <span className="material_symbols-outlined text-sm">logout</span>
               Cerrar sesión
             </button>
           </div>
@@ -276,12 +365,21 @@ export default function PortalLayout({ children }) {
         <div className="flex-1 min-w-0 flex flex-col bg-background-dark">
 
           {/* ── Global Header ── */}
-          <header className="h-16 border-b border-slate-800 bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-30 flex-shrink-0">
+          <header className="h-16 border-b border-slate-800 bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-6 lg:px-8 sticky top-0 z-30 flex-shrink-0">
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden p-2 text-slate-300 hover:text-white transition-colors mr-2"
+              aria-label="Toggle sidebar"
+            >
+              <span className="material-symbols-outlined text-2xl">{sidebarOpen ? 'close' : 'menu'}</span>
+            </button>
 
             {/* Search */}
-            <div className="flex items-center gap-4 w-80">
+            <div className="flex items-center gap-4 flex-1 max-w-xs sm:max-w-80">
               <div className="relative w-full">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xl">search</span>
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">search</span>
                 <input
                   className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:ring-1 focus:ring-primary focus:border-primary outline-none placeholder:text-slate-500 transition-all"
                   placeholder="Buscar automatizaciones..."
@@ -291,7 +389,7 @@ export default function PortalLayout({ children }) {
             </div>
 
             {/* Right side */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
 
               {/* Notifications */}
               <div className="relative">
@@ -309,23 +407,23 @@ export default function PortalLayout({ children }) {
                 )}
               </div>
 
-              <div className="h-6 w-px bg-slate-800" />
+              <div className="h-6 w-px bg-slate-800 hidden sm:block" />
 
               {/* User menu */}
               <div className="relative">
                 <button
                   onClick={() => { setShowUser(v => !v); setShowNotif(false); }}
-                  className={`flex items-center gap-3 px-3 py-1.5 rounded-lg transition-colors ${
+                  className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 rounded-lg transition-colors ${
                     showUser ? 'bg-slate-800' : 'hover:bg-slate-800/50'
                   }`}>
                   <div className="text-right hidden sm:block">
                     <p className="text-[10px] font-montserrat text-slate-400 leading-none">Bienvenido,</p>
-                    <p className="text-xs font-bold text-white leading-none mt-0.5">{user?.name || 'Usuario'}</p>
+                    <p className="text-xs font-bold text-white leading-none mt-0.5 truncate max-w-[80px]">{user?.name || 'Usuario'}</p>
                   </div>
                   <div className="size-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                     {initial}
                   </div>
-                  <span className={`material-symbols-outlined text-sm text-slate-500 transition-transform ${showUser ? 'rotate-180' : ''}`}>
+                  <span className={`material-symbols-outlined text-sm text-slate-500 transition-transform hidden sm:block ${showUser ? 'rotate-180' : ''}`}>
                     expand_more
                   </span>
                 </button>
@@ -338,7 +436,7 @@ export default function PortalLayout({ children }) {
           </header>
 
           {/* ── Page content ── */}
-          <main className="flex-1 overflow-y-auto">
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
             {children}
           </main>
 
