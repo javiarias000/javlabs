@@ -21,6 +21,10 @@ const { errorHandler } = require('./middlewares/error.middleware');
 
 const app = express();
 
+// Trust proxy para que funcione correctamente detrás de EasyPanel/Nginx
+// Esto permite que express-rate-limit use X-Forwarded-For correctamente
+app.set('trust proxy', 1);
+
 // 🔹 Seguridad y logging
 app.use(helmet({
   contentSecurityPolicy: {
