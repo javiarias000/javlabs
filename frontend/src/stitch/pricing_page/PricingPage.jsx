@@ -28,11 +28,15 @@ export default function PricingPage() {
             <div className="group relative flex flex-col bg-navy-darker border border-slate-800 rounded-xl p-8 hover:border-primary/40 transition-all duration-300">
               <div className="mb-8">
                 <span className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat">Básico</span>
+                <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
+                    style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
+                    -40%
+                </span>
                 <div className="mt-4 flex items-end gap-2">
-                  <span className="font-michroma text-4xl text-white">$120</span>
+                  <span className="font-michroma text-4xl text-white">$72</span>
                   <span className="text-slate-500 text-sm mb-1 font-montserrat">/mes</span>
                 </div>
-                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $350 setup inicial</p>
+                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $210 setup <span className="text-primary font-bold"></span></p>
                 <p className="text-slate-400 text-sm font-montserrat mt-4 leading-relaxed">Ideal para negocios pequeños o emprendedores que quieren automatizar sus primeros procesos.</p>
               </div>
               <div className="h-px bg-slate-800 mb-8" />
@@ -60,12 +64,18 @@ export default function PricingPage() {
                 </span>
               </div>
               <div className="mb-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-primary font-montserrat">Profesional</span>
+                <div className="inline-flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary font-montserrat">Profesional</span>
+                  <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
+                    style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
+                    -40%
+                  </span>
+                </div>
                 <div className="mt-4 flex items-end gap-2">
-                  <span className="font-michroma text-4xl text-white">$250</span>
+                  <span className="font-michroma text-4xl text-white">$150</span>
                   <span className="text-slate-400 text-sm mb-1 font-montserrat">/mes</span>
                 </div>
-                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $700 setup inicial</p>
+                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $420 setup <span className="text-primary font-bold"></span></p>
                 <p className="text-slate-400 text-sm font-montserrat mt-4 leading-relaxed">Para empresas en crecimiento que necesitan múltiples flujos y automatización avanzada con IA.</p>
               </div>
               <div className="h-px mb-8" style={{ background: 'rgba(13,127,242,0.2)' }} />
@@ -87,12 +97,18 @@ export default function PricingPage() {
             {/* Plan Empresarial */}
             <div className="group relative flex flex-col bg-navy-darker border border-slate-800 rounded-xl p-8 hover:border-accent/40 transition-all duration-300">
               <div className="mb-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat">Empresarial</span>
+                <div className="inline-flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat">Empresarial</span>
+                  <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
+                    style={{ background: 'linear-gradient(90deg, #8b5cf6, #b06ab3)' }}>
+                    -40%
+                  </span>
+                </div>
                 <div className="mt-4 flex items-end gap-2">
-                  <span className="font-michroma text-4xl text-white">$400</span>
+                  <span className="font-michroma text-4xl text-white">$240</span>
                   <span className="text-slate-500 text-sm mb-1 font-montserrat">/mes</span>
                 </div>
-                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $1,200 setup inicial</p>
+                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $720 setup <span className="text-primary font-bold"></span></p>
                 <p className="text-slate-400 text-sm font-montserrat mt-4 leading-relaxed">Para organizaciones que requieren automatización completa, IA avanzada y soporte dedicado.</p>
               </div>
               <div className="h-px bg-slate-800 mb-8" />

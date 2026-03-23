@@ -8,9 +8,9 @@ export default function ROICalculator() {
   const [open, setOpen]                 = useState(false);
 
   const plans = [
-    { id: 'basico', name: 'Básico',      monthly: 120, setup: 350,  maxInteractions: 1000,  maxChannels: 1 },
-    { id: 'pro',    name: 'Profesional', monthly: 250, setup: 700,  maxInteractions: 5000,  maxChannels: 3 },
-    { id: 'emp',    name: 'Empresarial', monthly: 400, setup: 1200, maxInteractions: 20000, maxChannels: 99 },
+    { id: 'basico', name: 'Básico',      monthly: 72, setup: 210,  maxInteractions: 1000,  maxChannels: 1 },
+    { id: 'pro',    name: 'Profesional', monthly: 150, setup: 420,  maxInteractions: 5000,  maxChannels: 3 },
+    { id: 'emp',    name: 'Empresarial', monthly: 240, setup: 720,  maxInteractions: 20000, maxChannels: 99 },
   ];
 
   const fmt = (n) => '$' + Math.round(Math.abs(n)).toLocaleString('es');
