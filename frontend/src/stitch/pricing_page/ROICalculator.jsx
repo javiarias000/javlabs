@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
 export default function ROICalculator() {
-  const [saleVal, setSaleVal]           = useState(40);
-  const [extraSales, setExtraSales]     = useState(10);
+  const [saleVal, setSaleVal]           = useState(50);
+  const [extraSales, setExtraSales]     = useState(15);
   const [interactions, setInteractions] = useState(1000);
   const [channels, setChannels]         = useState(1);
   const [open, setOpen]                 = useState(false);
 
   const plans = [
-    { id: 'basico', name: 'Básico',      monthly: 72, setup: 210,  maxInteractions: 1000,  maxChannels: 1 },
-    { id: 'pro',    name: 'Profesional', monthly: 150, setup: 420,  maxInteractions: 5000,  maxChannels: 3 },
-    { id: 'emp',    name: 'Empresarial', monthly: 240, setup: 720,  maxInteractions: 20000, maxChannels: 99 },
+    { id: 'basico', name: 'Básico',      monthly: 72, setup: 210,  maxInteractions: 1000,  maxChannels: 1, hoursSaved: 15 },
+    { id: 'pro',    name: 'Profesional', monthly: 150, setup: 420,  maxInteractions: 5000,  maxChannels: 3, hoursSaved: 40 },
+    { id: 'emp',    name: 'Empresarial', monthly: 240, setup: 720,  maxInteractions: 20000, maxChannels: 99, hoursSaved: 80 },
   ];
 
   const fmt = (n) => '$' + Math.round(Math.abs(n)).toLocaleString('es');
@@ -23,6 +23,11 @@ export default function ROICalculator() {
     if (!interOk || !chanOk) return 'bad';
     return 'warn';
   };
+
+  // Calcular valor del tiempo ahorrado (horas * valor promedio hora en LATAM ~$15-25)
+  const avgHourlyValue = saleVal > 0 ? 15 : 0; // Valor conservador de hora de trabajo
+  const timeSavedValue = (plan) => plan.hoursSaved * avgHourlyValue;
+  const totalROI = (plan) => extraRevenue + timeSavedValue(plan) - plan.monthly;
 
   const eligible = plans.filter(p => calcFit(p) !== 'bad');
   const recommended = eligible.length > 0
@@ -47,13 +52,13 @@ export default function ROICalculator() {
       <div className="p-6 rounded-xl border border-slate-800 bg-navy-darker/50 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className="size-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
-            <span className="material-symbols-outlined text-primary">trending_up</span>
+            <span className="material-symbols-outlined text-primary">payments</span>
           </div>
           <div>
-            <p className="text-white font-michroma text-sm uppercase">¿Cómo se paga solo?</p>
+            <p className="text-white font-michroma text-sm uppercase">¿Realmente vale la pena?</p>
             <p className="text-slate-400 text-xs font-montserrat mt-1">
-              Si tu servicio vale $40 y el sistema genera 10 ventas adicionales al mes →{' '}
-              <span className="text-primary font-bold">$400 extra</span>. El sistema se paga solo.
+              El sistema cuesta <span className="text-primary font-bold">$72-240/mes</span>. Si te libera 15-80 horas,
+              el ahorro en tu tiempo vale <span className="text-green-400 font-bold">$450-2,400/mes</span>.
             </p>
           </div>
         </div>
@@ -62,7 +67,7 @@ export default function ROICalculator() {
           className="flex-shrink-0 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white rounded hover:opacity-90 transition-all font-montserrat whitespace-nowrap flex items-center gap-2"
           style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
           <span className="material-symbols-outlined text-sm">calculate</span>
-          Calcular mi Plan
+          Ver Mi ROI
           <span className="material-symbols-outlined text-sm">{open ? 'expand_less' : 'expand_more'}</span>
         </button>
       </div>
@@ -74,39 +79,40 @@ export default function ROICalculator() {
           {/* Explanation */}
           <div className="mb-8 p-4 rounded-lg bg-primary/5 border border-primary/20">
             <p className="text-slate-300 text-sm font-montserrat leading-relaxed">
-              <span className="text-primary font-bold">¿Qué es el ROI?</span>{' '}
-              Es el dinero que te queda en el bolsillo cada mes después de pagar el plan.
-              Si el sistema te trae 10 ventas nuevas de $40, eso son $400 extra.
-              Si el plan cuesta $120, te quedan <span className="text-primary font-bold">$280 de ganancia neta</span>.
-              Cuanto mayor el número, mejor negocio es para ti.
+              <span className="text-primary font-bold">¿Cómo calculamos el ahorro?</span>{' '}
+              El sistema automatizado recupera horas de trabajo manual que puedes dedicar a vender o crecer.
+              <br/><br/>
+              <strong className="text-white">Ejemplo real:</strong> Si tu tiempo vale $30/hora y el sistema te libera 40 horas/mes (plan Profesional),
+              eso es <span className="text-green-400 font-bold">$1,200 en valor</span>. El plan cuesta $150/mes.
+              Tu ganancia neta: <span className="text-primary font-bold">$1,050/mes</span>. ROI: <span className="text-green-400 font-bold">700%</span>.
             </p>
           </div>
 
           {/* Sliders */}
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat mb-6">Cuéntanos sobre tu negocio</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat mb-6">Calcula tu ahorro mensual</p>
           <SliderRow
-            label="¿Cuánto vale cada venta o cita tuya?"
-            value={saleVal} min={10} max={500} step={5}
+            label="¿Cuánto vale cada venta o cita que generas?"
+            value={saleVal} min={10} max={1000} step={10}
             onChange={setSaleVal}
             display={fmt(saleVal)}
           />
           <SliderRow
-            label="¿Cuántas ventas/citas extra generaría el sistema al mes?"
+            label="¿Ventas/citas adicionales que el sistema te traería?"
             value={extraSales} min={1} max={100} step={1}
             onChange={setExtraSales}
             display={extraSales}
           />
           <SliderRow
-            label="¿Cuántas conversaciones/mensajes recibes al mes?"
+            label="¿Cuántas interacciones (mensajes, consultas) recibes al mes?"
             value={interactions} min={100} max={20000} step={100}
             onChange={setInteractions}
             display={interactions.toLocaleString('es')}
           />
           <SliderRow
-            label="¿Por cuántos canales te contactan? (WhatsApp, email, web...)"
+            label="¿En cuántos canales te contactan clientes?"
             value={channels} min={1} max={3} step={1}
             onChange={setChannels}
-            display={channels === 1 ? '1 canal' : channels === 2 ? '2 canales' : '3 canales'}
+            display={channels === 1 ? '1 canal' : channels === 2 ? '2 canales' : '3+ canales'}
           />
 
           {/* Summary metrics */}
@@ -130,8 +136,9 @@ export default function ROICalculator() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {plans.map(plan => {
               const fit      = calcFit(plan);
-              const roi      = extraRevenue - plan.monthly;
-              const payback  = roi > 0 ? Math.ceil(plan.setup / roi) : null;
+              const timeVal  = timeSavedValue(plan);
+              const totalRoi = totalROI(plan);
+              const payback  = totalRoi > 0 ? Math.ceil(plan.setup / totalRoi) : null;
               const isRec    = recommended?.id === plan.id;
 
               const fitConfig = {
@@ -162,17 +169,28 @@ export default function ROICalculator() {
                   <div className="h-px bg-slate-800 mb-4" />
 
                   {/* Lo que ganas */}
-                  <p className="text-slate-500 text-xs font-montserrat mb-1">Lo que te queda en el bolsillo / mes</p>
-                  <p className={`font-michroma text-xl ${roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {roi >= 0 ? '+' : '-'}{fmt(roi)}
+                  <p className="text-slate-500 text-xs font-montserrat mb-1">Valor que obtienes / mes</p>
+                  <p className="font-michroma text-lg text-green-400 mb-1">
+                    +{fmt(extraRevenue)} (ventas extra)
+                  </p>
+                  <p className="font-michroma text-lg text-white mb-2">
+                    +{fmt(timeVal)} (tiempo liberado)
+                  </p>
+                  <p className="text-slate-400 text-xs mb-3">{plan.hoursSaved}+ horas libres/mes</p>
+
+                  <p className={`font-michroma text-xl ${totalRoi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {totalRoi >= 0 ? '+' : '-'}{fmt(totalRoi)}
+                  </p>
+                  <p className="text-slate-500 text-xs font-montserrat mt-1">
+                    Ganancia neta después del plan
                   </p>
 
                   {payback ? (
                     <p className="text-slate-500 text-xs font-montserrat mt-2">
-                      Recuperas la inversión en <span className="text-white font-bold">{payback} {payback === 1 ? 'mes' : 'meses'}</span>
+                      Recuperas el setup en <span className="text-white font-bold">{payback} {payback === 1 ? 'mes' : 'meses'}</span>
                     </p>
                   ) : (
-                    <p className="text-red-400 text-xs font-montserrat mt-2">No cubre el costo mensual del plan</p>
+                    <p className="text-red-400 text-xs font-montserrat mt-2">El ROI mensual es negativo</p>
                   )}
 
                   <div className={`mt-4 flex items-center gap-2 text-xs font-montserrat px-3 py-2 rounded-lg border ${fitConfig.cls}`}>

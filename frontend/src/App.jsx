@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
+// Design System
+import './styles/design-tokens.css';
+
 // Páginas públicas
 import AboutPage from './stitch/about_page/AboutPage';
 import LandingPage1 from './stitch/landing_page_1/LandingPage1';

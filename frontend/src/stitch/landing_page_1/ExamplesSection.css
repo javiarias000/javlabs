@@ -1,0 +1,32 @@
+/* ExamplesSection.css - Estilos para la sección de ejemplos reales */
+
+.examples-section {
+  /* inherited from section-spaced */
+}
+
+.example-card {
+  transition: all 0.3s ease;
+}
+
+.example-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(13, 127, 242, 0.15);
+}
+
+.example-icon-box {
+  transition: all 0.3s ease;
+}
+
+.example-card:hover .example-icon-box {
+  background: rgba(13, 127, 242, 0.2);
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .example-card {
+    margin-bottom: 1rem;
+  }
+}

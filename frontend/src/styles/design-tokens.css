@@ -1,0 +1,586 @@
+/* =====================================================
+   DESIGN TOKENS - Sistema de Diseño
+   Proyecto: JAV LABS
+   Paleta actual mantenida
+   ===================================================== */
+
+:root {
+  /* =========================================
+     COLORES PRINCIPALES (Brand Colors)
+     ========================================= */
+  --color-primary: #0d7ff2;
+  --color-primary-light: #3d8ef7;
+  --color-primary-dark: #0a68d9;
+  --color-primary-rgb: 13, 127, 242;
+
+  --color-accent: #8b5cf6;
+  --color-accent-light: #a78bfa;
+  --color-accent-dark: #7c3aed;
+  --color-accent-rgb: 139, 92, 246;
+
+  /* Gradiente principal */
+  --gradient-primary: linear-gradient(90deg, #0d7ff2, #8b5cf6);
+  --gradient-primary-hover: linear-gradient(90deg, #0a68d9, #7c3aed);
+
+  /* =========================================
+     COLORES DE FONDO (Backgrounds)
+     ========================================= */
+  --bg-primary: #0D1B2A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #0f141a;
+  --bg-navy-darker: #0a0f14;
+  --bg-navy-light: #172033;
+
+  --bg-surface: #1E293B;
+  --bg-surface-hover: #273549;
+  --bg-glass: rgba(15, 20, 26, 0.8);
+
+  /* =========================================
+     COLORES DE TEXTO (Typography)
+     ========================================= */
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dark: #1a1a1a;
+
+  /* =========================================
+     COLORES DE ESTADO (States)
+     ========================================= */
+  --color-success: #22C55E;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #0d7ff2;
+
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-hover: rgba(13, 127, 242, 0.5);
+  --divider: rgba(255, 255, 255, 0.05);
+
+  /* =========================================
+     TIPOGRAFÍA
+     ========================================= */
+  --font-primary: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Michroma', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+
+  /* Tamaños de fuente (en rem) */
+  --font-size-xs: 0.75rem;     /* 12px */
+  --font-size-sm: 0.875rem;    /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-lg: 1.125rem;    /* 18px */
+  --font-size-xl: 1.25rem;     /* 20px */
+  --font-size-2xl: 1.5rem;     /* 24px */
+  --font-size-3xl: 1.875rem;   /* 30px */
+  --font-size-4xl: 2.25rem;    /* 36px */
+  --font-size-5xl: 3rem;       /* 48px */
+  --font-size-6xl: 3.75rem;    /* 60px */
+
+  /* Pesos de fuente */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Altura de línea */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Espaciado entre letras */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;
+  --letter-spacing-wider: 0.1em;
+  --letter-spacing-widest: 0.2em;
+
+  /* =========================================
+     SPACING SYSTEM (Espaciado)
+     ========================================= */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* =========================================
+     BORDER RADIUS
+     ========================================= */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;
+
+  /* =========================================
+     SHADOWS (Sombras)
+     ========================================= */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Sombras con color primario (glow) */
+  --shadow-glow-primary: 0 0 15px rgba(13, 127, 242, 0.4);
+  --shadow-glow-accent: 0 0 15px rgba(139, 92, 246, 0.4);
+  --shadow-glow-sm-primary: 0 0 8px rgba(13, 127, 242, 0.3);
+  --shadow-glow-sm-accent: 0 0 8px rgba(139, 92, 246, 0.3);
+
+  /* Shadow usado en botones */
+  --shadow-button: 0 10px 15px -3px rgba(13, 127, 242, 0.2);
+
+  /* =========================================
+     TRANSITIONS (Transiciones)
+     ========================================= */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* =========================================
+     Z-INDEX SCALE
+     ========================================= */
+  --z-behind: -1;
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 2000;
+  --z-fixed: 3000;
+  --z-modal-backdrop: 4000;
+  --z-modal: 5000;
+  --z-tooltip: 6000;
+  --z-toast: 7000;
+
+  /* =========================================
+     LAYOUT GRID
+     ========================================= */
+  --container-max-width: 1280px;
+  --container-padding: 1.5rem; /* 24px */
+  --grid-gutter: var(--space-6);
+
+  /* Breakpoints (para referencia) */
+  /* --breakpoint-sm: 640px;
+     --breakpoint-md: 768px;
+     --breakpoint-lg: 1024px;
+     --breakpoint-xl: 1280px; */
+
+  /* =========================================
+     BLURS (Efectos de desenfoque)
+     ========================================= */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+  --blur-2xl: 40px;
+  --blur-3xl: 80px;
+
+  /* =========================================
+     OPACIDADES UTILIDADES
+     ========================================= */
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+  --opacity-100: 1;
+}
+
+/* =====================================================
+   CLASES UTILITARIAS CSS (CSS Utility Classes)
+   ===================================================== */
+
+/* Typography utilities */
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-primary);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Shadows utilities */
+.shadow-glow-primary {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.shadow-glow-accent {
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* Border utilities */
+.border-glow-primary {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+/* Glass effect */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border: 1px solid var(--border-color);
+}
+
+/* Container utilities */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.container-narrow {
+  max-width: 800px;
+}
+
+.container-wide {
+  max-width: 1440px;
+}
+
+.container-full {
+  max-width: 100%;
+}
+
+/* =====================================================
+   ANIMACIONES KEYFRAMES
+   ===================================================== */
+
+/* Fade */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Zoom */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes zoomInUp {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1) translateY(0);
+  }
+}
+
+/* Bounce */
+@keyframes bounce {
+  0%, 20%, 53%, 100% {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateY(0);
+  }
+  40%, 43% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translateY(-30px) scaleY(1.1);
+  }
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translateY(-15px) scaleY(1.05);
+  }
+  80% {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateY(0) scaleY(0.95);
+  }
+  90% {
+    transform: translateY(-4px) scaleY(1.02);
+  }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+    opacity: 1;
+  }
+  80%, 100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* Slide */
+@keyframes slideInUp {
+  from {
+    visibility: visible;
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    visibility: visible;
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    visibility: visible;
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    visibility: visible;
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Float */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Spin */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scale */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Utility animation classes */
+.animate-fadeIn {
+  animation: fadeIn var(--transition-base) ease-out forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp var(--transition-slow) ease-out forwards;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown var(--transition-slow) ease-out forwards;
+}
+
+.animate-slideInUp {
+  animation: slideInUp var(--transition-slow) ease-out forwards;
+}
+
+.animate-slideInDown {
+  animation: slideInDown var(--transition-slow) ease-out forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft var(--transition-slow) ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight var(--transition-slow) ease-out forwards;
+}
+
+.animate-zoomIn {
+  animation: zoomIn var(--transition-slow) ease-out forwards;
+}
+
+.animate-zoomInUp {
+  animation: zoomInUp var(--transition-slow) ease-out forwards;
+}
+
+.animate-bounce {
+  animation: bounce 1s;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-scaleIn {
+  animation: scaleIn var(--transition-base) ease-out forwards;
+}
+
+/* Animation delays for staggered effects */
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animate-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animate-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animate-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animate-delay-800 {
+  animation-delay: 800ms;
+}
+
+.animate-delay-900 {
+  animation-delay: 900ms;
+}
+
+.animate-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+/* =====================================================
+   REDUCED MOTION (Accesibilidad)
+   ===================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

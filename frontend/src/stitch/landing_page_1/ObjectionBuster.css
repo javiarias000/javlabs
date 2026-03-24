@@ -1,0 +1,66 @@
+/* ObjectionBuster.css - Estilos para la sección de objeciones al precio */
+
+.objection-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.objection-table-row {
+  transition: background-color 0.2s ease;
+}
+
+.objection-table-row:hover {
+  background-color: rgba(13, 127, 242, 0.05);
+}
+
+.objection-table-header {
+  background: linear-gradient(135deg, rgba(13, 127, 242, 0.1) 0%, rgba(138, 92, 246, 0.1) 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .objection-table {
+    font-size: 0.875rem;
+  }
+
+  .objection-table th,
+  .objection-table td {
+    padding: 1rem !important;
+  }
+}
+
+/* ROI Cards */
+.roi-card {
+  transition: all 0.3s ease;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.roi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.roi-card.basic {
+  border-color: rgba(13, 127, 242, 0.2);
+}
+
+.roi-card.basic:hover {
+  box-shadow: 0 8px 30px rgba(13, 127, 242, 0.2);
+}
+
+.roi-card.professional {
+  border-color: rgba(138, 92, 246, 0.2);
+}
+
+.roi-card.professional:hover {
+  box-shadow: 0 8px 30px rgba(138, 92, 246, 0.2);
+}
+
+.roi-card.enterprise {
+  border-color: rgba(13, 127, 242, 0.4);
+}
+
+.roi-card.enterprise:hover {
+  box-shadow: 0 8px 30px rgba(13, 127, 242, 0.3);
+}

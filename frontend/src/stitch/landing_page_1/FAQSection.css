@@ -1,0 +1,44 @@
+/* FAQSection.css */
+
+.faq-item {
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(13, 127, 242, 0.3);
+  background-color: rgba(13, 127, 242, 0.02);
+}
+
+.faq-button {
+  transition: background-color 0.2s ease;
+}
+
+.faq-button:hover {
+  background-color: rgba(13, 127, 242, 0.05);
+}
+
+.faq-answer {
+  overflow: hidden;
+}
+
+/* Smooth expand/collapse */
+.faq-answer-content {
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+}
+
+/* Accent color for active indicator */
+.faq-active-indicator {
+  color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .faq-button .material-symbols-outlined {
+    font-size: 1.5rem !important;
+  }
+
+  .faq-button h3 {
+    font-size: 0.95rem !important;
+  }
+}
