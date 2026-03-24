@@ -375,23 +375,6 @@ export default function LandingPage1() {
         </div>
       </section>
 
-      {/* PROCESS SECTION */}
-      <section className="py-24 md:py-32 bg-navy-darker section-spaced">
-        <div className="container mx-auto px-6">
-          <div className="mb-16 text-center">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6">
-              <span className="material-symbols-outlined text-primary">timeline</span>
-              <span className="text-primary text-sm font-bold uppercase tracking-widest font-montserrat">Cómo Trabajamos</span>
-            </div>
-            <h2 className="font-michroma text-3xl md:text-4xl text-white uppercase mb-4 leading-tight">
-              Proceso <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Probado</span>
-            </h2>
-          </div>
-
-          <ProcessAnimation />
-        </div>
-      </section>
-
       {/* PRECIOS - NUEVOS PLANES CLAROS */}
       <section id="precios" className="py-24 md:py-32 bg-background-dark relative overflow-hidden section-spaced">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
