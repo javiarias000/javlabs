@@ -35,14 +35,22 @@ export default function ROICalculator() {
     : null;
 
   const SliderRow = ({ label, value, min, max, step, onChange, display }) => (
-    <div className="flex items-center gap-4 mb-5">
-      <span className="text-slate-400 text-sm font-montserrat w-64 flex-shrink-0">{label}</span>
-      <input
-        type="range" min={min} max={max} step={step} value={value}
-        onChange={e => onChange(+e.target.value)}
-        className="flex-1 accent-primary"
-      />
-      <span className="text-white text-sm font-bold font-montserrat w-24 text-right">{display}</span>
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-5">
+      <span className="text-slate-400 text-sm font-montserrat sm:w-48 md:w-64 flex-shrink-0">{label}</span>
+      <div className="flex-1 flex items-center gap-3">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={e => onChange(+e.target.value)}
+          className="flex-1 accent-primary h-2"
+        />
+        <span className="text-white text-sm font-bold font-montserrat min-w-[60px] sm:min-w-[80px] text-right whitespace-nowrap">
+          {display}
+        </span>
+      </div>
     </div>
   );
 

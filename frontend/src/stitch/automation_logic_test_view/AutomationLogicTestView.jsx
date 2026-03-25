@@ -78,7 +78,7 @@ export default function AutomationLogicTestView() {
     setToggling(wf.id);
     try {
       const action = wf.active ? 'deactivate' : 'activate';
-      await api.post(`/n8n/workflows/${wf.id}/${action}`);
+      await api.patch(`/n8n/workflows/${wf.id}/${action}`);
       setWorkflows(prev => prev.map(w => w.id === wf.id ? { ...w, active: !w.active } : w));
       if (selected?.id === wf.id) setSelected(prev => ({ ...prev, active: !prev.active }));
     } catch (err) {

@@ -3,7 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 
-export default function AnimatedStat({ value, label, suffix = '', icon, color = 'primary' }) {
+export default function AnimatedStat({ value, label, suffix = '', icon, color = 'primary', delay = 0 }) {
   const [displayValue, setDisplayValue] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
   const ref = useRef(null);
@@ -31,28 +31,32 @@ export default function AnimatedStat({ value, label, suffix = '', icon, color = 
   useEffect(() => {
     if (!isInView) return;
 
-    // Animate number from 0 to numericValue
-    let start = 0;
-    const duration = 2000; // 2 seconds
-    const startTime = performance.now();
+    // Animate number from 0 to numericValue with delay
+    const timeout = setTimeout(() => {
+      let start = 0;
+      const duration = 2000; // 2 seconds
+      const startTime = performance.now();
 
-    function update(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Easing function: easeOutQuart (suave al final)
-      const easeOut = 1 - Math.pow(1 - progress, 4);
-      const current = Math.floor(start + (numericValue - start) * easeOut);
-      setDisplayValue(current);
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Easing function: easeOutQuart (suave al final)
+        const easeOut = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(start + (numericValue - start) * easeOut);
+        setDisplayValue(current);
 
-      if (progress < 1) {
-        requestAnimationFrame(update);
-      } else {
-        setDisplayValue(numericValue);
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          setDisplayValue(numericValue);
+        }
       }
-    }
 
-    requestAnimationFrame(update);
-  }, [isInView, numericValue]);
+      requestAnimationFrame(update);
+    }, delay * 1000); // Convertir segundos a ms
+
+    return () => clearTimeout(timeout);
+  }, [isInView, numericValue, delay]);
 
   // Determine color class based on prop
   const colorClasses = {

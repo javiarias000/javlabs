@@ -212,7 +212,7 @@ export default function ObjectionBuster() {
               <p><strong>Tu tiempo perdido</strong><br/>60+ horas/mes en tareas repetitivas que podrías delegar</p>
             </div>
             <div>
-              <div className="material-symbols-outlined text-4xl text-accent mb-2">趋势</div>
+              <div className="material-symbols-outlined text-4xl text-accent mb-2">trending_down</div>
               <p><strong>Oportunidad perdida</strong><br/>Mientras respondes manualmente, pierdes ventas y clientes</p>
             </div>
             <div>

@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import './styles/design-tokens.css';
-
 // Design System
 import './styles/design-tokens.css';
 
@@ -75,8 +73,8 @@ function AppRoutes() {
         <Route path="/login"                 element={<PortalLogin />} />
 
         {/* PRIVADO — Portal */}
-          <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
-          <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
+        <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
+        <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
         <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />
         <Route path="/dashboard/performance" element={<P><AutomationPerformanceDashboard /></P>} />
 

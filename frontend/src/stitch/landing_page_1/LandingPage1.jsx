@@ -7,6 +7,117 @@ import MouseSpotlight from '../../components/MouseSpotlight';
 import AnimatedStatsGroup from '../../components/AnimatedStatsGroup';
 import ServiceCard3D from '../../components/ServiceCard3D';
 import useTypingEffect from '../../hooks/useTypingEffect';
+import ExamplesSection from './ExamplesSection';
+import ObjectionBuster from './ObjectionBuster';
+import FAQSection from './FAQSection';
+import ProcessAnimation from '../../components/ProcessAnimation';
+import ExpandableCard from '../../components/ExpandableCard';
+
+// Componente PlanCard para pricing cards con ExpandableCard
+function PlanCard({
+  title,
+  tagline,
+  price,
+  period,
+  setup,
+  description,
+  features,
+  details,
+  badge,
+  badgeStyle = 'linear-gradient(90deg, #0d7ff2, #8b5cf6)',
+  popular = false,
+  ctaText,
+  onCta
+}) {
+  const detailItems = details || [];
+
+  return (
+    <ExpandableCard
+      icon="star"
+      iconColor={popular ? "text-primary" : "text-accent"}
+      iconBg={popular ? "bg-primary/10" : "bg-accent/10"}
+      borderHover={popular ? "hover:border-primary/40" : "hover:border-accent/40"}
+      expandedContent={
+        <div className="space-y-4">
+          {detailItems.map((item, idx) => (
+            <div key={idx} className="p-4 bg-slate-900/50 rounded-lg border border-slate-700">
+              <p className="text-white text-sm font-bold mb-2">{item.title}</p>
+              <p className="text-slate-400 text-xs leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      }
+      className={popular ? 'scale-105 z-10' : ''}
+      popular={popular}
+    >
+      {/* Header del plan */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <span className={`text-xs font-bold uppercase tracking-widest ${popular ? 'text-primary' : 'text-slate-400'} font-montserrat`}>
+            {tagline}
+          </span>
+          {badge && !popular && (
+            <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat" style={{ background: badgeStyle }}>
+              {badge}
+            </span>
+          )}
+        </div>
+        <h3 className={`font-michroma text-2xl mb-3 ${popular ? 'text-white' : 'text-white'}`}>
+          {title}
+        </h3>
+        <div className="flex items-end gap-2 mb-2">
+          <span className="font-michroma text-4xl text-white">{price}</span>
+          <span className={`text-sm mb-1 ${popular ? 'text-primary' : 'text-slate-400'} font-montserrat`}>{period}</span>
+        </div>
+        <p className={`text-xs font-montserrat mt-1 ${popular ? 'text-primary/80' : 'text-slate-500'}`}>
+          {setup}
+        </p>
+        <p className={`text-sm font-montserrat mt-3 leading-relaxed ${popular ? 'text-white' : 'text-slate-400'}`}>
+          {description}
+        </p>
+      </div>
+
+      {/* Separador */}
+      <div className="h-px bg-slate-800 my-4" />
+
+      {/* Features principales */}
+      <div className="space-y-2 mb-6">
+        {features.map((feature, idx) => (
+          <div key={idx} className="flex items-start gap-3">
+            <span className={`material-symbols-outlined ${popular ? 'text-primary' : 'text-green-400'} text-sm mt-0.5 flex-shrink-0`}>
+              check_circle
+            </span>
+            <span className={`text-sm ${popular ? 'text-white' : 'text-slate-300'} font-montserrat leading-relaxed`}>
+              {feature}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA Button */}
+      <button
+        onClick={onCta}
+        className={`w-full py-3 px-6 font-montserrat text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 ${
+          popular
+            ? 'text-white shadow-lg hover:shadow-2xl hover:scale-105'
+            : 'border border-slate-700 text-slate-300 hover:border-primary hover:text-primary hover:bg-primary/5'
+        }`}
+        style={popular ? { background: badgeStyle } : {}}
+      >
+        {ctaText}
+      </button>
+
+      {/* Badge popular */}
+      {popular && badge && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+          <span className="px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat" style={{ background: badgeStyle }}>
+            {badge}
+          </span>
+        </div>
+      )}
+    </ExpandableCard>
+  );
+}
 import './LandingPage1.css';
 
 export default function LandingPage1() {
@@ -14,42 +125,20 @@ export default function LandingPage1() {
   const { scrollYProgress } = useScroll();
   const { y: parallaxY } = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
-  // Hero typing effect
-  const heroWords = ["AUTOMATIZA TU NEGOCIO.", "ESCALA SIN LÍMITES."];
+  // Hero typing effect - mensaje claro y directo para rewrite
+  const heroWords = ["AUTOMATIZA TU NEGOCIO.", "RECUPERA 20+ HORAS SEMANALES."];
   const { displayedText, currentWordIndex, isDeleting } = useTypingEffect(heroWords, {
     typingSpeed: 80,
     deletingSpeed: 40,
     pauseTime: 2500
   });
 
-  // Counter animation for stats
+  // Counter animation for stats - números más impresionantes y tangibles
   const stats = [
-    { label: 'Procesos Optimizados', value: 5, suffix: '+' },
-    { label: 'Eficiencia Aumentada', value: 95, suffix: '%' },
-    { label: 'Clientes Satisfechos', value: 5, suffix: '+' },
-    { label: 'Soporte 24/7', value: 100, suffix: '%' },
-  ];
-
-  // Process steps
-  const processSteps = [
-    {
-      num: '01',
-      title: 'DIAGNÓSTICO',
-      desc: 'Análisis profundo de tus procesos actuales para identificar oportunidades de mejora.',
-      color: '#0d7ff2'
-    },
-    {
-      num: '02',
-      title: 'DESARROLLO',
-      desc: 'Construcción y despliegue de las automatizaciones personalizadas.',
-      color: '#8b5cf6'
-    },
-    {
-      num: '03',
-      title: 'ESCALADO',
-      desc: 'Mantenimiento continuo y expansión de capacidades para un crecimiento sostenido.',
-      color: '#0d7ff2'
-    }
+    { label: 'Horas Ahorradas', value: 2000, suffix: '+', icon: 'schedule', color: 'primary' },
+    { label: 'Automatizaciones Activas', value: 150, suffix: '+', icon: 'auto_awesome', color: 'accent' },
+    { label: 'Tiempo de Implementación', value: 3, suffix: ' sem', icon: 'rocket_launch', color: 'primary' },
+    { label: 'Soporte 24/7', value: 100, suffix: '%', icon: 'support_agent', color: 'success' },
   ];
 
   // Services data
@@ -153,23 +242,40 @@ export default function LandingPage1() {
             </motion.h1>
 
             <motion.p variants={fadeInUp} className="font-montserrat text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed">
-              Optimiza procesos críticos y aumenta la eficiencia operativa con soluciones de
-              <span className="text-white font-semibold"> inteligencia artificial</span> y flujos de trabajo de vanguardia.
+              Deja que la tecnología trabaje por ti. Automatiza tareas, vende más, y recupera tiempo valioso.
+              <span className="text-white font-semibold"> Nosotros creamos, implementamos y mantenemos todo por ti</span> —
+              sin que toques código.
             </motion.p>
+
+            {/* Trust Indicators */}
+            <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-6 pt-4">
+              {[
+                { icon: 'schedule', text: '2-4 semanas implementación' },
+                { icon: 'support_agent', text: 'Soporte 24/7' },
+                { icon: 'verified', text: 'Sin permanencia' }
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-slate-400 text-sm">
+                  <span className="material-symbols-outlined text-primary text-base">{item.icon}</span>
+                  <span className="font-montserrat">{item.text}</span>
+                </div>
+              ))}
+            </motion.div>
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
-                onClick={() => navigate('/servicios')}
-                className="magnetic-btn px-8 py-4 text-sm font-bold uppercase tracking-widest text-white rounded-lg transition-all shadow-glow-primary hover:shadow-glow-accent"
+                onClick={() => document.getElementById('ejemplos')?.scrollIntoView({ behavior: 'smooth' })}
+                className="magnetic-btn px-8 py-4 text-sm font-bold uppercase tracking-widest text-white rounded-lg transition-all shadow-glow-primary hover:shadow-glow-accent flex items-center justify-center gap-2"
                 style={{ background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)' }}
               >
-                Ver Servicios
+                <span className="material-symbols-outlined text-base">play_circle</span>
+                Ver Cómo Funciona
               </button>
               <button
-                onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 text-sm font-bold uppercase tracking-widest border-2 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-all rounded-lg"
+                onClick={() => document.getElementById('precios')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 text-sm font-bold uppercase tracking-widest border-2 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-all rounded-lg flex items-center justify-center gap-2"
               >
-                Explorar
+                <span className="material-symbols-outlined text-base">payments</span>
+                Ver Precios
               </button>
             </motion.div>
           </motion.div>
@@ -226,25 +332,6 @@ export default function LandingPage1() {
                     />
                   </svg>
                 </div>
-
-                {/* Floating icons */}
-                {['smart_toy', 'psychology', 'auto_awesome', 'bolt'].map((icon, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.5 + i * 0.2, type: "spring" }}
-                    className="absolute"
-                    style={{
-                      top: `${20 + i * 20}%`,
-                      left: `${15 + i * 15}%`,
-                    }}
-                  >
-                    <div className="w-16 h-16 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center backdrop-blur-sm">
-                      <span className="material-symbols-outlined text-2xl text-primary">{icon}</span>
-                    </div>
-                  </motion.div>
-                ))}
 
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 animate-pulse" />
               </motion.div>
@@ -319,6 +406,207 @@ export default function LandingPage1() {
         </div>
       </section>
 
+      {/* ───── ¿QUÉ ES UNA AUTOMATIZACIÓN? ───── */}
+      <section id="que-es" className="py-32 bg-navy-darker">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={fadeInUp}
+            className="mb-16 text-center"
+          >
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6">
+              <span className="material-symbols-outlined text-primary">lightbulb</span>
+              <span className="text-primary text-sm font-bold uppercase tracking-widest font-montserrat">Conceptos Clave</span>
+            </div>
+            <h2 className="font-michroma text-3xl md:text-4xl text-white mb-4 leading-tight">
+              ¿Qué significa exactamente <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">"automatización completa"</span>?
+            </h2>
+            <p className="font-montserrat text-lg text-slate-400 max-w-2xl mx-auto">
+              Tres conceptos clave para entender exactamente qué obtienes.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Concepto 1 */}
+            <ExpandableCard
+              title="No es un 'flujo' — es un SISTEMA INTELIGENTE"
+              icon="smart_toy"
+              iconColor="text-primary"
+              iconBg="bg-primary/10"
+              borderHover="hover:border-primary/40"
+              expandedContent={
+                <div className="p-4 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-lg border border-primary/20">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-300 font-montserrat leading-relaxed">
+                        <strong className="text-primary">Ejemplo real:</strong> Un cliente escribe "¿tienes disponible el jueves a las 4pm?" → El sistema revisa tu calendario, confirma disponibilidad, crea la cita automáticamente y agenda recordatorios.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <p className="font-montserrat text-slate-400 text-sm leading-relaxed mb-6">
+                Piensa en esto como tu empleado digital que nunca duerme, nunca comete errores, y trabaja 24/7.
+              </p>
+
+              {/* Lista de capacidades - 4 items idénticos a las otras tarjetas */}
+              <div className="space-y-3">
+                {[
+                  { icon: 'chat', label: 'Responder consultas automáticamente', color: 'text-green-400', bg: 'bg-green-400/10' },
+                  { icon: 'event', label: 'Agendar citas sin intervención humana', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+                  { icon: 'notifications', label: 'Enviar recordatorios y seguimientos', color: 'text-purple-400', bg: 'bg-purple-400/10' },
+                  { icon: 'mail', label: 'Capturar leads de web o WhatsApp', color: 'text-orange-400', bg: 'bg-orange-400/10' }
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-primary/30 transition-all"
+                  >
+                    <div className={`w-8 h-8 rounded-lg ${item.bg} border ${item.color.replace('text', 'border')}/20 flex items-center justify-center`}>
+                      <span className={`material-symbols-outlined ${item.color}`}>{item.icon}</span>
+                    </div>
+                    <span className="text-slate-200 text-sm">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </ExpandableCard>
+
+            {/* Concepto 2 */}
+            <ExpandableCard
+              title='¿Qué son las "ejecuciones"?'
+              icon="play_circle"
+              iconColor="text-accent"
+              iconBg="bg-accent/10"
+              borderHover="hover:border-accent/40"
+              expandedContent={
+                <div className="p-4 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent rounded-lg border border-accent/20">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-accent text-sm">lightbulb</span>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-300 font-montserrat leading-relaxed">
+                        <strong className="text-accent">Ejemplo práctico:</strong> 1,000 ejecuciones/mes ≈ 500 mensajes + 300 pagos + 200 recordatorios. Cubre el 90% de negocios pequeños.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <p className="font-montserrat text-slate-400 text-sm leading-relaxed mb-6">
+                Es <strong className="text-white font-bold">CADA VEZ</strong> que el sistema realiza una acción por ti. Son eventos medibles y concretos.
+              </p>
+
+              {/* Lista visual - 4 items idénticos a las otras */}
+              <div className="space-y-3">
+                {[
+                  { icon: 'chat', label: '1 mensaje respondido = 1 ejecución', color: 'text-green-400', bg: 'bg-green-400/10' },
+                  { icon: 'payments', label: '1 pago procesado = 1 ejecución', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+                  { icon: 'receipt_long', label: '1 factura enviada = 1 ejecución', color: 'text-purple-400', bg: 'bg-purple-400/10' },
+                  { icon: 'event', label: '1 cita agendada = 1 ejecución', color: 'text-orange-400', bg: 'bg-orange-400/10' }
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-accent/30 transition-all"
+                  >
+                    <div className={`w-8 h-8 rounded-lg ${item.bg} border ${item.color.replace('text', 'border')}/20 flex items-center justify-center`}>
+                      <span className={`material-symbols-outlined ${item.color}`}>{item.icon}</span>
+                    </div>
+                    <span className="text-slate-200 text-sm">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </ExpandableCard>
+
+            {/* Concepto 3 */}
+            <ExpandableCard
+              title="Lo que SÍ incluye vs NO incluye"
+              icon="balance"
+              iconColor="text-primary"
+              iconBg="bg-primary/10"
+              borderHover="hover:border-primary/40"
+              expandedContent={
+                <div className="space-y-6 pt-4 mt-4 border-t border-slate-800">
+                  {/* NO Incluye */}
+                  <div>
+                    <h4 className="text-accent text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-accent/20 border border-accent/30 flex items-center justify-center">
+                        <span className="material-symbols-outlined text-sm">close</span>
+                      </div>
+                      Lo que NO incluye
+                    </h4>
+                    <div className="space-y-2">
+                      {[
+                        { icon: 'dns', label: 'Infraestructura externa', sub: '(WhatsApp API, hosting)', color: 'text-accent' },
+                        { icon: 'campaign', label: 'Publicidad o ads', color: 'text-accent' },
+                        { icon: 'article', label: 'Contenido de marketing', color: 'text-accent' }
+                      ].map((item, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center gap-3 p-2.5 rounded-lg bg-accent/5 border border-accent/10 hover:bg-accent/10 transition-all"
+                        >
+                          <div className={`w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center ${item.color}`}>
+                            <span className="material-symbols-outlined text-sm">{item.icon}</span>
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-slate-300 text-sm">{item.label}</span>
+                            {item.sub && <span className="text-slate-500 text-xs block">{item.sub}</span>}
+                          </div>
+                          <span className="material-symbols-outlined text-accent/60 text-sm">block</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Resumen */}
+                  <div className="p-4 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-lg border border-primary/20">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                        <span className="material-symbols-outlined text-primary text-sm">verified</span>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-300 font-montserrat leading-relaxed">
+                          <strong className="text-primary">Resumen:</strong> No vendemos acceso a herramientas. Te entregamos un sistema completo funcionando desde el día 1, con todo incluido.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <p className="font-montserrat text-slate-400 text-sm leading-relaxed mb-6">
+                Transparencia total sobre lo que incluye nuestro servicio.
+              </p>
+
+              {/* SÍ Incluye - exactamente 4 items como las otras tarjetas */}
+              <div className="space-y-3">
+                {[
+                  { icon: 'build', label: 'Creamos y configuramos todo', color: 'text-green-400' },
+                  { icon: 'link', label: 'Conectamos tus herramientas', color: 'text-green-400' },
+                  { icon: 'support_agent', label: 'Soporte técnico 24/7', color: 'text-green-400' },
+                  { icon: 'upgrade', label: 'Mejoras mensuales sin costo extra', color: 'text-green-400' }
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-green-400/5 border border-green-400/10 hover:bg-green-400/10 transition-all"
+                  >
+                    <div className={`w-8 h-8 rounded-lg bg-green-400/10 border border-green-400/20 flex items-center justify-center ${item.color}`}>
+                      <span className="material-symbols-outlined text-sm">{item.icon}</span>
+                    </div>
+                    <span className="text-slate-200 text-sm">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </ExpandableCard>
+          </div>
+        </div>
+      </section>
+
       {/* ───── SERVICIOS ───── */}
       <section id="servicios" className="py-32 bg-background-dark">
         <div className="max-w-7xl mx-auto px-6">
@@ -330,7 +618,7 @@ export default function LandingPage1() {
             className="mb-20 text-center"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6">
-              <span className="material-symbols-outlined text-primary">services</span>
+              <span className="material-symbols-outlined text-primary">auto_awesome</span>
               <span className="text-primary text-sm font-bold uppercase tracking-widest font-montserrat">Qué Automatizamos</span>
             </div>
             <h2 className="font-michroma text-3xl md:text-4xl text-white mb-4 leading-tight">
@@ -363,14 +651,14 @@ export default function LandingPage1() {
       </section>
 
       {/* ───── PROCESO ───── */}
-      <section className="py-32 bg-navy-darker">
+      <section className="py-24 md:py-32 bg-navy-darker overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
             variants={fadeInUp}
-            className="text-center mb-16"
+            className="text-center mb-12 md:mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6">
               <span className="material-symbols-outlined text-primary">timeline</span>
@@ -384,60 +672,7 @@ export default function LandingPage1() {
             </p>
           </motion.div>
 
-          <div className="relative flex flex-col md:flex-row justify-between items-start gap-12 md:gap-8">
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left w-full md:w-1/3"
-              >
-                <motion.div
-                  className="size-20 rounded-full flex items-center justify-center font-michroma text-2xl mb-6"
-                  style={{
-                    background: `conic-gradient(from 0deg, ${step.color}30, ${step.color}60, ${step.color}30)`,
-                    border: `3px solid ${step.color}`,
-                    boxShadow: `0 0 20px ${step.color}40`
-                  }}
-                  animate={{ boxShadow: [`0 0 20px ${step.color}40`, `0 0 30px ${step.color}60`, `0 0 20px ${step.color}40`] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  {step.num}
-                </motion.div>
-                <h4 className="font-michroma text-lg md:text-xl text-white mb-4 uppercase">{step.title}</h4>
-                <p className="font-montserrat text-slate-400 text-sm md:text-base leading-relaxed">{step.desc}</p>
-              </motion.div>
-            ))}
-
-            {/* Línea conectora animada */}
-            <motion.div
-              className="hidden md:block absolute top-10 left-0 w-full h-0.5 bg-gradient-to-r from-primary via-accent to-primary opacity-30 z-0"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, delay: 0.5 }}
-            />
-
-            {/* Puntos animados */}
-            <motion.div
-              className="hidden md:block absolute top-10 left-[33%] size-3 rounded-full bg-primary z-20"
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 1 }}
-              animate={{ boxShadow: ['0 0 8px #0d7ff2', '0 0 16px #0d7ff2', '0 0 8px #0d7ff2'] }}
-            />
-            <motion.div
-              className="hidden md:block absolute top-10 left-[66%] size-3 rounded-full bg-accent z-20"
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 1.5 }}
-              animate={{ boxShadow: ['0 0 8px #8b5cf6', '0 0 16px #8b5cf6', '0 0 8px #8b5cf6'] }}
-            />
-          </div>
+          <ProcessAnimation />
         </div>
       </section>
 
@@ -456,11 +691,13 @@ export default function LandingPage1() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 mb-6">
               <span className="material-symbols-outlined text-primary text-sm">payments</span>
-              <span className="text-primary text-xs font-bold uppercase tracking-widest">Planes y Precios</span>
+              <span className="text-primary text-xs font-bold uppercase tracking-widest">Planes Transparentes</span>
             </div>
-            <h2 className="font-michroma text-3xl md:text-4xl text-white uppercase mb-4">Soluciones para cada negocio</h2>
+            <h2 className="font-michroma text-3xl md:text-4xl text-white uppercase mb-4 leading-tight">
+              Invierte en automatización,<br />no en salarios
+            </h2>
             <p className="font-montserrat text-slate-400 max-w-2xl mx-auto">
-              Desde startups hasta empresas consolidadas — tenemos el plan exacto para automatizar tus procesos y escalar sin límites.
+              Precios claros sin sorpresas. Elige el plan que se ajuste a tu volumen de trabajo.
             </p>
           </motion.div>
 
@@ -472,114 +709,90 @@ export default function LandingPage1() {
             className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch"
           >
             {/* Plan Básico */}
-            <motion.div variants={scaleIn} className="group relative flex flex-col bg-navy-darker border border-slate-800 rounded-xl p-8 hover:border-primary/40 transition-all duration-300">
-              <div className="mb-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat">Básico </span>
-                <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
-                  style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
-                  -40%
-                </span>
-                <div className="mt-4 flex items-end gap-2">
-                  <span className="font-michroma text-4xl text-white">$72</span>
-                  <span className="text-slate-500 text-sm mb-1 font-montserrat">/mes</span>
-                </div>
-                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $210 setup</p>
-                <p className="text-slate-400 text-sm font-montserrat mt-4 leading-relaxed">Ideal para negocios pequeños o emprendedores.</p>
-              </div>
-              <div className="h-px bg-slate-800 mb-8" />
-              <ul className="flex flex-col gap-4 flex-1 font-montserrat">
-                {['1 flujo de automatización', 'Hasta 1,000 ejecuciones/mes', 'Integración con 1 canal', 'Google Calendar incluido', 'Soporte técnico básico', 'Panel de monitoreo'].map(f => (
-                  <li key={f} className="flex items-start gap-3 text-sm text-slate-400">
-                    <span className="material-symbols-outlined text-primary text-sm mt-0.5 flex-shrink-0">check_circle</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => navigate('/contacto')}
-                className="mt-8 w-full border border-slate-700 text-slate-300 py-3 text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all font-montserrat rounded hover:scale-105"
-              >
-                Comenzar
-              </button>
+            <motion.div variants={scaleIn}>
+              <PlanCard
+                title="INICIO"
+                tagline="INICIO"
+                price="$72"
+                period="/mes"
+                setup="+ $210 setup (único pago)"
+                description="Ideal para emprendedores que quieren automatizar su primera tarea y recuperar 15+ horas semanales."
+                features={['1 sistema automatizado completo', 'Hasta 1,000 interacciones/mes', 'Integración con 1 canal', 'Google Calendar incluido', 'Soporte técnico básico', 'Panel de monitoreo']}
+                details={[
+                  { title: '1 Sistema automatizado completo', desc: 'Crearemos y configuraremos 1 automatización de principio a fin: WhatsApp automatizado, agendamiento de citas, facturación automática o captura de leads.' },
+                  { title: 'Hasta 1,000 interacciones/mes', desc: '≈ 500 mensajes + 300 pagos + 200 recordatorios. Cubre el 90% de las necesidades de un pequeño negocio.' },
+                  { title: 'Integración con 1 canal', desc: 'WhatsApp, Email o Web. Automatizamos un canal completo (ej: WhatsApp Business con respuestas, consultas y agendamiento).' },
+                  { title: 'Google Calendar incluido', desc: 'Sincronización en tiempo real para agendamiento automático sin dobles bookings.' },
+                  { title: 'Soporte técnico básico', desc: 'Respuesta por email en <24h. Incluye uso del sistema y ajustes menores.' },
+                  { title: 'Panel de monitoreo', desc: 'Dashboard donde ves interacciones usadas, estado del sistema y tiempo ahorrado.' }
+                ]}
+                badge="Ahorra $528-828/mes"
+                badgeStyle="linear-gradient(90deg, #0d7ff2, #8b5cf6)"
+                popular={false}
+                ctaText="Comenzar"
+                onCta={() => navigate('/contacto')}
+              />
             </motion.div>
 
             {/* Plan Profesional */}
-            <motion.div variants={scaleIn} className="group relative flex flex-col rounded-xl p-8 transition-all duration-300"
-              style={{ background: 'linear-gradient(135deg, #0d1b2a 0%, #0d2a4a 100%)', border: '1px solid rgba(13,127,242,0.4)', boxShadow: '0 0 40px rgba(13,127,242,0.15)' }}>
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span className="px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
-                  style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
-                  MÁS POPULAR
-                </span>
-              </div>
-              <div className="mb-8">
-                <div className="inline-flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-primary font-montserrat">Profesional</span>
-                  <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
-                    style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
-                    -40%
-                  </span>
-                </div>
-                <div className="mt-4 flex items-end gap-2">
-                  <span className="font-michroma text-4xl text-white">$150</span>
-                  <span className="text-slate-400 text-sm mb-1 font-montserrat">/mes</span>
-                </div>
-                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $420 setup</p>
-                <p className="text-slate-400 text-sm font-montserrat mt-4 leading-relaxed">Para empresas en crecimiento con IA avanzada.</p>
-              </div>
-              <div className="h-px mb-8" style={{ background: 'rgba(13,127,242,0.2)' }} />
-              <ul className="flex flex-col gap-4 flex-1 font-montserrat">
-                {['Hasta 3 flujos de automatización', 'Hasta 5,000 ejecuciones/mes', 'Multi-canal completo', 'Agente IA personalizado', 'Soporte prioritario', 'Optimización mensual'].map(f => (
-                  <li key={f} className="flex items-start gap-3 text-sm text-slate-300">
-                    <span className="material-symbols-outlined text-primary text-sm mt-0.5 flex-shrink-0">check_circle</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => navigate('/contacto')}
-                className="mt-8 w-full py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg hover:scale-105 transition-all font-montserrat"
-                style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}
-              >
-                Comenzar
-              </button>
+            <motion.div variants={scaleIn}>
+              <PlanCard
+                title="CRECIMIENTO"
+                tagline="CRECIMIENTO"
+                price="$150"
+                period="/mes"
+                setup="+ $420 setup (único pago)"
+                description="Para negocios en crecimiento que automatizan 2-3 procesos y quieren un agente de IA que responda como tú."
+                features={['Hasta 3 sistemas automatizados completos', 'Hasta 5,000 interacciones mensuales', 'Multi-canal (WhatsApp + Email + Web)', 'Agente IA personalizado', 'Soporte prioritario 24/7', 'Optimización mensual sin costo extra']}
+                details={[
+                  { title: 'Hasta 3 sistemas automatizados completos', desc: 'Creamos 3 automatizaciones diferentes (ej: WhatsApp + Calendario + Facturación). Cada sistema funciona de forma independiente pero conectada.' },
+                  { title: 'Hasta 5,000 interacciones mensuales', desc: '≈ 2,500 mensajes + 1,500 pagos + 1,000 recordatorios. Cubre negocios con volumen moderado-alto.' },
+                  { title: 'Multi-canal (WhatsApp + Email + Web)', desc: 'Automatizamos 3 canales simultáneamente. Todo se conecta en un solo sistema unificado.' },
+                  { title: 'Agente IA personalizado', desc: 'Asistente entrenado con tu tono, vocabulario y conocimiento de productos. Responde consultas complejas, vende, agenda y califica leads.' },
+                  { title: 'Soporte prioritario 24/7', desc: 'Respuesta en <12h por WhatsApp/email. Ingenieros que conocen tu sistema.' },
+                  { title: 'Optimización mensual sin costo extra', desc: 'Cada mes revisamos tus flujos y tienes consultoría de 30min para escalar.' }
+                ]}
+                badge="MÁS POPULAR"
+                badgeStyle="linear-gradient(90deg, #8b5cf6, #0d7ff2)"
+                popular={true}
+                ctaText="Comenzar"
+                onCta={() => navigate('/contacto')}
+              />
             </motion.div>
 
             {/* Plan Empresarial */}
-            <motion.div variants={scaleIn} className="group relative flex flex-col bg-navy-darker border border-slate-800 rounded-xl p-8 hover:border-accent/40 transition-all duration-300">
-              <div className="mb-8">
-                <div className="inline-flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-slate-500 font-montserrat">Empresarial</span>
-                  <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white rounded-full font-montserrat"
-                    style={{ background: 'linear-gradient(90deg, #8b5cf6, #b06ab3)' }}>
-                    -40%
-                  </span>
-                </div>
-                <div className="mt-4 flex items-end gap-2">
-                  <span className="font-michroma text-4xl text-white">$240</span>
-                  <span className="text-slate-500 text-sm mb-1 font-montserrat">/mes</span>
-                </div>
-                <p className="text-slate-500 text-xs font-montserrat mt-1">+ $720 setup</p>
-                <p className="text-slate-400 text-sm font-montserrat mt-4 leading-relaxed">Automatización total con IA avanzada.</p>
-              </div>
-              <div className="h-px bg-slate-800 mb-8" />
-              <ul className="flex flex-col gap-4 flex-1 font-montserrat">
-                {['Flujos ilimitados', 'Hasta 20,000 ejecuciones/mes', 'Todos los canales', 'IA con NLP', 'Dashboard completo', 'Soporte dedicado 24/7'].map(f => (
-                  <li key={f} className="flex items-start gap-3 text-sm text-slate-400">
-                    <span className="material-symbols-outlined text-accent text-sm mt-0.5 flex-shrink-0">check_circle</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => navigate('/contacto')}
-                className="mt-8 w-full border border-slate-700 text-slate-300 py-3 text-xs font-bold uppercase tracking-widest hover:border-accent hover:text-accent transition-all font-montserrat rounded hover:scale-105"
-              >
-                Comenzar
-              </button>
+            <motion.div variants={scaleIn}>
+              <PlanCard
+                title="EMPRESARIAL"
+                tagline="ESCALA"
+                price="$240"
+                period="/mes"
+                setup="+ $720 setup (único pago)"
+                description="Para organizaciones que necesitan automatización total, IA avanzada y soporte dedicado 24/7."
+                features={['Flujos ilimitados', 'Hasta 20,000 interacciones mensuales', 'Todos los canales de comunicación', 'IA con NLP avanzado', 'Dashboard administrativo completo', 'Soporte dedicado 24/7']}
+                details={[
+                  { title: 'Flujos ilimitados', desc: 'Creamos todas las automatizaciones que necesites: procesos de ventas, onboarding, RRHH, reportes, integraciones ERP/CRM, etc.' },
+                  { title: 'Hasta 20,000 interacciones mensuales', desc: '≈ 10,000 mensajes + 6,000 transacciones + 4,000 notificaciones. Cubre alto volumen o múltiples departamentos.' },
+                  { title: 'Todos los canales de comunicación', desc: 'WhatsApp, Email, Web, SMS, Telegram, Instagram/Facebook Messenger, Voz (IVR). Todo conectado manteniendo contexto.' },
+                  { title: 'IA con NLP avanzado', desc: 'Entiende consultas complejas, detecta emoción/urgencia, puede negociar precios y resolver conflictos.' },
+                  { title: 'Dashboard administrativo completo', desc: 'Panel para gerentes con KPIs por departamento, alertas proactivas, reportes exportables (PDF/Excel) y gestión de usuarios.' },
+                  { title: 'Soporte dedicado 24/7', desc: 'Chat en vivo 24/7 con ingenieros, <1h respuesta, ingeniero asignado que conoce tu sistema, SLA garantizado.' }
+                ]}
+                badge="Ahorra $2,160-3,360/mes"
+                badgeStyle="linear-gradient(90deg, #8b5cf6, #b06ab3)"
+                popular={false}
+                ctaText="Comenzar"
+                onCta={() => navigate('/contacto')}
+              />
             </motion.div>
           </motion.div>
 
           <ROICalculator />
         </div>
       </section>
+
+      {/* ───── OBJECTION BUSTER ───── */}
+      <ObjectionBuster />
 
       {/* ───── CTA ───── */}
       <section className="py-20 px-6">
@@ -637,22 +850,6 @@ export default function LandingPage1() {
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Sistemas de automatización de alta gama para empresas con visión de futuro.
             </p>
-            <div className="flex gap-4">
-              {['facebook', 'twitter', 'linkedin', 'instagram'].map((social) => (
-                <motion.a
-                  key={social}
-                  href="/"
-                  className="size-10 rounded border border-slate-700 flex items-center justify-center hover:border-primary transition-colors group"
-                  aria-label={`Síguenos en ${social}`}
-                  whileHover={{ y: -3, scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="material-symbols-outlined text-slate-400 group-hover:text-primary text-xs">
-                    {social === 'facebook' ? 'facebook' : social === 'twitter' ? 'alternate_email' : social === 'linkedin' ? 'alternate_description' : 'photo_camera'}
-                  </span>
-                </motion.a>
-              ))}
-            </div>
           </div>
 
           <div>
