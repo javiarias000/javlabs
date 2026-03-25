@@ -1080,8 +1080,7 @@ webhookRouter.get('/tickets/:id/public', [
 
     // OBTENER TICKET SIN RELACIONES FIRST
     const ticket = await prisma.supportTicket.findUnique({
-      where: { id },
-      rejectOnNotFound: false
+      where: { id }
     });
 
     if (!ticket) {
