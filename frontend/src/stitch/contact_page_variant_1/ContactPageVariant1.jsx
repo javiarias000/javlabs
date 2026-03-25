@@ -40,11 +40,11 @@ export default function ContactPageVariant1() {
         <PublicNavbar />
 
         <main className="flex-grow">
-          <section className="bg-navy-deep py-20 px-6 border-b border-slate-800">
+          <section className="contact-hero border-b border-border-color">
             <div className="max-w-7xl mx-auto text-center">
-              <h1 className="font-heading text-4xl md:text-6xl text-white mb-6 uppercase tracking-tighter">CONTÁCTANOS</h1>
-              <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
-                Cuéntanos tu proyecto y te respondemos en menos de 24 horas
+              <h1 className="mb-6">¿LISTO PARA AUTOMATIZAR?</h1>
+              <p className="text-text-secondary text-lg md:text-xl max-w-2xl mx-auto font-light">
+                Agenda una consulta gratis y descubre cuántas horas ahorrarías cada semana
               </p>
             </div>
           </section>
@@ -54,51 +54,51 @@ export default function ContactPageVariant1() {
               <div className="lg:col-span-7">
 
                 {success ? (
-                  <div className="flex flex-col items-center justify-center h-full gap-6 py-20 text-center">
-                    <span className="material-symbols-outlined text-6xl text-primary">check_circle</span>
-                    <h2 className="font-heading text-2xl text-white uppercase">¡Mensaje enviado!</h2>
-                    <p className="text-slate-400">Te responderemos en menos de 24 horas.</p>
+                  <div className="success-message">
+                    <span className="material-symbols-outlined success-icon text-6xl">check_circle</span>
+                    <h2 className="success-title">¡Mensaje enviado!</h2>
+                    <p className="success-text">Te responderemos en menos de 24 horas.</p>
                     <button
                       onClick={() => { setSuccess(false); setForm({ name: '', company: '', email: '', phone: '', service: '', message: '' }); }}
-                      className="border border-primary text-primary px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                      className="retry-button"
                     >
                       Enviar otro mensaje
                     </button>
                   </div>
                 ) : (
-                  <form className="space-y-6" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Nombre</label>
+                  <form className="contact-form" onSubmit={handleSubmit}>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label className="form-label">Nombre</label>
                         <input name="name" value={form.name} onChange={handleChange} required
-                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          className="form-input"
                           placeholder="Tu nombre" type="text" />
                       </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Empresa</label>
+                      <div className="form-group">
+                        <label className="form-label">Empresa</label>
                         <input name="company" value={form.company} onChange={handleChange}
-                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          className="form-input"
                           placeholder="Tu empresa" type="text" />
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Email</label>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label className="form-label">Email</label>
                         <input name="email" value={form.email} onChange={handleChange} required
-                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          className="form-input"
                           placeholder="tu@email.com" type="email" />
                       </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Teléfono</label>
+                      <div className="form-group">
+                        <label className="form-label">Teléfono</label>
                         <input name="phone" value={form.phone} onChange={handleChange}
-                          className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600"
+                          className="form-input"
                           placeholder="+34 000 000 000" type="tel" />
                       </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Tipo de servicio</label>
+                    <div className="form-group">
+                      <label className="form-label">Tipo de servicio</label>
                       <select name="service" value={form.service} onChange={handleChange}
-                        className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all appearance-none cursor-pointer">
+                        className="form-select">
                         <option value="">Selecciona un servicio</option>
                         <option>Automatización de Procesos</option>
                         <option>IA &amp; Machine Learning</option>
@@ -106,18 +106,17 @@ export default function ContactPageVariant1() {
                         <option>Desarrollo a Medida</option>
                       </select>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Mensaje</label>
+                    <div className="form-group">
+                      <label className="form-label">Mensaje</label>
                       <textarea name="message" value={form.message} onChange={handleChange} required
-                        className="bg-input-bg border border-slate-700 p-4 text-white focus-gradient transition-all placeholder:text-slate-600 resize-none"
+                        className="form-textarea"
                         placeholder="Cuéntanos sobre tu proyecto..." rows="5"></textarea>
                     </div>
 
-                    {error && <p className="text-red-400 text-xs font-montserrat">{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
 
                     <button
-                      className="w-full text-white font-bold py-5 uppercase tracking-[0.2em] hover:opacity-90 transition-opacity disabled:opacity-50"
-                      style={{ background: 'linear-gradient(to right, #0d7ff2, #7c3aed)' }}
+                      className="submit-button"
                       type="submit"
                       disabled={loading}
                     >
@@ -127,29 +126,29 @@ export default function ContactPageVariant1() {
                 )}
               </div>
 
-              <div className="lg:col-span-5 flex flex-col gap-12">
-                <div className="space-y-8">
-                  <h3 className="font-heading text-xl text-white uppercase">Información de contacto</h3>
+              <div className="lg:col-span-5 contact-info-section">
+                <div>
+                  <h3 className="font-heading text-xl text-white uppercase mb-8">Información de contacto</h3>
                   <div className="space-y-6">
-                    <div className="flex items-start gap-5">
-                      <span className="material-symbols-outlined text-primary">mail</span>
+                    <div className="contact-info-item">
+                      <span className="material-symbols-outlined contact-info-icon">mail</span>
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Email</p>
-                        <p className="text-white hover:text-primary transition-colors cursor-pointer">jorge.arias.amauta@gmail.com</p>
+                        <p className="contact-info-label">Email</p>
+                        <p className="contact-info-value">jorge.arias.amauta@gmail.com</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-5">
-                      <span className="material-symbols-outlined text-primary">call</span>
+                    <div className="contact-info-item">
+                      <span className="material-symbols-outlined contact-info-icon">call</span>
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Teléfono</p>
-                        <p className="text-white hover:text-primary transition-colors cursor-pointer">+593967685172</p>
+                        <p className="contact-info-label">Teléfono</p>
+                        <p className="contact-info-value">+593967685172</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-5">
-                      <span className="material-symbols-outlined text-primary">location_on</span>
+                    <div className="contact-info-item">
+                      <span className="material-symbols-outlined contact-info-icon">location_on</span>
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Ubicación</p>
-                        <p className="text-white">Ambato, Ecuador</p>
+                        <p className="contact-info-label">Ubicación</p>
+                        <p className="contact-info-value">Ambato, Ecuador</p>
                       </div>
                     </div>
                   </div>
@@ -159,28 +158,71 @@ export default function ContactPageVariant1() {
           </section>
         </main>
 
-        <footer className="w-full border-t border-slate-800 bg-background-dark py-8 px-6">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <span className="material-symbols-outlined text-primary">schedule</span>
-              <p className="text-sm font-medium tracking-wide">¿Prefieres una llamada rápida?</p>
+        {/* Footer unificado con CTA doble */}
+        <footer className="bg-card-dark px-10 py-12 border-t border-border-color">
+          <div className="footer-grid">
+            <div className="footer-brand">
+              <div className="flex items-center gap-3 text-white mb-6">
+                <span className="material-symbols-outlined text-2xl text-color-primary">settings_input_component</span>
+                <h2 className="text-lg font-michroma tracking-widest">JAV LABS</h2>
+              </div>
+              <p className="footer-text">
+                Automatizamos tus procesos para que recuperes 20+ horas cada semana. Sistemas completos, sin que toques código.
+              </p>
+              <div className="mt-6">
+                <p className="text-white text-sm font-montserrat font-bold mb-3">Contáctanos</p>
+                <div className="space-y-3 text-text-secondary text-sm font-montserrat">
+                  <p><span className="material-symbols-outlined text-color-primary text-sm align-middle mr-2">mail</span>jorge.arias.amauta@gmail.com</p>
+                  <p><span className="material-symbols-outlined text-color-primary text-sm align-middle mr-2">call</span>+593 967 685 172</p>
+                  <p><span className="material-symbols-outlined text-color-primary text-sm align-middle mr-2">location_on</span>Ambato, Ecuador</p>
+                </div>
+              </div>
             </div>
-            <button className="gradient-border-btn text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity">
-              Agendar llamada en Calendly
-            </button>
+            <div>
+              <h4 className="footer-heading text-white">Empresa</h4>
+              <div className="footer-links">
+                {['Nosotros', 'Servicios', 'Precios', 'Casos de Éxito'].map((item) => (
+                  <a key={item} className="footer-link" href="/">{item}</a>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="footer-heading text-white">Soporte</h4>
+              <div className="footer-links">
+                {['Contacto', 'Portal de Clientes', 'FAQ', 'Documentación'].map((item) => (
+                  <a key={item} className="footer-link" href="/">{item}</a>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="footer-heading text-white">¿Listo para automatizar?</h4>
+              <p className="footer-text mb-4">Agenda una consulta gratis y descubre cuántas horas ahorrarías.</p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => window.scrollTo(0, document.body.scrollHeight)}
+                  className="w-full text-white font-bold py-3 px-6 text-xs uppercase tracking-widest hover:opacity-90 transition-all"
+                  style={{ background: 'var(--gradient-primary)' }}>
+                  Consulta Gratis →
+                </button>
+                <a
+                  href="https://calendly.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center border border-color-primary text-color-primary py-3 px-6 text-xs font-bold uppercase tracking-widest hover:bg-color-primary hover:text-white transition-all font-montserrat rounded">
+                  Agendar en Calendly
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p className="footer-copyright">© {new Date().getFullYear()} JAV LABS. Todos los derechos reservados.</p>
+            <div className="flex gap-8 text-text-muted text-xs">
+              {['Privacidad', 'Términos', 'Cookies'].map((item) => (
+                <a key={item} href="/" className="footer-link">{item}</a>
+              ))}
+            </div>
           </div>
         </footer>
-
-        <div className="w-full bg-black py-4 px-6">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-            <p>© 2026 JAV LABS. Todos los derechos reservados.</p>
-            <div className="flex gap-8">
-              <a className="hover:text-primary" href="/nosotros">Legal</a>
-              <a className="hover:text-primary" href="/nosotros">Privacidad</a>
-              <a className="hover:text-primary" href="/nosotros">Cookies</a>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );

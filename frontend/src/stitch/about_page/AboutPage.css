@@ -1,1 +1,241 @@
+/* =====================================================
+   ABOUT PAGE - Styles using Design Tokens
+   ===================================================== */
 
+/* Import design tokens are globally available */
+
+/* Section spacing utilities */
+.section-padding {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+}
+
+.section-padding-lg {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+}
+
+.section-padding-xl {
+  padding-top: var(--space-32);
+  padding-bottom: var(--space-32);
+}
+
+/* Card styles */
+.about-card {
+  background: var(--bg-navy-darker);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.about-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* Timeline styles */
+.timeline-item {
+  display: flex;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.timeline-year {
+  flex-shrink: 0;
+  width: 6rem;
+  padding: var(--space-2) var(--space-3);
+  background: rgba(13, 127, 242, 0.1);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.timeline-connector {
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-primary) 60%, transparent);
+  margin-top: var(--space-2);
+}
+
+.timeline-content {
+  padding-bottom: var(--space-4);
+}
+
+.timeline-content h4 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.timeline-content p {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Stats bar */
+.stats-bar {
+  background: var(--bg-navy-darker);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stats-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+.stats-divider {
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+}
+
+.stats-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-4xl);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.stats-label {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Mission/Vision cards */
+.mission-card {
+  position: relative;
+  padding: var(--space-10);
+  background: var(--bg-navy-darker);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.mission-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10rem;
+  height: 10rem;
+  background: var(--color-primary);
+  filter: blur(60px);
+  opacity: 0.1;
+  transition: opacity var(--transition-base);
+}
+
+.mission-card:hover::before {
+  opacity: 0.2;
+}
+
+.mission-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary)/10;
+  border: 1px solid var(--color-primary)/30;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+}
+
+.mission-icon .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+.mission-divider {
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  margin-bottom: var(--space-6);
+}
+
+.mission-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--space-6);
+}
+
+.mission-text {
+  font-family: var(--font-primary);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* CTA button consistency */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-8);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-widest);
+  background: white;
+  color: var(--color-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  border: none;
+}
+
+.cta-button:hover {
+  background: var(--bg-surface-hover);
+  transform: scale(1.05);
+}
+
+/* Focus states for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .stats-item {
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .stats-divider {
+    display: none;
+  }
+
+  .mission-card {
+    padding: var(--space-6);
+  }
+}

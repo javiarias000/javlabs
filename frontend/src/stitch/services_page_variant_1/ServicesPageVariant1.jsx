@@ -5,7 +5,7 @@ import './ServicesPageVariant1.css';
 
 export default function ServicesPageVariant1() {
   const navigate = useNavigate();
-  const [openFaq, setOpenFaq] = useState(1); // índice abierto por defecto
+  const [openFaq, setOpenFaq] = useState(1);
 
   const faqs = [
     {
@@ -35,116 +35,186 @@ export default function ServicesPageVariant1() {
         <main className="flex-1">
 
           {/* ───── HERO ───── */}
-          <section className="relative py-24 px-10 flex flex-col items-center justify-center text-center overflow-hidden">
-            <div className="absolute inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #0d0df2 0%, transparent 70%)' }} />
+          <section className="relative services-hero flex flex-col items-center justify-center text-center overflow-hidden">
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-color-primary/10 via-color-accent/5 to-transparent opacity-60" />
+
             <div className="relative z-10 max-w-4xl">
-              <h1 className="text-white text-5xl md:text-6xl font-michroma mb-6 tracking-tighter">
-                NUESTROS SERVICIOS
-              </h1>
-              <div className="gradient-underline w-32 mx-auto mb-8" />
-              <p className="text-slate-400 font-montserrat text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-                Soluciones avanzadas de automatización e inteligencia artificial diseñadas para escalar tu infraestructura digital.
-              </p>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-michroma mb-6 tracking-tight leading-tight">
+                  DEJA QUE LA TECNOLOGÍA<br className="hidden md:block" /> TRABAJE POR TI
+                </h1>
+                <div className="w-24 h-1 bg-gradient-to-r from-color-primary to-color-accent mx-auto mb-8 rounded-full" />
+                <p className="text-text-secondary font-montserrat text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                  Automatizamos tus procesos completos para que recuperes 20+ horas cada semana. No necesitas contratar 3 personas — nosotros creamos, implementamos y mantenemos todo por ti.
+                </p>
+              </motion.div>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="mt-10"
+              >
+                <button
+                  onClick={() => navigate('/contacto')}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-color-primary to-color-accent text-white font-montserrat font-bold text-sm uppercase tracking-widest rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                >
+                  <span>Comenzar ahora</span>
+                  <span className="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </motion.div>
             </div>
           </section>
 
           {/* ───── SERVICIOS ───── */}
-          <section className="px-10 py-20 max-w-7xl mx-auto">
+          <section className="services-section max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-color-primary/10 border border-color-primary/30 mb-6">
+                <span className="material-symbols-outlined text-color-primary">auto_awesome</span>
+                <span className="text-color-primary text-sm font-bold uppercase tracking-widest font-montserrat">Nuestros Servicios</span>
+              </div>
+              <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
+                Soluciones completas para <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">tu negocio</span>
+              </h2>
+              <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
+                Cada servicio es un sistema completo — no solo una herramienta.
+              </p>
+            </motion.div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
                   icon: 'memory',
                   title: 'Automatización de Procesos',
-                  desc: 'Eliminamos cuellos de botella mediante flujos de trabajo inteligentes que conectan sus herramientas actuales.',
-                  items: ['Ahorro de +40h mensuales', 'Reducción de error humano', 'Reportes en tiempo real'],
+                  desc: 'Recupera 40+ horas mensuales eliminando tareas repetitivas. Tus herramientas actuales trabajando juntas sin intervención manual.',
+                  items: ['Ahorro de +40h mensuales', 'Reducción de error humano', 'Todo funciona automáticamente 24/7'],
+                  colorClass: 'text-color-primary',
+                  borderClass: 'border-color-primary/50',
+                  hoverBg: 'bg-color-primary/10'
                 },
                 {
                   icon: 'psychology',
                   title: 'IA Generativa',
-                  desc: 'Implementación de modelos de lenguaje personalizados para atención al cliente y análisis de datos profundo.',
-                  items: ['Chatbots con contexto real', 'Análisis predictivo', 'Entrenamiento de LLMs'],
+                  desc: 'Un asistente de IA que responde como tú, atiende clientes 24/7 y califica leads automáticamente.',
+                  items: ['Chatbot que usa tu tono', 'Atención 24/7 sin esperas', 'Vende y agenda automáticamente'],
+                  colorClass: 'text-color-accent',
+                  borderClass: 'border-color-accent/50',
+                  hoverBg: 'bg-color-accent/10'
                 },
                 {
                   icon: 'hub',
                   title: 'Integración de Sistemas',
-                  desc: 'Conectamos su ecosistema de software a través de APIs robustas para una sincronización de datos impecable.',
-                  items: ['Estrategia API First', 'Escalabilidad horizontal', 'Seguridad de grado bancario'],
+                  desc: 'Conectamos tu CRM, calendario, email y herramientas en un solo sistema que comparte datos automáticamente.',
+                  items: ['Todo conectado en un solo flujo', 'Sin duplicar información', 'Implementación en días, no meses'],
+                  colorClass: 'text-color-primary',
+                  borderClass: 'border-color-primary/50',
+                  hoverBg: 'bg-color-primary/10'
                 },
-              ].map((service) => (
-                <div key={service.title} className="bg-card-dark border border-slate-800 p-8 flex flex-col hover-glow transition-all group">
-                  <span className="material-symbols-outlined text-5xl circuit-icon mb-6">{service.icon}</span>
-                  <h3 className="text-white text-xl font-michroma mb-4 tracking-tight">{service.title}</h3>
-                  <p className="text-slate-400 font-montserrat text-sm mb-8 leading-relaxed">{service.desc}</p>
-                  <ul className="space-y-3 mb-10 flex-1">
-                    {service.items.map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-sm text-slate-300 font-montserrat">
-                        <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="gradient-border-btn w-full py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-primary/10 transition-colors">
-                    Solicitar este servicio
-                  </button>
-                </div>
+              ].map((service, idx) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="service-card group"
+                >
+                  <div className="relative z-10">
+                    <div className={`service-icon bg-${service.colorClass.replace('text-', '')}/10 border-${service.colorClass.replace('text-', '')}/30`}>
+                      <span className={`material-symbols-outlined text-2xl ${service.colorClass}`}>{service.icon}</span>
+                    </div>
+                    <h3 className="service-title">{service.title}</h3>
+                    <p className="service-desc">{service.desc}</p>
+                    <ul className="service-features">
+                      {service.items.map((item) => (
+                        <li key={item} className="service-feature-item">
+                          <span className={`material-symbols-outlined ${service.colorClass}`}>check_circle</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => navigate('/contacto')}
+                      className={`service-button ${service.colorClass.replace('text-', '')}`}
+                    >
+                      Ver cómo funciona
+                    </button>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </section>
 
           {/* ───── CÓMO TRABAJAMOS ───── */}
-          <section className="bg-slate-900/50 py-24 px-10">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-white text-3xl font-michroma mb-16 text-center">¿CÓMO TRABAJAMOS?</h2>
+          <section className="services-section-alt">
+            <div className="max-w-7xl mx-auto px-6">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="text-center mb-16"
+              >
+                <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
+                  ASÍ CREAMOS TU <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">SISTEMA</span>
+                </h2>
+                <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
+                  En 3 pasos simples, sin que tú toques código.
+                </p>
+              </motion.div>
 
-              {/* La línea va a top: 32px (la mitad de size-16 = 64px) */}
-              <div className="relative hidden md:flex flex-row justify-between" style={{ paddingTop: '0' }}>
+              {/* Timeline horizontal */}
+              <div className="relative hidden md:block">
+                <div className="absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-color-primary/30 via-color-accent/30 to-color-primary/30" />
 
-                {/* Línea fija a 32px desde arriba = centro exacto del cuadrado de 64px */}
-                <div className="absolute left-0 right-0 h-0.5 z-0"
-                  style={{ top: '32px', background: 'linear-gradient(to right, #0d7ff2, #8b5cf6)' }}
-                />
-
-                {[
-                  { num: '01', border: '#0d7ff2', text: '#0d7ff2', title: 'DIAGNÓSTICO',    desc: 'Auditamos sus procesos actuales y detectamos ineficiencias.' },
-                  { num: '02', border: '#0d7ff2', text: '#0d7ff2', title: 'PROPUESTA',      desc: 'Diseñamos una arquitectura técnica a medida de sus metas.' },
-                  { num: '03', border: '#0d7ff2', text: '#0d7ff2', title: 'IMPLEMENTACIÓN', desc: 'Desarrollo ágil y despliegue de las soluciones elegidas.' },
-                  { num: '04', border: '#8b5cf6', text: '#8b5cf6', title: 'SOPORTE',         desc: 'Optimización continua y mantenimiento proactivo 24/7.' },
-                ].map((step) => (
-                  <div key={step.num} className="relative z-10 flex flex-col items-center text-center w-1/4">
-                    {/* size-16 = 64px, la línea está en top:32px = centro exacto */}
-                    <div
-                      className="size-16 flex items-center justify-center font-michroma text-xl mb-6"
-                      style={{
-                        background: '#0D1B2A',
-                        border: `2px solid ${step.border}`,
-                        color: step.text,
-                      }}
-                    >
-                      {step.num}
+                <div className="relative flex justify-between">
+                  {[
+                    { num: '01', title: 'DIAGNÓSTICO', desc: 'Nos cuentas tu negocio, qué procesos consumen tu tiempo, y qué quieres lograr.' },
+                    { num: '02', title: 'CONSTRUCCIÓN', desc: 'Nuestro equipo desarrolla y despliega TODO. Tú NO tocas código.' },
+                    { num: '03', title: 'CRECIMIENTO', desc: 'No te dejamos solo. Incluye monitoreo 24/7, mejoras mensuales y soporte permanente.' }
+                  ].map((step, idx) => (
+                    <div key={idx} className="relative flex-1 flex flex-col items-center text-center px-4">
+                      <div
+                        className="size-16 flex items-center justify-center font-michroma text-2xl mb-6 rounded-full bg-navy-darker border-2 shadow-lg"
+                        style={{ borderColor: idx === 2 ? 'var(--color-accent)' : 'var(--color-primary)', boxShadow: `0 0 30px ${idx === 2 ? 'rgba(139,92,246,0.3)' : 'rgba(13,127,242,0.3)'}` }}
+                      >
+                        {step.num}
+                      </div>
+                      <h4 className="text-white font-michroma text-lg mb-2">{step.title}</h4>
+                      <p className="text-text-secondary text-sm max-w-xs">{step.desc}</p>
                     </div>
-                    <h4 className="text-white font-bold mb-2 font-michroma text-sm">{step.title}</h4>
-                    <p className="text-slate-400 text-xs font-montserrat px-4">{step.desc}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              {/* Mobile: versión vertical sin línea */}
-              <div className="flex flex-col gap-10 md:hidden">
+              {/* Mobile: vertical */}
+              <div className="flex flex-col gap-12 md:hidden">
                 {[
-                  { num: '01', border: '#0d7ff2', text: '#0d7ff2', title: 'DIAGNÓSTICO',    desc: 'Auditamos sus procesos actuales y detectamos ineficiencias.' },
-                  { num: '02', border: '#0d7ff2', text: '#0d7ff2', title: 'PROPUESTA',      desc: 'Diseñamos una arquitectura técnica a medida de sus metas.' },
-                  { num: '03', border: '#0d7ff2', text: '#0d7ff2', title: 'IMPLEMENTACIÓN', desc: 'Desarrollo ágil y despliegue de las soluciones elegidas.' },
-                  { num: '04', border: '#8b5cf6', text: '#8b5cf6', title: 'SOPORTE',         desc: 'Optimización continua y mantenimiento proactivo 24/7.' },
-                ].map((step) => (
-                  <div key={step.num} className="flex flex-col items-center text-center">
+                  { num: '01', title: 'DIAGNÓSTICO', desc: 'Nos cuentas tu negocio, qué procesos consumen tu tiempo, y qué quieres lograr.' },
+                  { num: '02', title: 'CONSTRUCCIÓN', desc: 'Nuestro equipo desarrolla y despliega TODO. Tú NO tocas código.' },
+                  { num: '03', title: 'CRECIMIENTO', desc: 'No te dejamos solo. Incluye monitoreo 24/7, mejoras mensuales y soporte permanente.' }
+                ].map((step, idx) => (
+                  <div key={idx} className="flex flex-col items-center text-center">
                     <div
-                      className="size-16 flex items-center justify-center font-michroma text-xl mb-4"
-                      style={{ background: '#0D1B2A', border: `2px solid ${step.border}`, color: step.text }}
+                      className="size-16 flex items-center justify-center font-michroma text-2xl mb-4 rounded-full bg-navy-darker border-2"
+                      style={{ borderColor: idx === 2 ? 'var(--color-accent)' : 'var(--color-primary)' }}
                     >
                       {step.num}
                     </div>
-                    <h4 className="text-white font-bold mb-2 font-michroma text-sm">{step.title}</h4>
-                    <p className="text-slate-400 text-xs font-montserrat px-4">{step.desc}</p>
+                    <h4 className="text-white font-michroma text-lg mb-2">{step.title}</h4>
+                    <p className="text-text-secondary text-sm max-w-xs">{step.desc}</p>
                   </div>
                 ))}
               </div>
@@ -153,136 +223,132 @@ export default function ServicesPageVariant1() {
           </section>
 
           {/* ───── COMPARATIVA ───── */}
-          <section className="px-10 py-24 max-w-7xl mx-auto">
-            <h2 className="text-white text-3xl font-michroma mb-12">COMPARATIVA DE PLANES</h2>
-            <div className="overflow-x-auto border border-slate-800">
-              <table className="w-full text-left font-montserrat">
-                <thead>
-                  <tr className="border-b border-slate-800" style={{ background: 'linear-gradient(to right, rgba(13,127,242,0.2), rgba(139,92,246,0.2))' }}>
-                    <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase">Característica</th>
-                    <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Básico</th>
-                    <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center border-x border-slate-700/50 bg-primary/10">Profesional</th>
-                    <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Enterprise</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-card-dark divide-y divide-slate-800">
-                  {[
-                    { label: 'Automatizaciones',     basic: 'Hasta 5',    pro: 'Hasta 20',        ent: 'Ilimitadas',        check: false },
-                    { label: 'Soporte Técnico',      basic: 'Email (48h)', pro: 'Prioritario 24/7', ent: 'Manager Dedicado', check: false },
-                    { label: 'Integraciones Custom', basic: null,          pro: true,               ent: true,               check: true  },
-                    { label: 'Infraestructura IA',   basic: null,          pro: true,               ent: true,               check: true  },
-                  ].map((row) => (
-                    <tr key={row.label}>
-                      <td className="p-6 text-slate-300 font-medium">{row.label}</td>
-                      <td className="p-6 text-center text-slate-400">
-                        {row.check
-                          ? <span className="material-symbols-outlined text-slate-600">close</span>
-                          : row.basic}
-                      </td>
-                      <td className="p-6 text-center text-white border-x border-slate-700/50">
-                        {row.check
-                          ? <span className="material-symbols-outlined text-primary">check</span>
-                          : <span className="font-semibold">{row.pro}</span>}
-                      </td>
-                      <td className="p-6 text-center text-slate-400">
-                        {row.check
-                          ? <span className="material-symbols-outlined text-primary">check</span>
-                          : row.ent}
-                      </td>
+          <section className="services-section-alt">
+            <div className="max-w-7xl mx-auto px-6">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="text-center mb-16"
+              >
+                <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
+                  Comparativa de <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">Planes</span>
+                </h2>
+                <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
+                  Elige el plan que mejor se adapte a tus necesidades
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="overflow-x-auto rounded-xl border border-border-color shadow-2xl"
+              >
+                <table className="comparison-table">
+                  <thead>
+                    <tr style={{ background: 'linear-gradient(to right, rgba(13, 127, 242, 0.15), rgba(139, 92, 246, 0.15))' }}>
+                      <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase">Característica</th>
+                      <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Básico</th>
+                      <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center border-x border-border-color bg-color-primary/5">Profesional</th>
+                      <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Enterprise</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-border-color">
+                    {[
+                      { label: 'Automatizaciones',     basic: 'Hasta 5',    pro: 'Hasta 20',        ent: 'Ilimitadas',        check: false },
+                      { label: 'Soporte Técnico',      basic: 'Email (48h)', pro: 'Prioritario 24/7', ent: 'Manager Dedicado', check: false },
+                      { label: 'Integraciones Custom', basic: null,          pro: true,               ent: true,               check: true  },
+                      { label: 'Infraestructura IA',   basic: null,          pro: true,               ent: true,               check: true  },
+                    ].map((row, idx) => (
+                      <motion.tr
+                        key={row.label}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: idx * 0.1 }}
+                        className="hover:bg-slate-800/50 transition-colors"
+                      >
+                        <td className="p-6 text-text-secondary font-medium">{row.label}</td>
+                        <td className="p-6 text-center text-text-muted">
+                          {row.check
+                            ? <span className="material-symbols-outlined text-slate-600 text-xl">close</span>
+                            : row.basic}
+                        </td>
+                        <td className="p-6 text-center text-white border-x border-border-color bg-color-primary/5">
+                          {row.check
+                            ? <span className="material-symbols-outlined text-color-primary text-xl">check_circle</span>
+                            : <span className="font-semibold">{row.pro}</span>}
+                        </td>
+                        <td className="p-6 text-center text-text-muted">
+                          {row.check
+                            ? <span className="material-symbols-outlined text-color-primary text-xl">check_circle</span>
+                            : row.ent}
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </motion.div>
             </div>
           </section>
 
           {/* ───── FAQ ───── */}
-          <section className="px-10 py-24 max-w-4xl mx-auto">
-            <h2 className="text-white text-3xl font-michroma mb-12 text-center uppercase">Preguntas Frecuentes</h2>
+          <section className="services-section max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
+                Preguntas <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">Frecuentes</span>
+              </h2>
+              <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
+                Resolvemos tus dudas sobre nuestros servicios
+              </p>
+            </motion.div>
+
             <div className="space-y-4">
-              {faqs.map((faq) => {
-                const isOpen = openFaq === faq.id;
-                return (
-                  <div
-                    key={faq.id}
-                    className="bg-card-dark p-6 transition-all cursor-pointer"
-                    style={{ borderLeft: `4px solid ${isOpen ? '#0d7ff2' : '#1e293b'}` }}
-                    onClick={() => setOpenFaq(isOpen ? null : faq.id)}
+              {faqs.map((faq, idx) => (
+                <motion.div
+                  key={faq.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    className="accordion-item w-full text-left p-6"
+                    aria-expanded={openFaq === idx}
                   >
-                    <div className="flex justify-between items-center gap-4">
-                      <h4 className="text-white font-michroma text-sm uppercase">{faq.question}</h4>
-                      <span
-                        className="material-symbols-outlined flex-shrink-0 transition-transform duration-300"
-                        style={{ color: isOpen ? '#0d7ff2' : '#64748b', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                      >
+                    <div className="flex items-center justify-between gap-4">
+                      <h3 className="text-white font-michroma text-lg pr-8">{faq.question}</h3>
+                      <span className={`material-symbols-outlined text-color-primary transition-transform duration-300 ${openFaq === idx ? 'rotated' : ''}`}>
                         expand_more
                       </span>
                     </div>
-                    {isOpen && (
-                      <div className="mt-4 text-slate-400 text-sm font-montserrat leading-relaxed">
-                        {faq.answer}
-                      </div>
+                    {openFaq === idx && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-text-secondary font-montserrat mt-4 leading-relaxed">{faq.answer}</p>
+                      </motion.div>
                     )}
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* ───── CTA FINAL ───── */}
-          <section className="bg-background-dark py-20 px-10 border-t border-slate-800">
-            <div className="max-w-5xl mx-auto text-center">
-              <h3 className="text-white text-2xl md:text-3xl font-michroma mb-8">
-                ¿NO SABES QUÉ SERVICIO NECESITAS? HABLEMOS.
-              </h3>
-              {/* ✅ Fix: style inline porque Tailwind no genera clases con colores custom en runtime */}
-              <button
-                onClick={() => navigate('/contacto')}
-                className="text-white font-bold uppercase tracking-widest px-10 py-5 transition-all shadow-lg hover:opacity-90"
-                style={{ background: 'linear-gradient(to right, #0d7ff2, #8b5cf6)' }}
-              >
-                Agendar Diagnóstico Gratuito
-              </button>
+                  </button>
+                </motion.div>
+              ))}
             </div>
           </section>
 
         </main>
-
-        {/* ───── FOOTER ───── */}
-        <footer className="bg-card-dark px-10 py-12 border-t border-slate-800">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div className="col-span-2">
-              <div className="flex items-center gap-3 text-white mb-6">
-                <span className="material-symbols-outlined text-2xl text-primary">settings_input_component</span>
-                <h2 className="text-lg font-michroma tracking-widest">JAV LABS</h2>
-              </div>
-              <p className="text-slate-500 font-montserrat text-sm max-w-md leading-relaxed">
-                Laboratorio de automatización avanzada especializado en IA y optimización de flujos operativos para empresas de alto rendimiento.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-michroma text-xs uppercase mb-6 tracking-widest">Legal</h4>
-              <div className="flex flex-col gap-3">
-                {['Privacidad', 'Términos', 'Cookies'].map((item) => (
-                  <a key={item} className="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="/">{item}</a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white font-michroma text-xs uppercase mb-6 tracking-widest">Social</h4>
-              <div className="flex flex-col gap-3">
-                {['LinkedIn', 'X / Twitter', 'Github'].map((item) => (
-                  <a key={item} className="text-slate-500 hover:text-primary text-xs font-montserrat transition-colors" href="/">{item}</a>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-600 text-xs font-montserrat">© 2026 JAV LABS. Todos los derechos reservados.</p>
-            <p className="text-slate-600 text-xs font-montserrat uppercase tracking-widest">Pioneering Efficiency.</p>
-          </div>
-        </footer>
-
       </div>
     </>
   );

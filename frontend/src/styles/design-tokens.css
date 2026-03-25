@@ -34,6 +34,7 @@
   --bg-surface: #1E293B;
   --bg-surface-hover: #273549;
   --bg-glass: rgba(15, 20, 26, 0.8);
+  --bg-card-dark: #0d1117;
 
   /* =========================================
      COLORES DE TEXTO (Typography)
@@ -244,6 +245,52 @@
   backdrop-filter: blur(var(--blur-md));
   -webkit-backdrop-filter: blur(var(--blur-md));
   border: 1px solid var(--border-color);
+}
+
+/* Background variants */
+.bg-navy-muted {
+  background: rgba(15, 25, 35, 0.6);
+}
+
+.bg-navy-muted\/50 {
+  background: rgba(15, 25, 35, 0.3);
+}
+
+/* Error glow */
+.error-glow {
+  color: var(--color-error);
+}
+
+.bg-error-glow {
+  background: var(--color-error);
+}
+
+.border-error-glow {
+  border-color: var(--color-error);
+}
+
+.text-error-glow {
+  color: var(--color-error);
+}
+
+/* Glow diamond effect */
+.glow-diamond {
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+/* Additional utility classes */
+.circuit-bg {
+  background-image:
+    linear-gradient(rgba(13, 127, 242, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 127, 242, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.technical-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 /* Container utilities */

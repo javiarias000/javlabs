@@ -10,66 +10,213 @@
       transform: translateX(-50%);
     }
   }
-  
-  .animate-marquee {
-    display: flex;
-    width: max-content;
-    animation: marquee 30s linear infinite;
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ============================= */
+/* LOGOS TECNOLOGÍAS */
+/* ============================= */
+
+.tech-logo {
+  height: 70px;
+  min-width: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.tech-logo img {
+  max-height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+
+.tech-logo:hover {
+  transform: scale(1.1);
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+/* ============================= */
+/* GLOW HOVER GLOBAL */
+/* ============================= */
+
+.glow-hover:hover {
+  box-shadow: 0 0 40px rgba(13, 127, 242, 0.25);
+}
+
+/* ============================= */
+/* BOTONES PREMIUM */
+/* ============================= */
+
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-premium::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.btn-premium:hover::after {
+  opacity: 1;
+}
+
+/* ============================= */
+/*gradient-text ANIMADO */
+/* ============================= */
+
+.gradient-text-animated {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-accent) 25%,
+    var(--color-accent-light) 50%,
+    var(--color-accent) 75%,
+    var(--color-primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  50% { background-position: 200% center; }
+  100% { background-position: 0% center; }
+}
+
+/* ============================= */
+/* TYPING CURSOR */
+/* ============================= */
+
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  color: var(--color-primary);
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ============================= */
+/* FLOATING SHAPES */
+/* ============================= */
+
+.float-shape {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-shape:nth-child(2) {
+  animation-delay: 2s;
+  animation-duration: 8s;
+}
+
+.float-shape:nth-child(3) {
+  animation-delay: 4s;
+  animation-duration: 7s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* ============================= */
+/* PROGRESS LINES (Process) */
+/* ============================= */
+
+.process-line-animated {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  overflow: hidden;
+}
+
+.process-line-animated::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: line-sweep 2s ease-in-out infinite;
+}
+
+@keyframes line-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ============================= */
+/* POPULAR BADGE PULSE */
+/* ============================= */
+
+.popular-badge-pulse {
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+}
+
+/* ============================= */
+/* SMOOTH SCROLL */
+/* ============================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  
-  /* ============================= */
-  /* LOGOS TECNOLOGÍAS */
-  /* ============================= */
-  
-  .tech-logo {
-    height: 70px;
-    min-width: 120px;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    opacity: 0.9;
-    transition: all 0.3s ease;
+}
+
+/* ============================= */
+/* REDUCED MOTION */
+/* ============================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  
-  .tech-logo img {
-    max-height: 45px;
-    width: auto;
-    object-fit: contain;
+
+  .gradient-text-animated,
+  .float-shape,
+  .tech-marquee,
+  .process-line-animated::after,
+  .popular-badge-pulse,
+  .typing-cursor::after {
+    animation: none !important;
   }
-  
-  .tech-logo:hover {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  
-  /* ============================= */
-  /* GLOW HOVER GLOBAL */
-  /* ============================= */
-  
-  .glow-hover:hover {
-    box-shadow: 0 0 40px rgba(13, 127, 242, 0.25);
-  }
-  
-  /* ============================= */
-  /* BOTONES PREMIUM */
-  /* ============================= */
-  
-  .btn-premium {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .btn-premium::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.08);
-    opacity: 0;
-    transition: 0.3s;
-  }
-  
-  .btn-premium:hover::after {
-    opacity: 1;
-  }
+}
