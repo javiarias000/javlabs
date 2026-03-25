@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import PublicNavbar from '../../components/PublicNavbar';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './ServicesPageVariant1.css';
 
 export default function ServicesPageVariant1() {
@@ -27,17 +27,10 @@ export default function ServicesPageVariant1() {
 
   return (
     <>
-      <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
-
-        {/* ───── HEADER ───── */}
-        <PublicNavbar />
-
-        <main className="flex-1">
-
-          {/* ───── HERO ───── */}
+      {/* ───── HERO ───── */}
           <section className="relative services-hero flex flex-col items-center justify-center text-center overflow-hidden">
             {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-color-primary/10 via-color-accent/5 to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent opacity-60" />
 
             <div className="relative z-10 max-w-4xl">
               <motion.div
@@ -48,7 +41,7 @@ export default function ServicesPageVariant1() {
                 <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-michroma mb-6 tracking-tight leading-tight">
                   DEJA QUE LA TECNOLOGÍA<br className="hidden md:block" /> TRABAJE POR TI
                 </h1>
-                <div className="w-24 h-1 bg-gradient-to-r from-color-primary to-color-accent mx-auto mb-8 rounded-full" />
+                <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-8 rounded-full" />
                 <p className="text-text-secondary font-montserrat text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
                   Automatizamos tus procesos completos para que recuperes 20+ horas cada semana. No necesitas contratar 3 personas — nosotros creamos, implementamos y mantenemos todo por ti.
                 </p>
@@ -63,7 +56,7 @@ export default function ServicesPageVariant1() {
               >
                 <button
                   onClick={() => navigate('/contacto')}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-color-primary to-color-accent text-white font-montserrat font-bold text-sm uppercase tracking-widest rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-accent text-white font-montserrat font-bold text-sm uppercase tracking-widest rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 >
                   <span>Comenzar ahora</span>
                   <span className="material-symbols-outlined">arrow_forward</span>
@@ -81,12 +74,12 @@ export default function ServicesPageVariant1() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-color-primary/10 border border-color-primary/30 mb-6">
-                <span className="material-symbols-outlined text-color-primary">auto_awesome</span>
-                <span className="text-color-primary text-sm font-bold uppercase tracking-widest font-montserrat">Nuestros Servicios</span>
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6">
+                <span className="material-symbols-outlined text-primary">auto_awesome</span>
+                <span className="text-primary text-sm font-bold uppercase tracking-widest font-montserrat">Nuestros Servicios</span>
               </div>
               <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
-                Soluciones completas para <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">tu negocio</span>
+                Soluciones completas para <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">tu negocio</span>
               </h2>
               <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
                 Cada servicio es un sistema completo — no solo una herramienta.
@@ -100,27 +93,27 @@ export default function ServicesPageVariant1() {
                   title: 'Automatización de Procesos',
                   desc: 'Recupera 40+ horas mensuales eliminando tareas repetitivas. Tus herramientas actuales trabajando juntas sin intervención manual.',
                   items: ['Ahorro de +40h mensuales', 'Reducción de error humano', 'Todo funciona automáticamente 24/7'],
-                  colorClass: 'text-color-primary',
-                  borderClass: 'border-color-primary/50',
-                  hoverBg: 'bg-color-primary/10'
+                  colorClass: 'text-primary',
+                  borderClass: 'border-primary/50',
+                  hoverBg: 'bg-primary/10'
                 },
                 {
                   icon: 'psychology',
                   title: 'IA Generativa',
                   desc: 'Un asistente de IA que responde como tú, atiende clientes 24/7 y califica leads automáticamente.',
                   items: ['Chatbot que usa tu tono', 'Atención 24/7 sin esperas', 'Vende y agenda automáticamente'],
-                  colorClass: 'text-color-accent',
-                  borderClass: 'border-color-accent/50',
-                  hoverBg: 'bg-color-accent/10'
+                  colorClass: 'text-accent',
+                  borderClass: 'border-accent/50',
+                  hoverBg: 'bg-accent/10'
                 },
                 {
                   icon: 'hub',
                   title: 'Integración de Sistemas',
                   desc: 'Conectamos tu CRM, calendario, email y herramientas en un solo sistema que comparte datos automáticamente.',
                   items: ['Todo conectado en un solo flujo', 'Sin duplicar información', 'Implementación en días, no meses'],
-                  colorClass: 'text-color-primary',
-                  borderClass: 'border-color-primary/50',
-                  hoverBg: 'bg-color-primary/10'
+                  colorClass: 'text-primary',
+                  borderClass: 'border-primary/50',
+                  hoverBg: 'bg-primary/10'
                 },
               ].map((service, idx) => (
                 <motion.div
@@ -168,7 +161,7 @@ export default function ServicesPageVariant1() {
                 className="text-center mb-16"
               >
                 <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
-                  ASÍ CREAMOS TU <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">SISTEMA</span>
+                  ASÍ CREAMOS TU <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">SISTEMA</span>
                 </h2>
                 <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
                   En 3 pasos simples, sin que tú toques código.
@@ -177,7 +170,7 @@ export default function ServicesPageVariant1() {
 
               {/* Timeline horizontal */}
               <div className="relative hidden md:block">
-                <div className="absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-color-primary/30 via-color-accent/30 to-color-primary/30" />
+                <div className="absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/30 via-accent/30 to-primary/30" />
 
                 <div className="relative flex justify-between">
                   {[
@@ -233,7 +226,7 @@ export default function ServicesPageVariant1() {
                 className="text-center mb-16"
               >
                 <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
-                  Comparativa de <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">Planes</span>
+                  Comparativa de <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Planes</span>
                 </h2>
                 <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
                   Elige el plan que mejor se adapte a tus necesidades
@@ -245,14 +238,14 @@ export default function ServicesPageVariant1() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="overflow-x-auto rounded-xl border border-border-color shadow-2xl"
+                className="overflow-x-auto rounded-xl border border-[var(--border-color)] shadow-2xl"
               >
                 <table className="comparison-table">
                   <thead>
                     <tr style={{ background: 'linear-gradient(to right, rgba(13, 127, 242, 0.15), rgba(139, 92, 246, 0.15))' }}>
                       <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase">Característica</th>
                       <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Básico</th>
-                      <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center border-x border-border-color bg-color-primary/5">Profesional</th>
+                      <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center border-x border-[var(--border-color)] bg-primary/5">Profesional</th>
                       <th className="p-6 text-white font-michroma text-sm tracking-widest uppercase text-center">Enterprise</th>
                     </tr>
                   </thead>
@@ -277,14 +270,14 @@ export default function ServicesPageVariant1() {
                             ? <span className="material-symbols-outlined text-slate-600 text-xl">close</span>
                             : row.basic}
                         </td>
-                        <td className="p-6 text-center text-white border-x border-border-color bg-color-primary/5">
+                        <td className="p-6 text-center text-white border-x border-[var(--border-color)] bg-primary/5">
                           {row.check
-                            ? <span className="material-symbols-outlined text-color-primary text-xl">check_circle</span>
+                            ? <span className="material-symbols-outlined text-primary text-xl">check_circle</span>
                             : <span className="font-semibold">{row.pro}</span>}
                         </td>
                         <td className="p-6 text-center text-text-muted">
                           {row.check
-                            ? <span className="material-symbols-outlined text-color-primary text-xl">check_circle</span>
+                            ? <span className="material-symbols-outlined text-primary text-xl">check_circle</span>
                             : row.ent}
                         </td>
                       </motion.tr>
@@ -305,7 +298,7 @@ export default function ServicesPageVariant1() {
               className="text-center mb-16"
             >
               <h2 className="text-white text-3xl md:text-4xl font-michroma mb-4">
-                Preguntas <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary to-color-accent">Frecuentes</span>
+                Preguntas <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Frecuentes</span>
               </h2>
               <p className="text-text-secondary font-montserrat max-w-2xl mx-auto">
                 Resolvemos tus dudas sobre nuestros servicios
@@ -328,7 +321,7 @@ export default function ServicesPageVariant1() {
                   >
                     <div className="flex items-center justify-between gap-4">
                       <h3 className="text-white font-michroma text-lg pr-8">{faq.question}</h3>
-                      <span className={`material-symbols-outlined text-color-primary transition-transform duration-300 ${openFaq === idx ? 'rotated' : ''}`}>
+                      <span className={`material-symbols-outlined text-primary transition-transform duration-300 ${openFaq === idx ? 'rotated' : ''}`}>
                         expand_more
                       </span>
                     </div>
@@ -347,9 +340,6 @@ export default function ServicesPageVariant1() {
               ))}
             </div>
           </section>
-
-        </main>
-      </div>
     </>
   );
 }

@@ -1,0 +1,122 @@
+{
+  "name": "Support Chatbot AI - OpenAI",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "support-response",
+        "method": "POST",
+        "responseMode": "onReceived"
+      },
+      "id": "webhook_trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300],
+      "webhookId": "support-response"
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://javlabs-javlabs-backend.ak7rlh.easypanel.host/api/support/tickets/{{ $json.body.ticketId }}/public",
+        "options": {}
+      },
+      "id": "get_ticket",
+      "name": "Get Ticket Details (Public)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "prompt": "Eres un agente de soporte técnico de JAV LABS.\n\nContexto del ticket:\nAsunto: {{ $json.body.subject }}\nPrioridad: {{ $json.body.priority }}\n\nHistorial de conversación:\n{% for msg in $node['Get Ticket Details'].json.messages %}\n{{ msg.senderType }}: {{ msg.content }}\n{% endfor %}\n\nMensaje actual del cliente: {{ $json.body.message }}\n\nInstrucciones:\n- Responde de forma profesional, amable y concisa\n- Si no sabes la respuesta, indica que un agente humano te asistirá\n- Máximo 3-4 frases\n- En español\n- Incluye un botón o enlace para \"Hablar con un humano\" si el problema es complejo\n\nRespuesta:",
+        "temperature": 0.7,
+        "maxTokens": 256
+      },
+      "id": "openai_chat",
+      "name": "OpenAI Chat",
+      "type": "n8n-nodes-base.openAiChatModel",
+      "position": [680, 300],
+      "credentials": {
+        "openAiApi": "openai_api"
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  response: $node['OpenAI Chat'].json.choices[0].message.content,\n  confidence: 0.95,\n  metadata: {\n    model: 'gpt-3.5-turbo',\n    timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "id": "build_response",
+      "name": "Build Response",
+      "type": "n8n-nodes-base.code",
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://javlabs-javlabs-backend.ak7rlh.easypanel.host/api/support/tickets/{{ $json.body.ticketId }}/webhook-n8n",
+        "body": {
+          "response": "{{ $json.response }}",
+          "confidence": "{{ $json.confidence }}",
+          "metadata": "{{ $json.metadata }}"
+        },
+        "options": {}
+      },
+      "id": "send_to_backend",
+      "name": "Send to Backend (Public Webhook)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Ticket Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Ticket Details": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat": {
+      "main": [
+        [
+          {
+            "node": "Build Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Response": {
+      "main": [
+        [
+          {
+            "node": "Send to Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "staticData": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "id": "support-chatbot-ai",
+  "active": false,
+  "tags": [],
+  "versionId": "1"
+}

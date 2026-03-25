@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import PublicNavbar from '../../components/PublicNavbar';
 import './AboutPage.css';
 
 export default function AboutPage() {
@@ -7,9 +6,6 @@ export default function AboutPage() {
 
   return (
     <>
-      {/* ───── HEADER ───── */}
-      <PublicNavbar />
-
       {/* ───── HERO ───── */}
       <section className="relative overflow-hidden pt-24 pb-32 bg-navy-darker">
         {/* Fondo decorativo */}

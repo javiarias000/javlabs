@@ -16,6 +16,9 @@ import AdminUsuarios from './stitch/admin_usuarios/AdminUsuarios';
 import PortalLogin from './stitch/portal_login/PortalLogin';
 import GoogleCallback from "./pages/GoogleCallback";
 
+// Layouts
+import PublicLayout from './components/PublicLayout';
+
 // Privadas
 import ClientDashboard from './stitch/client_dashboard/ClientDashboard';
 import ClientDashboardOverview from './stitch/client_dashboard_overview/ClientDashboardOverview';
@@ -62,17 +65,19 @@ function AppRoutes() {
     <>
       <ScrollToTop />
       <Routes>
-        {/* PÚBLICO */}
-        <Route path="/"                      element={<LandingPage1 />} />
-        <Route path="/servicios"             element={<ServicesPageVariant1 />} />
-        <Route path="/nosotros"              element={<AboutPage />} />
-        <Route path="/contacto"              element={<ContactPageVariant1 />} />
-        <Route path="/precios"               element={<PricingPage />} />
-        <Route path="/auth/callback"         element={<AuthCallback />} />
-        <Route path="/auth/google/callback"  element={<GoogleCallback />} />
-        <Route path="/login"                 element={<PortalLogin />} />
+        {/* PÚBLICO - Con layout unificado */}
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<LandingPage1 />} />
+          <Route path="/servicios" element={<ServicesPageVariant1 />} />
+          <Route path="/nosotros" element={<AboutPage />} />
+          <Route path="/contacto" element={<ContactPageVariant1 />} />
+          <Route path="/precios" element={<PricingPage />} />
+          <Route path="auth/callback" element={<AuthCallback />} />
+          <Route path="auth/google/callback" element={<GoogleCallback />} />
+          <Route path="login" element={<PortalLogin />} />
+        </Route>
 
-        {/* PRIVADO — Portal */}
+        {/* PRIVADO — Portal (sin footer unificado en dashboard) */}
         <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
         <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
         <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />

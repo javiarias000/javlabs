@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import ROICalculator from '../pricing_page/ROICalculator';
-import PublicNavbar from '../../components/PublicNavbar';
 import MouseSpotlight from '../../components/MouseSpotlight';
 import AnimatedStatsGroup from '../../components/AnimatedStatsGroup';
 import ServiceCard3D from '../../components/ServiceCard3D';
@@ -190,9 +189,6 @@ export default function LandingPage1() {
   return (
     <>
       <MouseSpotlight size={400} opacity={0.08} color="#0d7ff2" />
-
-      {/* ───── HEADER ───── */}
-      <PublicNavbar />
 
       {/* ───── HERO ───── */}
       <section className="relative overflow-hidden pt-20 pb-32 section-gradient">
@@ -839,66 +835,6 @@ export default function LandingPage1() {
         </div>
       </section>
 
-      {/* ───── FOOTER ───── */}
-      <footer className="bg-navy-darker border-t border-slate-800 pt-20 pb-10">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-          <div className="col-span-1">
-            <div className="flex items-center gap-4 mb-6">
-              <img src="/Logo3.png" alt="Javlabs Logo" className="h-12 w-auto object-contain" />
-              <span className="text-white text-lg font-michroma tracking-widest">JAVLABS</span>
-            </div>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              Sistemas de automatización de alta gama para empresas con visión de futuro.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-white font-michroma text-sm uppercase mb-6">Empresa</h4>
-            <ul className="flex flex-col gap-4 text-slate-400 text-sm">
-              {['Nosotros', 'Casos de Éxito', 'Carreras', 'Prensa'].map((item) => (
-                <li key={item}><Link to="/" className="hover:text-primary transition-colors">{item}</Link></li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-michroma text-sm uppercase mb-6">Soporte</h4>
-            <ul className="flex flex-col gap-4 text-slate-400 text-sm">
-              <li><Link to="/contacto" className="hover:text-primary transition-colors">Contacto</Link></li>
-              <li><Link to="/login" className="hover:text-primary transition-colors">Portal de Clientes</Link></li>
-              <li><a href="/" className="hover:text-primary transition-colors">Documentación</a></li>
-              <li><a href="/" className="hover:text-primary transition-colors">FAQ</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-michroma text-sm uppercase mb-6">Newsletter</h4>
-            <p className="text-slate-400 text-xs mb-4">Recibe insights sobre automatización cada semana.</p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Email"
-                className="bg-background-dark border border-slate-700 rounded-l px-4 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white newsletter-input"
-              />
-              <button
-                className="px-4 py-2 rounded-r hover:opacity-80 transition-all"
-                style={{ background: 'var(--color-primary)' }}
-              >
-                <span className="material-symbols-outlined text-sm">send</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-xs">© {new Date().getFullYear()} JAV LABS. Todos los derechos reservados.</p>
-          <div className="flex gap-8 text-slate-500 text-xs">
-            {['Privacidad', 'Términos', 'Cookies'].map((item) => (
-              <a key={item} href="/" className="hover:text-slate-300 transition-colors">{item}</a>
-            ))}
-          </div>
-        </div>
-      </footer>
     </>
   );
 }

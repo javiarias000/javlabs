@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { AnimatePresence, motion } from 'framer-motion';
+import Footer from './Footer';
 
 const navItems = [
   { icon: 'dashboard',            label: 'Dashboard',        path: '/dashboard/overview'      },
@@ -439,6 +440,11 @@ export default function PortalLayout({ children }) {
           <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
             {children}
           </main>
+
+          {/* Footer unificado (solo en páginas que no son dashboard principal) */}
+          {!pathname.includes('/dashboard') && (
+            <Footer />
+          )}
 
         </div>
       </div>

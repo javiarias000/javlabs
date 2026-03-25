@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const axios  = require('axios');
-// ✅ FIX: prisma faltaba en el archivo original
 const prisma = require('../config/prisma');
 const { authenticate } = require('../middlewares/auth.middleware');
 const { query, body } = require('express-validator');
@@ -13,7 +12,7 @@ const n8n = axios.create({
   headers: { 'X-N8N-API-KEY': process.env.N8N_API_KEY },
 });
 
-// GET /api/n8n/workflows
+// GET /api/n8n/workflows - Listar workflows de n8n
 router.get('/workflows', async (req, res, next) => {
   try {
     const { data } = await n8n.get('/workflows');
@@ -21,7 +20,7 @@ router.get('/workflows', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// GET /api/n8n/workflows/:id
+// GET /api/n8n/workflows/:id - Obtener workflow específico
 router.get('/workflows/:id', async (req, res, next) => {
   try {
     const { data } = await n8n.get(`/workflows/${req.params.id}`);
@@ -29,9 +28,8 @@ router.get('/workflows/:id', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// POST /api/n8n/workflows
+// POST /api/n8n/workflows - Crear workflow en n8n
 router.post('/workflows', [
-  // ✅ VALIDATION ADDED - N8N Workflow Create
   body('name').optional().notEmpty().withMessage('Workflow name required'),
   body('nodes').optional().isArray().withMessage('Nodes must be array'),
   body('connections').optional().isObject().withMessage('Connections must be object'),
@@ -43,7 +41,7 @@ router.post('/workflows', [
   } catch (err) { next(err); }
 });
 
-// PATCH /api/n8n/workflows/:id/activate
+// PATCH /api/n8n/workflows/:id/activate - Activar workflow
 router.patch('/workflows/:id/activate', async (req, res, next) => {
   try {
     const { data } = await n8n.post(`/workflows/${req.params.id}/activate`);
@@ -51,7 +49,7 @@ router.patch('/workflows/:id/activate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// PATCH /api/n8n/workflows/:id/deactivate
+// PATCH /api/n8n/workflows/:id/deactivate - Desactivar workflow
 router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   try {
     const { data } = await n8n.post(`/workflows/${req.params.id}/deactivate`);
@@ -59,7 +57,7 @@ router.patch('/workflows/:id/deactivate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// GET /api/n8n/projects
+// GET /api/n8n/projects - Listar proyectos n8n agrupados
 router.get('/projects', async (req, res, next) => {
   try {
     const [wfRes, execRes] = await Promise.all([
@@ -71,10 +69,10 @@ router.get('/projects', async (req, res, next) => {
     const executions = execRes.data.data || execRes.data;
 
     const PROJECT_RULES = [
-      { key: 'dentilook',  project: 'DentiLook',       keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
-      { key: 'sama_shala', project: 'Sama Shala',      keywords: ['sama_shala', 'sama shala'] },
-      { key: 'facturas',   project: 'Datos & Facturas', keywords: ['factura', 'datos_facturas'] },
-      { key: 'violin',     project: 'Clases Violin',   keywords: ['violin', 'clases_magistrales'] },
+      { key: 'dentilook',  keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
+      { key: 'sama_shala', keywords: ['sama_shala', 'sama shala'] },
+      { key: 'facturas',   keywords: ['factura', 'datos_facturas'] },
+      { key: 'violin',     keywords: ['violin', 'clases_magistrales'] },
     ];
 
     const getProjectInfo = (name) => {
@@ -131,8 +129,7 @@ router.get('/projects', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// ✅ VALIDATION ADDED - N8N Executions (duplicate route - both need validation)
+// GET /api/n8n/executions - Listar ejecuciones de workflows
 router.get('/executions', [
   query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be 1-100'),
   query('status').optional().isIn(['success', 'error', 'running', 'waiting']).withMessage('Invalid status'),
@@ -150,7 +147,7 @@ router.get('/executions', [
   } catch (err) { next(err); }
 });
 
-// GET /api/n8n/stats
+// GET /api/n8n/stats - Estadísticas de n8n
 router.get('/stats', async (req, res, next) => {
   try {
     const [execs, workflows] = await Promise.all([
@@ -176,7 +173,7 @@ router.get('/stats', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// GET /api/n8n/projects/:key
+// GET /api/n8n/projects/:key - Obtener detalles de proyecto n8n
 router.get('/projects/:key', async (req, res, next) => {
   try {
     const key = req.params.key;
@@ -190,7 +187,7 @@ router.get('/projects/:key', async (req, res, next) => {
     const executions = execRes.data.data || execRes.data;
 
     const PROJECT_RULES = [
-      { key: 'dentilook',  keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
+      { key: 'dentilook', keywords: ['dentilook', 'clinica', 'dental', 'cita', 'recordatorio citas', 'rag - carga', 'carga documentos', 'buscador de leads'] },
       { key: 'sama_shala', keywords: ['sama_shala', 'sama shala'] },
       { key: 'facturas',   keywords: ['factura', 'datos_facturas'] },
       { key: 'violin',     keywords: ['violin', 'clases_magistrales'] },
@@ -204,7 +201,7 @@ router.get('/projects/:key', async (req, res, next) => {
       if (name.includes(' — ') || name.includes(' - ')) {
         const sep = name.includes(' — ') ? ' — ' : ' - ';
         const parts = name.split(sep);
-        if (parts.length > 1) return parts[0].trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+        return parts[0].trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
       }
       if (name.includes('_')) return name.split('_')[0].toLowerCase();
       return 'general';
@@ -248,7 +245,7 @@ router.get('/projects/:key', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// ✅ VALIDATION ADDED - N8N Project Settings
+// PATCH /api/n8n/projects/:key - Actualizar configuración de proyecto n8n
 router.patch('/projects/:key', [
   body('name').optional().notEmpty().isLength({ max: 200 }).withMessage('Name max 200 chars'),
   body('description').optional().isLength({ max: 1000 }).withMessage('Description max 1000 chars'),

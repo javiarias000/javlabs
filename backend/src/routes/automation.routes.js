@@ -6,6 +6,69 @@ const { validate } = require('../middlewares/validate.middleware');
 
 router.use(authenticate);
 
+/**
+ * @swagger
+ * /automations:
+ *   get:
+ *     summary: Listar automatizaciones
+ *     description: Devuelve todas las automatizaciones. Admin ve todas, usuarios solo las de sus proyectos
+ *     tags: [Automations]
+ *     security:
+ *       - bearerAuth: []
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Lista de automatizaciones
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     format: uuid
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   type:
+ *                     type: string
+ *                     enum: [PROCESS, API_INTEGRATION, CHATBOT, CRM, REPORT, WORKFLOW]
+ *                   status:
+ *                     type: string
+ *                     enum: [ACTIVE, PAUSED, ERROR, PENDING]
+ *                   tasksRun:
+ *                     type: integer
+ *                   timeSaved:
+ *                     type: number
+ *                     format: float
+ *                   webhookUrl:
+ *                     type: string
+ *                     format: url
+ *                     nullable: true
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                   project:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       userId:
+ *                         type: string
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
 router.get('/', async (req, res, next) => {
   try {
     const isAdmin = req.user.role === 'ADMIN';
@@ -18,7 +81,68 @@ router.get('/', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// ✅ VALIDATION ADDED - Create Automation
+/**
+ * @swagger
+ * /automations:
+ *   post:
+ *     summary: Crear automatización
+ *     description: Crea una nueva automatización vinculada a un proyecto
+ *     tags: [Automations]
+ *     security:
+ *       - bearerAuth: []
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - type
+ *               - projectId
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Lead Scoring Automation
+ *               description:
+ *                 type: string
+ *                 maxLength: 1000
+ *                 example: Automatización para puntuar leads según interacciones
+ *               type:
+ *                 type: string
+ *                 enum: [PROCESS, API_INTEGRATION, CHATBOT, CRM, REPORT, WORKFLOW]
+ *                 example: CHATBOT
+ *               projectId:
+ *                 type: string
+ *                 format: uuid
+ *                 example: 123e4567-e89b-12d3-a456-426614174000
+ *               webhookUrl:
+ *                 type: string
+ *                 format: url
+ *                 example: https://n8n.javlabs.com/webhook/lead-scoring
+ *                 nullable: true
+ *     responses:
+ *       201:
+ *         description: Automatización creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Automation'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         description: Proyecto no pertenece al usuario
+ *       404:
+ *         description: Proyecto no encontrado
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
 router.post('/', [
   body('name').notEmpty().withMessage('Automation name is required'),
   body('description').optional().isLength({ max: 1000 }).withMessage('Description too long (max 1000 chars)'),
@@ -35,6 +159,76 @@ router.post('/', [
   } catch (err) { next(err); }
 });
 
+/**
+ * @swagger
+ * /automations/{id}:
+ *   get:
+ *     summary: Obtener automatización específica
+ *     description: Devuelve detalles de una automatización por ID (solo si belongs to user's project)
+ *     tags: [Automations]
+ *     security:
+ *       - bearerAuth: []
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID de la automatización
+ *     responses:
+ *       200:
+ *         description: Detalle de automatización
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 type:
+ *                   type: string
+ *                   enum: [PROCESS, API_INTEGRATION, CHATBOT, CRM, REPORT, WORKFLOW]
+ *                 status:
+ *                   type: string
+ *                   enum: [ACTIVE, PAUSED, ERROR, PENDING]
+ *                 tasksRun:
+ *                   type: integer
+ *                 timeSaved:
+ *                   type: number
+ *                   format: float
+ *                 webhookUrl:
+ *                   type: string
+ *                   format: url
+ *                   nullable: true
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                 project:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         description: No tienes acceso a esta automatización
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     const automation = await prisma.automation.findUnique({
@@ -46,7 +240,67 @@ router.get('/:id', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// ✅ VALIDATION ADDED - Update Automation
+/**
+ * @swagger
+ * /automations/{id}:
+ *   patch:
+ *     summary: Actualizar automatización
+ *     description: Actualiza campos de una automatización existente (solo si belongs to user's project)
+ *     tags: [Automations]
+ *     security:
+ *       - bearerAuth: []
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID de la automatización a actualizar
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [active, inactive, paused]
+ *                 example: active
+ *               name:
+ *                 type: string
+ *                 example: Updated Automation Name
+ *               description:
+ *                 type: string
+ *                 maxLength: 1000
+ *                 example: Descripción actualizada
+ *               webhookUrl:
+ *                 type: string
+ *                 format: url
+ *                 example: https://n8n.javlabs.com/webhook/updated
+ *     responses:
+ *       200:
+ *         description: Automatización actualizada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Automation'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         description: No tienes acceso a esta automatización
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
 router.patch('/:id', [
   body('status').optional().isIn(['active', 'inactive', 'paused']).withMessage('Invalid status'),
   body('name').optional().notEmpty().withMessage('Name cannot be empty'),
@@ -64,6 +318,56 @@ router.patch('/:id', [
   } catch (err) { next(err); }
 });
 
+/**
+ * @swagger
+ * /automations/{id}:
+ *   delete:
+ *     summary: Eliminar automatización (solo admin)
+ *     description: Elimina una automatización del sistema. Solo administradores pueden acceder
+ *     tags: [Automations]
+ *     security:
+ *       - bearerAuth: []
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID de la automatización a eliminar
+ *     responses:
+ *       200:
+ *         description: Automatización eliminada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Automatización eliminada.
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         description: Sin permisos de administrador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: FORBIDDEN
+ *                 message:
+ *                   type: string
+ *                   example: Sin permisos.
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
 router.delete('/:id', async (req, res, next) => {
   try {
     if (req.user.role !== 'ADMIN') return res.status(403).json({ error: 'Sin permisos.' });

@@ -9,6 +9,9 @@ const path    = require('path');
 let passport;
 try { passport = require('./config/passport'); } catch (e) { /* no instalado aún */ }
 
+// Swagger documentation
+const { swaggerSpec, swaggerUi } = require('../docs/swagger');
+
 const authRoutes       = require('./routes/auth.routes');
 const userRoutes       = require('./routes/user.routes');
 const projectRoutes    = require('./routes/project.routes');
@@ -78,6 +81,13 @@ app.use(express.urlencoded({ extended: true }));
 // 🔹 Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'JAV LABS API', timestamp: new Date() });
+});
+
+// 🔹 Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
 });
 
 // 🔹 Rutas API
