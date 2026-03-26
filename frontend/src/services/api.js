@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // ✅ FIX: usar la misma key que AuthContext
 const TOKEN_KEY   = 'accessToken';
@@ -53,7 +53,7 @@ api.interceptors.response.use(
         const storedRefresh = localStorage.getItem(REFRESH_KEY);
 
         const { data } = await axios.post(
-          `${API_URL}/auth/refresh`,
+          '/auth/refresh',
           { refreshToken: storedRefresh },
           { withCredentials: true }
         );

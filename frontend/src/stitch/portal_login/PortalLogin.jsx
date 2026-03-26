@@ -102,7 +102,7 @@ export default function PortalLogin() {
             {/* GOOGLE */}
             <button
               className="w-full flex items-center justify-center gap-3 border border-white/10 bg-white/5 hover:bg-white/10 transition-all py-3 rounded-lg text-white text-sm font-medium"
-              onClick={() => window.location.href = (import.meta.env.VITE_API_URL || "http://localhost:3001/api") + "/auth/google"}
+              onClick={() => window.location.href = (import.meta.env.VITE_API_URL || "http://localhost:3000/api") + "/auth/google"}
             >
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="h-5" />
               Continuar con Google
