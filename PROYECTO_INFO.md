@@ -458,6 +458,116 @@ Los siguientes archivos .md han sido consolidados en este documento y pueden eli
 
 ---
 
+---
+
+## 🤖 INTEGRACIÓN AUTOMATIZADA CON N8N (2026-03-26)
+
+### **Sistema de Soporte con IA**
+
+✅ **Integración completada y funcional** entre backend JAV LABS y n8n para soporte automatizado.
+
+---
+
+### **🔧 Problemas Resueltos**
+
+1. **Módulo faltante en producción**
+   - `jsonwebtoken` movido de `devDependencies` a `dependencies`
+   - Commit: `cee99e6`
+
+2. **Rate limiting bloqueando endpoints**
+   - Excluidos endpoints públicos (`/public`, `/webhook-n8n`)
+   - Excluidos endpoints de auth (`/api/auth/*`)
+   - Commit: `e7fbe2b`
+
+3. **URL incorrecta del webhook**
+   - Corregida variable `N8N_SUPPORT_WEBHOOK_URL`
+   - De `.../webhook-test/...` → `.../webhook/...`
+
+4. **Configuración n8n V4**
+   - HTTP Request: Usar `JSON Body` (no `body`)
+   - Referencias: `={{ $json.field }}`
+   - Prompt OpenAI: Corregido a `$node['Get Ticket Details'].json`
+
+5. **Logging mejorado**
+   - Detalle en notificación a n8n
+   - Commit: `e99f23d`
+
+---
+
+### **📊 Arquitectura del Flujo**
+
+```
+Usuario crea ticket (AUTOMATED)
+    ↓
+Backend → notifyN8n() → POST webhook
+    ↓
+n8n Workflow "N8n_Javlabs":
+  ├─ Webhook Trigger (recibe ticketId)
+  ├─ Get Ticket Details (consulta /public)
+  ├─ OpenAI Chat (genera respuesta)
+  ├─ Build Response (formatea)
+  └─ Send to Backend (envía respuesta)
+    ↓
+Backend → Crea mensaje BOT en ticket
+    ↓
+Frontend → Muestra respuesta automática
+```
+
+---
+
+### **📁 Archivos Modificados**
+
+| Archivo | commit | Descripción |
+|---------|--------|-------------|
+| `backend/package.json` | cee99e6 | jsonwebtoken → dependencies |
+| `backend/src/app.js` | e7fbe2b | Rate limiting mejorado |
+| `backend/src/routes/support.routes.js` | e99f23d | Logging detallado |
+
+---
+
+### **📚 Documentación**
+
+- **Diagnóstico completo:** `INTEGRACION_N8N_DIAGNOSTICO_Y_SOLUCION.md`
+- **Workflow corregido:** `support_n8n_workflow_fixed.json` (referencia)
+- **Scripts de prueba:** `test_n8n_integration.sh`, `test_webhook_direct.sh`
+
+---
+
+### **Variables de Entorno Requeridas**
+
+```env
+# Backend .env
+N8N_URL=n8n-n8n.ak7rlh.easypanel.host
+N8N_SUPPORT_WEBHOOK_URL=https://n8n-n8n.ak7rlh.easypanel.host/webhook/support-response
+N8N_API_KEY=<api-key>
+```
+
+---
+
+### **Configuración n8n - Nodo "Send to Backend"**
+
+**IMPORTANTE:** En n8n V4, usar:
+
+- **Type:** HTTP Request
+- **Method:** POST
+- **URL:** `https://.../api/support/tickets/{{ $json.ticketId }}/webhook-n8n`
+- **Send Body:** ON
+- **Body Content Type:** JSON
+- **JSON Body:**
+```json
+{
+  "response": "={{ $json.response }}",
+  "confidence": "={{ $json.confidence }}",
+  "metadata": "={{ $json.metadata }}"
+}
+```
+
+---
+
+**Estado:** ✅ Funcionando en producción
+
+---
+
 ## 🎉 ESTADO ACTUAL
 
 ✅ **Proyecto funcional y corregido**
@@ -466,16 +576,18 @@ Los siguientes archivos .md han sido consolidados en este documento y pueden eli
 - Frontend: Puerto 5173
 - Backend: Puerto 3000
 - Ollama: Puerto 11434
+- n8n: Integración activa
 
 **Últimas correcciones:**
 - Página de servicios funcionando
 - Landing page sin footer duplicado
 - Iconos de Material Symbols visibles
 - Build de producción exitoso
+- **Integración n8n completada** 🤖
 
 **Listo para:** Desarrollo continuo y deployment
 
 ---
 
-**Última actualización:** 2026-03-25
+**Última actualización:** 2026-03-26
 **Responsable:** Claude Code Assistant
