@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 // ✅ FIX: una sola constante para la key — evita el bug de "token" vs "accessToken"
 const TOKEN_KEY   = "accessToken";
