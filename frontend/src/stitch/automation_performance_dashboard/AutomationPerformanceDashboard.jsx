@@ -20,24 +20,48 @@ export default function AutomationPerformanceDashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [error,      setError]      = useState(null);
+  const [debugMsg,   setDebugMsg]   = useState(null);
 
   // ─── fetch ──────────────────────────────────────────────────────
   const fetchData = useCallback(async (isRefresh = false) => {
+    console.log('[Dashboard] fetchData iniciado');
+    const startTime = Date.now();
     isRefresh ? setRefreshing(true) : setLoading(true);
     setError(null);
+    setDebugMsg(null);
     try {
-      const [projRes, wfRes] = await Promise.all([
-        api.get('/n8n/projects'),
-        api.get('/n8n/workflows'),
+      // Timeout de 10 segundos para cada petición (más corto para detectar problemas)
+      const withTimeout = (promise, ms) => Promise.race([
+        promise,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout después de ' + ms + 'ms')), ms)
+        )
       ]);
+
+      console.log('[Dashboard] Haciendo peticiones a N8N...');
+      const [projRes, wfRes] = await Promise.all([
+        withTimeout(api.get('/n8n/projects'), 10000),
+        withTimeout(api.get('/n8n/workflows'), 10000),
+      ]);
+
+      const elapsed = Date.now() - startTime;
+      console.log('[Dashboard] Respuestas recibidas en', elapsed, 'ms:', {
+        projectsLength: projRes.data?.projects?.length || projRes.data?.length || 0,
+        workflowsLength: wfRes.data?.data?.length || wfRes.data?.length || 0
+      });
+
       setProjects(projRes.data?.projects || projRes.data || []);
-      setWorkflows(wfRes.data?.data       || wfRes.data  || []);
+      setWorkflows(wfRes.data?.data || wfRes.data || []);
       setLastUpdate(new Date());
+      setDebugMsg(`Datos cargados en ${elapsed}ms`);
     } catch (err) {
-      setError('No se pudo conectar con n8n. Verifica la configuración.');
+      const elapsed = Date.now() - startTime;
+      console.error('[Dashboard] Error después de', elapsed, 'ms:', err.message);
+      setError(`Error (${elapsed}ms): ${err.message || 'No se pudo conectar con n8n'}`);
     } finally {
       setLoading(false);
       setRefreshing(false);
+      console.log('[Dashboard] fetchData completado, loading=false');
     }
   }, []);
 
@@ -126,6 +150,14 @@ export default function AutomationPerformanceDashboard() {
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
             <span className="material-symbols-outlined">error</span>
             {error}
+          </div>
+        )}
+
+        {/* ── Debug info ── */}
+        {debugMsg && (
+          <div className="mb-6 p-4 bg-primary/10 border border-primary/30 text-primary text-xs flex items-center gap-3">
+            <span className="material-symbols-outlined">info</span>
+            {debugMsg}
           </div>
         )}
 

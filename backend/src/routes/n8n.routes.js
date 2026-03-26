@@ -5,18 +5,40 @@ const { authenticate } = require('../middlewares/auth.middleware');
 const { query, body } = require('express-validator');
 const { validate } = require('../middlewares/validate.middleware');
 
-router.use(authenticate);
+// Cliente HTTP para comunicarse con n8n
+const getN8nBaseURL = () => {
+  const n8nUrl = process.env.N8N_URL || 'http://localhost:5678';
+  // Si ya tiene protocolo, usarlo tal cual; si no, agregar https://
+  return n8nUrl.startsWith('http') ? n8nUrl : `https://${n8nUrl}`;
+};
 
 const n8n = axios.create({
-  baseURL: process.env.N8N_URL + '/api/v1',
+  baseURL: getN8nBaseURL() + '/api/v1',
   headers: { 'X-N8N-API-KEY': process.env.N8N_API_KEY },
+  timeout: 10000, // 10 seconds timeout
+  validateStatus: function (status) {
+    return status >= 200 && status < 300; // Accept any status between 200 and 299
+  }
 });
 
-// GET /api/n8n/workflows - Listar workflows de n8n
+// GET /api/n8n/workflows - Listar workflows de n8n (solo campos necesarios)
 router.get('/workflows', async (req, res, next) => {
   try {
     const { data } = await n8n.get('/workflows');
-    res.json(data);
+
+    // N8N puede devolver { data: [...] } o directamente [...]
+    const workflows = data.data || data;
+
+    // Reducir a solo los campos esenciales para el dashboard
+    const slimWorkflows = workflows.map(wf => ({
+      id: wf.id,
+      name: wf.name,
+      active: wf.active,
+      updatedAt: wf.updatedAt,
+      createdAt: wf.createdAt,
+    }));
+
+    res.json(slimWorkflows);
   } catch (err) { next(err); }
 });
 
@@ -60,9 +82,10 @@ router.patch('/workflows/:id/deactivate', async (req, res, next) => {
 // GET /api/n8n/projects - Listar proyectos n8n agrupados
 router.get('/projects', async (req, res, next) => {
   try {
+    // Limitar a 50 ejecuciones para no saturar la respuesta
     const [wfRes, execRes] = await Promise.all([
       n8n.get('/workflows'),
-      n8n.get('/executions?limit=100&includeData=false'),
+      n8n.get('/executions?limit=50&includeData=false'),
     ]);
 
     const workflows  = wfRes.data.data  || wfRes.data;
@@ -102,9 +125,22 @@ router.get('/projects', async (req, res, next) => {
     for (const wf of workflows) {
       const { key: projKey, name: projName } = getProjectInfo(wf.name);
       if (!projectMap[projName]) {
-        projectMap[projName] = { key: projKey, name: projName, workflows: [], executions: 0, success: 0, errors: 0, active: 0 };
+        projectMap[projName] = {
+          key: projKey,
+          name: projName,
+          workflows: [],   // Solo metadata, no el objeto completo
+          executions: 0,
+          success: 0,
+          errors: 0,
+          active: 0
+        };
       }
-      projectMap[projName].workflows.push({ id: wf.id, name: wf.name, active: wf.active });
+      // Workflow Slim: solo campos esenciales
+      projectMap[projName].workflows.push({
+        id: wf.id,
+        name: wf.name,
+        active: wf.active
+      });
       if (wf.active) projectMap[projName].active++;
     }
 
@@ -179,7 +215,8 @@ router.get('/projects/:key', async (req, res, next) => {
     const key = req.params.key;
     const [wfRes, execRes, customName] = await Promise.all([
       n8n.get('/workflows'),
-      n8n.get('/executions?limit=200&includeData=false'),
+      // Limitar a 50 ejecuciones para no saturar
+      n8n.get('/executions?limit=50&includeData=false'),
       prisma.n8nProject.findUnique({ where: { key } }).catch(() => null),
     ]);
 

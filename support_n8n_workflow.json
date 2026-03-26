@@ -5,7 +5,7 @@
       "parameters": {
         "path": "support-response",
         "method": "POST",
-        "responseMode": "onReceived"
+        "responseMode": "onSuccess"
       },
       "id": "webhook_trigger",
       "name": "Webhook Trigger",

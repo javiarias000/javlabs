@@ -101,6 +101,7 @@ function AppRoutes() {
         {/* PRIVADO — Soporte */}
         <Route path="/soporte"         element={<P><SupportTicketList /></P>} />
         <Route path="/soporte/chat"    element={<P><TechnicalSupportChat /></P>} />
+        <Route path="/soporte/ticket"  element={<P><SupportTicketList /></P>} />
         <Route path="/soporte/ticket/:id"  element={<P><TicketConversationView /></P>} />
 
         {/* 404 */}

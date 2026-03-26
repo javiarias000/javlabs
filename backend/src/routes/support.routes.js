@@ -20,10 +20,9 @@ const n8nClient = axios.create({
 
 // Webhook URL que n8n debe llamar para responder (configurado en n8n workflow)
 const N8N_SUPPORT_WEBHOOK_URL = process.env.N8N_SUPPORT_WEBHOOK_URL || (() => {
-  const base = process.env.N8N_URL || 'localhost:5678';
-  const protocol = base.startsWith('http') ? '' : 'https://';
+  const base = process.env.N8N_URL || 'http://localhost:5678';
   const cleanBase = base.replace(/\/$/, '');
-  return `${protocol}${cleanBase}/webhook/support-response`;
+  return `${cleanBase}/webhook/support-response`;
 })();
 
 /**
@@ -160,7 +159,8 @@ webhookRouter.post('/tickets/:id/webhook-n8n', [
   param('id').isUUID(),
   body('response').isString().notEmpty(),
   body('confidence').optional().isFloat({ min: 0, max: 1 }),
-  body('metadata').optional().isObject()
+  body('metadata').optional().isObject(),
+  validate
 ], async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -560,7 +560,8 @@ router.post('/tickets', [
  */
 // GET /api/support/tickets/:id - Obtener ticket específico con historial completo
 router.get('/tickets/:id', [
-  param('id').isUUID()
+  param('id').isUUID(),
+  validate
 ], async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -671,7 +672,8 @@ router.get('/tickets/:id', [
 router.post('/tickets/:id/messages', [
   param('id').isUUID(),
   body('content').isString().notEmpty().withMessage('Message content required'),
-  body('senderType').isIn(['USER', 'BOT', 'AGENT']).withMessage('Invalid sender type')
+  body('senderType').isIn(['USER', 'BOT', 'AGENT']).withMessage('Invalid sender type'),
+  validate
 ], async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -773,7 +775,8 @@ router.post('/tickets/:id/messages', [
  */
 // POST /api/support/tickets/:id/human-takeover - Agente humano toma control
 router.post('/tickets/:id/human-takeover', [
-  param('id').isUUID()
+  param('id').isUUID(),
+  validate
 ], async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -857,7 +860,8 @@ router.post('/tickets/:id/human-takeover', [
  */
 // POST /api/support/tickets/:id/resume-automated - Reanudar bot
 router.post('/tickets/:id/resume-automated', [
-  param('id').isUUID()
+  param('id').isUUID(),
+  validate
 ], async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -947,7 +951,8 @@ router.post('/tickets/:id/resume-automated', [
 router.patch('/tickets/:id', [
   param('id').isUUID(),
   body('status').optional().isIn(['AUTOMATED', 'HUMAN_TAKEOVER', 'PENDING_HUMAN', 'COMPLETED', 'CLOSED']),
-  body('priority').optional().isIn(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'])
+  body('priority').optional().isIn(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']),
+  validate
 ], async (req, res, next) => {
   try {
     const { id } = req.params;
