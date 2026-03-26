@@ -157,7 +157,7 @@ async function notifyN8n(ticketId, message) {
  */
 webhookRouter.post('/tickets/:id/webhook-n8n', [
   param('id').isUUID(),
-  body('response').isString().notEmpty(),
+  body('response').optional().isString(),
   body('confidence').optional().isFloat({ min: 0, max: 1 }),
   body('metadata').optional().isObject(),
   validate
@@ -179,14 +179,26 @@ webhookRouter.post('/tickets/:id/webhook-n8n', [
       return res.status(400).json({ error: 'Ticket is not in AUTOMATED mode' });
     }
 
+    // Limpiar metadata: remover undefined/null values
+    const cleanMeta = {};
+    if (confidence !== undefined && confidence !== null) cleanMeta.confidence = confidence;
+    if (metadata && typeof metadata === 'object') {
+      Object.entries(metadata).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) cleanMeta[key] = value;
+      });
+    }
+
+    // Si response es undefined/null/empty, usar mensaje por defecto
+    const messageContent = (response || '').trim() || 'Lo siento, estoy experimentando dificultades técnicas. Un agente humano te asistirá pronto.';
+
     // Crear mensaje del BOT
     const message = await prisma.ticketMessage.create({
       data: {
         ticketId: id,
         senderType: 'BOT',
         senderId: null,
-        content: response,
-        metadata: { confidence, ...metadata }
+        content: messageContent,
+        metadata: Object.keys(cleanMeta).length > 0 ? cleanMeta : null
       }
     });
 
