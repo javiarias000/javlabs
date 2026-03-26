@@ -10,7 +10,12 @@ const REFRESH_KEY = "refreshToken";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser]               = useState(null);
-  const [accessToken, setAccessToken] = useState(localStorage.getItem(TOKEN_KEY));
+  const [accessToken, setAccessToken] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(TOKEN_KEY);
+    }
+    return null;
+  });
   const [loading, setLoading]         = useState(true);
 
   // ─── helpers ────────────────────────────────────────────────────

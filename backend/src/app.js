@@ -50,6 +50,8 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.N8N_URL, // Permitir requests desde n8n (server-to-server)
   'http://localhost:5173',
+  'http://localhost:5174', // Puerto actual del frontend en desarrollo
+  'http://localhost:5175', // Puerto anterior
   'http://localhost:3000',
 ].filter(Boolean);
 
