@@ -480,6 +480,8 @@ router.post('/tickets', [
     const { subject, message, status = 'AUTOMATED', priority = 'MEDIUM' } = req.body;
     const userId = req.user.id;
 
+    console.log(`[Support] Creando ticket - userId: ${userId}, status: ${status}, hasMessage: ${!!message}`);
+
     // Crear ticket nuevo
     const ticket = await prisma.supportTicket.create({
       data: {
@@ -503,9 +505,14 @@ router.post('/tickets', [
       }
     });
 
+    console.log(`[Support] Ticket creado: ${ticket.id}, status: ${ticket.status}, messagesCount: ${ticket.messages.length}`);
+
     // Si hay mensaje y el ticket está en modo AUTOMATED, notificar a n8n
     if (message && ticket.status === 'AUTOMATED' && ticket.messages.length > 0) {
+      console.log(`[Support] Condiciones cumplidas para notifyN8n - llamando...`);
       await notifyN8n(ticket.id, ticket.messages[0]);
+    } else {
+      console.log(`[Support] NO se notifica a n8n - message: ${!!message}, status: ${ticket.status}, messages.length: ${ticket.messages.length}`);
     }
 
     res.status(201).json(ticket);
@@ -719,16 +726,20 @@ router.post('/tickets/:id/messages', [
     const { id } = req.params;
     const { content, senderType, metadata } = req.body;
 
+    console.log(`[Support] Añadiendo mensaje a ticket ${id} - senderType: ${senderType}`);
+
     const ticket = await prisma.supportTicket.findUnique({
       where: { id }
     });
 
     if (!ticket) {
+      console.log(`[Support] Ticket ${id} no encontrado`);
       return res.status(404).json({ error: 'Ticket not found' });
     }
 
     // Verificar acceso
     if (req.user.role === 'CLIENT' && ticket.userId !== req.user.id) {
+      console.log(`[Support] Acceso denegado - usuario ${req.user.id} no es dueño del ticket`);
       return res.status(403).json({ error: 'Not authorized' });
     }
 
@@ -749,6 +760,8 @@ router.post('/tickets/:id/messages', [
       }
     });
 
+    console.log(`[Support] Mensaje creado: ${message.id} en ticket ${id}`);
+
     // Actualizar lastMessageAt del ticket
     await prisma.supportTicket.update({
       where: { id },
@@ -757,7 +770,10 @@ router.post('/tickets/:id/messages', [
 
     // Si el mensaje es del usuario y el ticket está en modo AUTOMATED, notificar a n8n para que genere respuesta IA
     if (senderType === 'USER' && ticket.status === 'AUTOMATED') {
+      console.log(`[Support] Mensaje de USER en ticket AUTOMATED - notificando a n8n`);
       await notifyN8n(ticket.id, message);
+    } else {
+      console.log(`[Support] NO notificando a n8n - senderType: ${senderType}, ticketStatus: ${ticket.status}`);
     }
 
     res.status(201).json(message);
