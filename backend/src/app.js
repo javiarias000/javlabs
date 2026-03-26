@@ -70,10 +70,30 @@ app.use(cors({
 // Passport (sin sesión — usamos JWT)
 if (passport) app.use(passport.initialize());
 
-// 🔹 Rate limit
+// 🔹 Rate limit - excluir endpoints públicos
 const limiter     = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
-app.use('/api/', limiter);
+
+// Aplicar rate limit a todo /api/ excepto endpoints públicos de soporte
+app.use('/api/', (req, res, next) => {
+  // Excluir endpoints públicos que no requieren autenticación
+  const publicEndpoints = [
+    '/api/support/tickets/', // /public y /webhook-n8n
+  ];
+
+  // Verificar si es un endpoint público
+  const isPublicEndpoint = publicEndpoints.some(endpoint =>
+    req.path.startsWith(endpoint) && (req.path.includes('/public') || req.path.includes('/webhook-n8n'))
+  );
+
+  if (isPublicEndpoint) {
+    return next();
+  }
+
+  // Aplicar rate limiting al resto
+  return limiter(req, res, next);
+});
+
 app.use('/api/auth', authLimiter);
 
 // 🔹 Body parser

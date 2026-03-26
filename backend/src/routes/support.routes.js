@@ -31,18 +31,35 @@ const N8N_SUPPORT_WEBHOOK_URL = process.env.N8N_SUPPORT_WEBHOOK_URL || (() => {
  */
 async function notifyN8n(ticketId, message) {
   try {
+    console.log(`[Support] Iniciando notificación a n8n para ticket ${ticketId}`);
+
     // Obtener ticket completo con usuario
     const ticket = await prisma.supportTicket.findUnique({
       where: { id: ticketId },
       include: { user: true }
     });
 
-    if (!ticket || ticket.status !== 'AUTOMATED') return;
+    console.log(`[Support] Ticket encontrado:`, {
+      id: ticket?.id,
+      status: ticket?.status,
+      userId: ticket?.userId,
+      userName: ticket?.user?.name
+    });
 
-    await axios.post(N8N_SUPPORT_WEBHOOK_URL, {
+    if (!ticket) {
+      console.log(`[Support] Ticket ${ticketId} no existe - NO notificando a n8n`);
+      return;
+    }
+
+    if (ticket.status !== 'AUTOMATED') {
+      console.log(`[Support] Ticket ${ticketId} no está en modo AUTOMATED (está: ${ticket.status}) - NO notificando`);
+      return;
+    }
+
+    const payload = {
       ticketId: ticket.id,
       userId: ticket.userId,
-      name: ticket.user?.name || 'Usuario',  // Campo 'name' para compatibility
+      name: ticket.user?.name || 'Usuario',
       userName: ticket.user?.name || 'Usuario',
       userEmail: ticket.user?.email || '',
       subject: ticket.subject,
@@ -50,10 +67,21 @@ async function notifyN8n(ticketId, message) {
       message: message.content,
       messageId: message.id,
       timestamp: message.createdAt
+    };
+
+    console.log(`[Support] Enviando payload a n8n:`, {
+      url: N8N_SUPPORT_WEBHOOK_URL,
+      payload: { ...payload, message: payload.message.substring(0, 50) + '...' }
     });
-    console.log(`[Support] Notificado n8n sobre mensaje en ticket ${ticket.id}`);
+
+    await axios.post(N8N_SUPPORT_WEBHOOK_URL, payload);
+    console.log(`[Support] ✅ Notificado n8n exitosamente sobre mensaje en ticket ${ticket.id}`);
   } catch (err) {
-    console.error('[Support] Error notificando a n8n:', err.message);
+    console.error('[Support] ❌ Error notificando a n8n:', {
+      message: err.message,
+      stack: err.stack,
+      response: err.response?.data
+    });
     // No lanzar error - que el mensaje se guarde igual
   }
 }
