@@ -70,30 +70,35 @@ app.use(cors({
 // Passport (sin sesión — usamos JWT)
 if (passport) app.use(passport.initialize());
 
-// 🔹 Rate limit - excluir endpoints públicos
+// 🔹 Rate limit - excluir endpoints públicos y de auth del limiter general
 const limiter     = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
 
-// Aplicar rate limit a todo /api/ excepto endpoints públicos de soporte
+// Aplicar rate limit a todo /api/ excepto:
+// - Endpoints públicos de soporte (/public, /webhook-n8n)
+// - Endpoints de auth (manejados por authLimiter separadamente)
 app.use('/api/', (req, res, next) => {
-  // Excluir endpoints públicos que no requieren autenticación
+  // Excluir endpoints públicos de soporte
   const publicEndpoints = [
-    '/api/support/tickets/', // /public y /webhook-n8n
+    '/api/support/tickets/',
   ];
 
-  // Verificar si es un endpoint público
-  const isPublicEndpoint = publicEndpoints.some(endpoint =>
+  const isPublicSupport = publicEndpoints.some(endpoint =>
     req.path.startsWith(endpoint) && (req.path.includes('/public') || req.path.includes('/webhook-n8n'))
   );
 
-  if (isPublicEndpoint) {
+  // Excluir endpoints de auth (se manejan con authLimiter después)
+  const isAuthEndpoint = req.path.startsWith('/api/auth/') || req.path === '/api/auth';
+
+  if (isPublicSupport || isAuthEndpoint) {
     return next();
   }
 
-  // Aplicar rate limiting al resto
+  // Aplicar rate limiting general al resto
   return limiter(req, res, next);
 });
 
+// Aplicar authLimiter solo a los endpoints de auth
 app.use('/api/auth', authLimiter);
 
 // 🔹 Body parser
