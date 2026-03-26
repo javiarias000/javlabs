@@ -43,6 +43,7 @@ async function notifyN8n(ticketId, message) {
     await axios.post(N8N_SUPPORT_WEBHOOK_URL, {
       ticketId: ticket.id,
       userId: ticket.userId,
+      name: ticket.user?.name || 'Usuario',  // Campo 'name' para compatibility
       userName: ticket.user?.name || 'Usuario',
       userEmail: ticket.user?.email || '',
       subject: ticket.subject,
