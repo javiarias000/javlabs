@@ -790,7 +790,7 @@ export default function LandingPage1() {
                 tagline="Para emprendedores"
                 price="$72"
                 period="/mes"
-                setup="+ $210 setup único"
+                setup="+ $110 setup único"
                 description="Ideal para emprendedores que quieren automatizar su primera tarea y recuperar 15+ horas semanales."
                 features={['1 sistema automatizado completo', 'Hasta 1,000 interacciones/mes', 'Integración con 1 canal', 'Google Calendar incluido', 'Soporte técnico básico', 'Panel de monitoreo']}
                 details={[
@@ -812,7 +812,7 @@ export default function LandingPage1() {
                 tagline="Más popular"
                 price="$150"
                 period="/mes"
-                setup="+ $420 setup único"
+                setup="+ $220 setup único"
                 description="Para negocios en crecimiento que automatizan 2-3 procesos y quieren un agente de IA personalizado."
                 features={['Hasta 3 sistemas automatizados', 'Hasta 5,000 interacciones/mes', 'Multi-canal (WhatsApp + Email + Web)', 'Agente IA personalizado', 'Soporte prioritario 24/7', 'Optimización mensual gratis']}
                 details={[
@@ -821,6 +821,7 @@ export default function LandingPage1() {
                   { title: 'Agente IA personalizado', desc: 'Entrenado con tu tono, vocabulario y catálogo de productos.' },
                 ]}
                 badge="MÁS POPULAR"
+                badge="Ahorra hasta $428/mes"
                 badgeGradient="linear-gradient(90deg, #8b5cf6, #0d7ff2)"
                 popular={true}
                 ctaText="Comenzar"
@@ -834,7 +835,7 @@ export default function LandingPage1() {
                 tagline="Para organizaciones"
                 price="$240"
                 period="/mes"
-                setup="+ $720 setup único"
+                setup="+ $420 setup único"
                 description="Para organizaciones que necesitan automatización total, IA avanzada y soporte dedicado 24/7."
                 features={['Flujos ilimitados', 'Hasta 20,000 interacciones/mes', 'Todos los canales', 'IA con NLP avanzado', 'Dashboard administrativo', 'SLA garantizado 24/7']}
                 details={[
