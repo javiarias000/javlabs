@@ -34,9 +34,11 @@ export default function ROICalculator() {
     ? eligible.reduce((a, b) => (extraRevenue - a.monthly) >= (extraRevenue - b.monthly) ? a : b)
     : null;
 
-  const SliderRow = ({ label, value, min, max, step, onChange, display }) => (
+  const SliderRow = ({ label, value, min, max, step, onChange, display, ariaLabel }) => (
     <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-5">
-      <span className="text-slate-400 text-sm font-montserrat sm:w-48 md:w-64 flex-shrink-0">{label}</span>
+      <label className="text-slate-400 text-sm font-montserrat sm:w-48 md:w-64 flex-shrink-0">
+        {label}
+      </label>
       <div className="flex-1 flex items-center gap-3">
         <input
           type="range"
@@ -45,7 +47,12 @@ export default function ROICalculator() {
           step={step}
           value={value}
           onChange={e => onChange(+e.target.value)}
-          className="flex-1 accent-primary h-2"
+          aria-label={ariaLabel || label}
+          aria-valuenow={value}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          role="slider"
+          className="flex-1 accent-primary h-2 focus:outline focus:outline-2 focus:outline-blue-500 rounded"
         />
         <span className="text-white text-sm font-bold font-montserrat min-w-[60px] sm:min-w-[80px] text-right whitespace-nowrap">
           {display}
@@ -72,8 +79,11 @@ export default function ROICalculator() {
         </div>
         <button
           onClick={() => setOpen(!open)}
-          className="flex-shrink-0 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white rounded hover:opacity-90 transition-all font-montserrat whitespace-nowrap flex items-center gap-2"
-          style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}>
+          aria-expanded={open}
+          aria-controls="roi-calculator"
+          className="flex-shrink-0 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white rounded hover:opacity-90 transition-all font-montserrat whitespace-nowrap flex items-center gap-2 focus:outline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2"
+          style={{ background: 'linear-gradient(90deg, #0d7ff2, #8b5cf6)' }}
+        >
           <span className="material-symbols-outlined text-sm">calculate</span>
           Ver Mi ROI
           <span className="material-symbols-outlined text-sm">{open ? 'expand_less' : 'expand_more'}</span>
@@ -82,7 +92,13 @@ export default function ROICalculator() {
 
       {/* Calculator panel */}
       {open && (
-        <div className="mt-4 p-8 rounded-xl border border-slate-800 bg-navy-darker">
+        <div
+          id="roi-calculator"
+          className="mt-4 p-8 rounded-xl border border-slate-800 bg-navy-darker"
+          role="region"
+          aria-live="polite"
+          aria-atomic="true"
+        >
 
           {/* Explanation */}
           <div className="mb-8 p-4 rounded-lg bg-primary/5 border border-primary/20">
@@ -103,24 +119,28 @@ export default function ROICalculator() {
             value={saleVal} min={10} max={1000} step={10}
             onChange={setSaleVal}
             display={fmt(saleVal)}
+            ariaLabel="Valor promedio de cada venta en dólares"
           />
           <SliderRow
             label="¿Ventas/citas adicionales que el sistema te traería?"
             value={extraSales} min={1} max={100} step={1}
             onChange={setExtraSales}
             display={extraSales}
+            ariaLabel="Número estimado de ventas adicionales mensuales"
           />
           <SliderRow
             label="¿Cuántas interacciones (mensajes, consultas) recibes al mes?"
             value={interactions} min={100} max={20000} step={100}
             onChange={setInteractions}
             display={interactions.toLocaleString('es')}
+            ariaLabel="Total de interacciones mensuales con clientes"
           />
           <SliderRow
             label="¿En cuántos canales te contactan clientes?"
             value={channels} min={1} max={3} step={1}
             onChange={setChannels}
             display={channels === 1 ? '1 canal' : channels === 2 ? '2 canales' : '3+ canales'}
+            ariaLabel="Número de canales de contacto"
           />
 
           {/* Summary metrics */}
