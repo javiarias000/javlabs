@@ -1,46 +1,65 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-// Design System
 import './styles/design-tokens.css';
 
+// ================= LAZY LOADED PAGES =================
 // Páginas públicas
-import AboutPage from './stitch/about_page/AboutPage';
-import LandingPage1 from './stitch/landing_page_1/LandingPage1';
-import ServicesPageVariant1 from './stitch/services_page_variant_1/ServicesPageVariant1';
-import ContactPageVariant1 from './stitch/contact_page_variant_1/ContactPageVariant1';
-import PricingPage from './stitch/pricing_page/PricingPage';
-import AuthCallback from './components/AuthCallback';
-import AdminUsuarios from './stitch/admin_usuarios/AdminUsuarios';
-import PortalLogin from './stitch/portal_login/PortalLogin';
-import GoogleCallback from "./pages/GoogleCallback";
+const LandingPage1 = lazy(() => import('./stitch/landing_page_1/LandingPage1'));
+const ServicesPageVariant1 = lazy(() => import('./stitch/services_page_variant_1/ServicesPageVariant1'));
+const AboutPage = lazy(() => import('./stitch/about_page/AboutPage'));
+const ContactPageVariant1 = lazy(() => import('./stitch/contact_page_variant_1/ContactPageVariant1'));
+const PricingPage = lazy(() => import('./stitch/pricing_page/PricingPage'));
+const AuthCallback = lazy(() => import('./components/AuthCallback'));
+const PortalLogin = lazy(() => import('./stitch/portal_login/PortalLogin'));
+const GoogleCallback = lazy(() => import('./pages/GoogleCallback'));
 
 // Layouts
-import PublicLayout from './components/PublicLayout';
+const PublicLayout = lazy(() => import('./components/PublicLayout'));
 
-// Privadas
-import ClientDashboard from './stitch/client_dashboard/ClientDashboard';
-import ClientDashboardOverview from './stitch/client_dashboard_overview/ClientDashboardOverview';
-import AutomationPerformanceDashboard from './stitch/automation_performance_dashboard/AutomationPerformanceDashboard';
-import ActiveAutomationsListView from './stitch/active_automations_list_view/ActiveAutomationsListView';
-import AutomationManagementTable from './stitch/automation_management_table/AutomationManagementTable';
-import AutomationLogicTestView from './stitch/automation_logic_test_view/AutomationLogicTestView';
-import AutomationLogsErrorTracking from './stitch/automation_logs_error_tracking/AutomationLogsErrorTracking';
-import NewAutomationWizardStep1 from './stitch/new_automation_wizard_step_1/NewAutomationWizardStep1';
-import ErrorAnalysisView from './stitch/error_analysis_view/ErrorAnalysisView';
-import WorkflowDetailsVariant1 from './stitch/workflow_details_variant_1/WorkflowDetailsVariant1';
-import TechnicalSupportChat from './stitch/technical_support_chat/TechnicalSupportChat';
-import TicketConversationView from './stitch/ticket_conversation_view/TicketConversationView';
-import SupportTicketList from './stitch/support_ticket_list/SupportTicketList';
-// ✅ Nueva página de detalle de proyecto n8n
-import ProjectDetailView from './pages/ProjectDetailView';
+// Páginas privadas
+const AdminUsuarios = lazy(() => import('./stitch/admin_usuarios/AdminUsuarios'));
+const ClientDashboard = lazy(() => import('./stitch/client_dashboard/ClientDashboard'));
+const ClientDashboardOverview = lazy(() => import('./stitch/client_dashboard_overview/ClientDashboardOverview'));
+const AutomationPerformanceDashboard = lazy(() => import('./stitch/automation_performance_dashboard/AutomationPerformanceDashboard'));
+const ActiveAutomationsListView = lazy(() => import('./stitch/active_automations_list_view/ActiveAutomationsListView'));
+const AutomationManagementTable = lazy(() => import('./stitch/automation_management_table/AutomationManagementTable'));
+const AutomationLogicTestView = lazy(() => import('./stitch/automation_logic_test_view/AutomationLogicTestView'));
+const AutomationLogsErrorTracking = lazy(() => import('./stitch/automation_logs_error_tracking/AutomationLogsErrorTracking'));
+const NewAutomationWizardStep1 = lazy(() => import('./stitch/new_automation_wizard_step_1/NewAutomationWizardStep1'));
+const ErrorAnalysisView = lazy(() => import('./stitch/error_analysis_view/ErrorAnalysisView'));
+const WorkflowDetailsVariant1 = lazy(() => import('./stitch/workflow_details_variant_1/WorkflowDetailsVariant1'));
+const TechnicalSupportChat = lazy(() => import('./stitch/technical_support_chat/TechnicalSupportChat'));
+const TicketConversationView = lazy(() => import('./stitch/ticket_conversation_view/TicketConversationView'));
+const SupportTicketList = lazy(() => import('./stitch/support_ticket_list/SupportTicketList'));
+const ProjectDetailView = lazy(() => import('./pages/ProjectDetailView'));
 
 // ================= SCROLL =================
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return null;
+}
+
+// ================= LOADING COMPONENT =================
+function PageLoader() {
+  return (
+    <div style={{
+      background: '#0D1B2A',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#fff',
+      flexDirection: 'column',
+      gap: '1rem',
+    }}>
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <p className="font-montserrat text-text-secondary">Cargando...</p>
+    </div>
+  );
 }
 
 // ================= WRAPPER PRIVADO =================
@@ -62,7 +81,7 @@ const P = ({ children }) => {
 // ================= APP =================
 function AppRoutes() {
   return (
-    <>
+    <Suspense fallback={<PageLoader />}>
       <ScrollToTop />
       <Routes>
         {/* PÚBLICO - Con layout unificado */}
@@ -118,16 +137,18 @@ function AppRoutes() {
           </div>
         } />
       </Routes>
-    </>
+    </Suspense>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
