@@ -77,7 +77,7 @@ const FooterLink = ({ to, label, accentVar = '--color-primary', external = false
     >
       <Tag
         {...tagProps}
-        className="text-[var(--text-secondary)] text-sm hover:text-[var(--color-primary)] transition-colors duration-200 inline-flex items-center gap-2 group"
+        className="text-[var(--text-secondary)] text-sm hover:text-[var(--color-primary)] transition-colors duration-200 inline-flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-sm"
         style={{ '--accent': `var(${accentVar})` }}
       >
         <span className="w-0 h-0.5 bg-[var(--color-primary)] group-hover:w-4 transition-all duration-200 ease-out rounded-full" />
@@ -111,7 +111,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[var(--bg-navy-darker)] border-t border-[var(--border-color)] relative overflow-hidden">
+    <footer role="contentinfo" className="bg-[var(--bg-navy-darker)] border-t border-[var(--border-color)] relative overflow-hidden">
       {/* Ambient glow */}
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)]/5 via-transparent to-[var(--color-accent)]/5 pointer-events-none" />
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[var(--color-primary)]/4 rounded-full blur-3xl pointer-events-none" />
@@ -133,7 +133,7 @@ const Footer = () => {
             </Link>
 
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
-              Transformamos negocios con soluciones de automatización innovadoras. Más de 500 proyectos entregados en 15 países.
+              Transformamos negocios con soluciones de automatización innovadoras. 
             </p>
 
             {/* ── Social icons (SVG-based, fix principal) ── */}
@@ -233,7 +233,8 @@ const Footer = () => {
                 >
                   <a
                     href={href}
-                    className="text-[var(--text-secondary)] text-sm hover:text-[var(--color-primary)] transition-colors duration-200 flex items-center gap-3 group"
+                    aria-label={label}
+                    className="text-[var(--text-secondary)] text-sm hover:text-[var(--color-primary)] transition-colors duration-200 flex items-center gap-3 group focus:outline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-sm"
                   >
                     <div className="size-8 rounded-lg bg-[var(--bg-tertiary)]/50 border border-[var(--border-color)] flex items-center justify-center group-hover:bg-[var(--color-primary)]/15 group-hover:border-[var(--color-primary)]/40 transition-all duration-200 shrink-0">
                       <span className="material-symbols-outlined text-base">{icon}</span>
@@ -292,7 +293,8 @@ const Footer = () => {
                       <button
                         type="submit"
                         disabled={subscribing}
-                        className="absolute right-1.5 px-3 py-1.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] rounded-md text-[11px] font-bold text-white uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all duration-150 disabled:opacity-50 whitespace-nowrap"
+                        aria-label="Suscribirse al newsletter"
+                        className="absolute right-1.5 px-3 py-1.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] rounded-md text-[11px] font-bold text-white uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus:outline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2"
                       >
                         {subscribing ? (
                           <span className="flex items-center gap-1">
@@ -342,7 +344,7 @@ const Footer = () => {
                 >
                   <Link
                     to={to}
-                    className="text-[var(--text-muted)] text-xs hover:text-[var(--color-primary)] transition-colors duration-200 relative group"
+                    className="text-[var(--text-muted)] text-xs hover:text-[var(--color-primary)] transition-colors duration-200 relative group focus:outline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-sm"
                   >
                     {label}
                     <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[var(--color-primary)] group-hover:w-full transition-all duration-300" />
