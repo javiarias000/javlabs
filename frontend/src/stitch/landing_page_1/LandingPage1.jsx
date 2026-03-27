@@ -1,15 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, lazy, Suspense } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import ROICalculator from '../pricing_page/ROICalculator';
-import MouseSpotlight from '../../components/MouseSpotlight';
-import AnimatedStatsGroup from '../../components/AnimatedStatsGroup';
-import ServiceCard3D from '../../components/ServiceCard3D';
-import ExamplesSection from './ExamplesSection';
-import ObjectionBuster from './ObjectionBuster';
-import FAQSection from './FAQSection';
-import ProcessAnimation from '../../components/ProcessAnimation';
-import ExpandableCard from '../../components/ExpandableCard';
+
+// Lazy loaded components (below the fold)
+const MouseSpotlight = lazy(() => import('../../components/MouseSpotlight'));
+const AnimatedStatsGroup = lazy(() => import('../../components/AnimatedStatsGroup'));
+const ServiceCard3D = lazy(() => import('../../components/ServiceCard3D'));
+const ExamplesSection = lazy(() => import('./ExamplesSection'));
+const ObjectionBuster = lazy(() => import('./ObjectionBuster'));
+const FAQSection = lazy(() => import('./FAQSection'));
+const ProcessAnimation = lazy(() => import('../../components/ProcessAnimation'));
+const ExpandableCard = lazy(() => import('../../components/ExpandableCard'));
+import SEO from '../../components/SEO';
 
 // ─────────────────────────────────────────────────────────────
 // TYPING HOOK (optimizado — sin animación por caracter)
@@ -408,8 +411,42 @@ export default function LandingPage1() {
   const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } } };
   const scaleIn = { hidden: { opacity: 0, scale: 0.92 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } } };
 
+  // FAQ para Structured Data
+  const landingFaqs = [
+    {
+      question: '¿Cuánto tiempo toma implementar una automatización?',
+      answer: 'Los proyectos básicos se despliegan en 2-3 semanas. Soluciones Enterprise pueden tomar 2-4 meses dependiendo de la complejidad.'
+    },
+    {
+      question: '¿Es necesario reemplazar mis herramientas actuales?',
+      answer: 'No. Nuestra especialidad es la integración. Trabajamos sobre tu stack tecnológico actual (Salesforce, Hubspot, SAP, etc.) sin fricciones.'
+    },
+    {
+      question: '¿Ofrecen garantía de ROI?',
+      answer: 'Sí. En automatizaciones estándar garantizamos retorno medible en los primeros 90 días o extendemos el soporte sin costo adicional.'
+    },
+    {
+      question: '¿Mis datos están seguros?',
+      answer: 'Totalmente. Todos los datos se almacenan con encriptación. No vendemos ni compartimos tu información. Tienes acceso completo para exportar.'
+    },
+    {
+      question: '¿Necesito saber programar?',
+      answer: 'NO. Tú solo participas en diagnóstico, aprobación y uso. Nosotros desarrollamos, implementamos y mantenemos todo.'
+    }
+  ];
+
   return (
     <>
+      <SEO
+        title="Automatización con IA para Empresas Ecuador | JAV LABS"
+        description="JAV LABS - Agencia de automatización con IA en Ecuador. Recupera 20+ horas semanales con workflows automatizados, integraciones n8n y agentes de IA. Implementación en 2-3 semanas."
+        ogTitle="Automatización con IA para Empresas | JAV LABS Ecuador"
+        ogDescription="Automatiza procesos empresariales con IA. +2000 horas ahorradas, 150+ automatizaciones activas. Consultoría especializada en n8n, WhatsApp Business y agentes autónomos."
+        ogImage="/Logo2.png"
+        canonicalUrl="/"
+        breadcrumbItems={[{ name: 'Inicio', url: '/' }]}
+        faqSchema={landingFaqs}
+      />
       <MouseSpotlight size={400} opacity={0.06} color="#0d7ff2" />
 
       {/* ═══════════════════════════════════════ HERO ═══ */}
@@ -553,7 +590,14 @@ export default function LandingPage1() {
           <div className="flex gap-14 animate-marquee items-center">
             {['/logos/n8n.png', '/logos/supabase.png', '/logos/redis.png', '/logos/docker.png', '/logos/easypanel.png', '/logos/hostinger.png', '/logos/chatwoot.png', '/logos/whatsapp.png', '/logos/instagram.png', '/logos/meta.png', '/logos/messenger.png', '/logos/python.png', '/logos/json.png'].map((src, i) => (
               <motion.div key={i} className="tech-logo opacity-40 hover:opacity-80 transition-opacity duration-300" whileHover={{ scale: 1.1 }}>
-                <img src={src} alt={`tech-${i}`} className="h-10 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300" />
+                <img
+                  src={src}
+                  alt={`${['n8n','supabase','redis','docker','easypanel','hostinger','chatwoot','whatsapp','instagram','meta','messenger','python','json'][i]} logo`}
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  className="h-10 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                />
               </motion.div>
             ))}
           </div>
