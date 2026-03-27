@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import SEO from '../../components/SEO';
 import './ServicesPageVariant1.css';
 
 export default function ServicesPageVariant1() {
@@ -25,8 +26,48 @@ export default function ServicesPageVariant1() {
     },
   ];
 
+  // FAQ Schema para Structured Data
+  const servicesFaqSchema = faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  }));
+
+  // Servicios para Schema Service
+  const servicesList = [
+    {
+      name: 'Automatización de Procesos',
+      description: 'Recupera 40+ horas mensuales eliminando tareas repetitivas. Tus herramientas actuales trabajando juntas sin intervención manual.',
+      price: 'Varía según proyecto'
+    },
+    {
+      name: 'IA Generativa',
+      description: 'Un asistente de IA que responde como tú, atiende clientes 24/7 y califica leads automáticamente.',
+      price: 'Incluido en planes Pro/Enterprise'
+    },
+    {
+      name: 'Integración de Sistemas',
+      description: 'Conectamos tu CRM, calendario, email y herramientas en un solo sistema que comparte datos automáticamente.',
+      price: 'Incluido en todos los planes'
+    }
+  ];
+
   return (
     <>
+      <SEO
+        title="Servicios de Automatización con IA | JAV LABS Ecuador"
+        description="3 servicios clave: Automatización de Procesos (+40h/mes), IA Generativa (chatbots personalizados), Integración de Sistemas (conecta todas tus herramientas). Implementación rápida sin reemplazar tu stack actual."
+        ogTitle="Nuestros Servicios de Automatización | JAV LABS"
+        ogDescription="Automatización de workflows, IA Generativa aplicada e Integración de Sistemas. Soluciones completas sin que toques código. Consultoría especializada en n8n, WhatsApp Business y agentes de IA."
+        ogImage="/Logo2.png"
+        canonicalUrl="/servicios"
+        breadcrumbItems={[
+          { name: 'Inicio', url: '/' },
+          { name: 'Servicios', url: '/servicios' }
+        ]}
+        faqSchema={servicesFaqSchema}
+        serviceName="Servicios de Automatización"
+        serviceDescription="Ofrecemos tres servicios principales: Automatización de Procesos, IA Generativa e Integración de Sistemas. Implementamos soluciones personalizadas para empresas en Ecuador."
+      />
       {/* ───── HERO ───── */}
           <section className="relative services-hero flex flex-col items-center justify-center text-center overflow-hidden">
             {/* Background gradient */}

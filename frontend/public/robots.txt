@@ -1,0 +1,34 @@
+# Robots.txt para JAV LABS
+# Generado automáticamente para optimización SEO
+
+User-agent: *
+Allow: /
+
+# Bloquear rutas privadas/admin
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /automatizaciones/
+Disallow: /workflow/
+Disallow: /proyectos/
+Disallow: /soporte/
+Disallow: /login
+Disallow: /auth/
+Disallow: /api/
+
+# Permitir Googlebot específicamente
+User-agent: Googlebot
+Allow: /
+
+# Mapa del sitio
+Sitemap: https://jav-labs.com/sitemap.xml
+
+# Reglas específicas para bots importantes
+User-agent: Bingbot
+Crawl-delay: 1
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
