@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import ROICalculator from './ROICalculator';
 import ObjectionBuster from '../landing_page_1/ObjectionBuster';
 import { motion } from 'framer-motion';
+import SEO from '../../components/SEO';
 import './PricingPage.css';
 
 export default function PricingPage() {
@@ -72,6 +73,18 @@ export default function PricingPage() {
 
   return (
     <>
+      <SEO
+        title="Planes y Precios de Automatización | JAV LABS Ecuador"
+        description="3 planes de automatización con IA: Básico ($72/mes), Profesional ($150/mes) y Empresarial ($240/mes). Inversión transparente sin sorpresas. ROI garantizado en 90 días."
+        ogTitle="Planes de Automatización - Precios Transparentes | JAV LABS"
+        ogDescription="Compara nuestros planes de automatización. Básico, Profesional y Enterprise. Inversión clara, resultados medibles. Calculadora de ROI incluida."
+        ogImage="/Logo2.png"
+        canonicalUrl="/precios"
+        breadcrumbItems={[
+          { name: 'Inicio', url: '/' },
+          { name: 'Precios', url: '/precios' }
+        ]}
+      />
       {/* HERO SECTION */}
       <section className="pricing-hero relative overflow-hidden pricing-hero-bg">
         <div className="max-w-7xl mx-auto relative z-10">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import SEO from '../../components/SEO';
 import './ContactPageVariant1.css';
 
 export default function ContactPageVariant1() {
@@ -35,6 +36,18 @@ export default function ContactPageVariant1() {
 
   return (
     <>
+      <SEO
+        title="Contacto - Consulta Gratis | JAV LABS Ecuador"
+        description="¿Listo para automatizar? Agenda una consulta gratis con JAV LABS. Te contactamos en menos de 24h. Sin compromiso. Automatización con IA, n8n, WhatsApp Business API."
+        ogTitle="Contacto - Consulta Gratis | JAV LABS"
+        ogDescription="Agenda una consulta gratuita y descubre cuántas horas podrías ahorrar. Respondemos en menos de 24 horas. Automatización para empresas en Ecuador y LATAM."
+        ogImage="/Logo2.png"
+        canonicalUrl="/contacto"
+        breadcrumbItems={[
+          { name: 'Inicio', url: '/' },
+          { name: 'Contacto', url: '/contacto' }
+        ]}
+      />
           <section className="contact-hero border-b border-border-color">
             <div className="max-w-7xl mx-auto text-center">
               <h1 className="mb-6">¿LISTO PARA AUTOMATIZAR?</h1>

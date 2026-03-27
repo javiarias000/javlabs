@@ -3,19 +3,19 @@
 import { motion } from 'framer-motion';
 
 const techLogos = [
-  '/logos/n8n.png',
-  '/logos/supabase.png',
-  '/logos/redis.png',
-  '/logos/docker.png',
-  '/logos/easypanel.png',
-  '/logos/hostinger.png',
-  '/logos/chatwoot.png',
-  '/logos/whatsapp.png',
-  '/logos/instagram.png',
-  '/logos/meta.png',
-  '/logos/messenger.png',
-  '/logos/python.png',
-  '/logos/json.png'
+  { src: '/logos/n8n.png', name: 'n8n' },
+  { src: '/logos/supabase.png', name: 'supabase' },
+  { src: '/logos/redis.png', name: 'redis' },
+  { src: '/logos/docker.png', name: 'docker' },
+  { src: '/logos/easypanel.png', name: 'easypanel' },
+  { src: '/logos/hostinger.png', name: 'hostinger' },
+  { src: '/logos/chatwoot.png', name: 'chatwoot' },
+  { src: '/logos/whatsapp.png', name: 'whatsapp' },
+  { src: '/logos/instagram.png', name: 'instagram' },
+  { src: '/logos/meta.png', name: 'meta' },
+  { src: '/logos/messenger.png', name: 'messenger' },
+  { src: '/logos/python.png', name: 'python' },
+  { src: '/logos/json.png', name: 'json' }
 ];
 
 export default function TechMarquee() {
@@ -45,16 +45,19 @@ export default function TechMarquee() {
             repeatType: 'loop'
           }}
         >
-          {duplicatedLogos.map((src, i) => (
+          {duplicatedLogos.map((logo, i) => (
             <motion.div
-              key={`${src}-${i}`}
+              key={`${logo.src}-${i}`}
               className="tech-logo flex-shrink-0"
               whileHover={{ scale: 1.15, filter: 'brightness(1.3)' }}
               transition={{ duration: 0.3 }}
             >
               <img
-                src={src}
-                alt={`tech-${i}`}
+                src={logo.src}
+                alt={`${logo.name} logo`}
+                width={40}
+                height={40}
+                loading="lazy"
                 className="h-10 w-auto object-contain transition-opacity"
               />
             </motion.div>

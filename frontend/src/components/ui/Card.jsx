@@ -25,6 +25,8 @@ const Card = ({
   hover = true,
   onClick,
   className = '',
+  imgWidth,
+  imgHeight,
   ...props
 }) => {
   const classNames = [
@@ -50,6 +52,8 @@ const Card = ({
             src={image}
             alt={title || 'Card image'}
             loading="lazy"
+            width={imgWidth}
+            height={imgHeight}
             className="card-image"
           />
         </div>

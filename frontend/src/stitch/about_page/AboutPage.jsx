@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import SEO from '../../components/SEO';
 import './AboutPage.css';
 
 export default function AboutPage() {
@@ -6,6 +7,18 @@ export default function AboutPage() {
 
   return (
     <>
+      <SEO
+        title="Nosotros - JAV LABS | Tu Empleado Digital Trabajando 24/7"
+        description="JAV LABS nació en 2025 para democratizar la automatización inteligente. Somos un laboratorio de automatización que crea sistemas completos para que recuperes 20+ horas cada semana."
+        ogTitle="Quiénes Somos - JAV LABS Ecuador"
+        ogDescription="Conoce JAV LABS, tu laboratorio de automatización en Ecuador. Creamos sistemas completos sin que toques código. +2000 horas ahorradas para nuestros clientes."
+        ogImage="/Logo2.png"
+        canonicalUrl="/nosotros"
+        breadcrumbItems={[
+          { name: 'Inicio', url: '/' },
+          { name: 'Nosotros', url: '/nosotros' }
+        ]}
+      />
       {/* ───── HERO ───── */}
       <section className="relative overflow-hidden pt-24 pb-32 bg-navy-darker">
         {/* Fondo decorativo */}
