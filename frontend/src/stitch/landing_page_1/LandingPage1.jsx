@@ -1,4 +1,5 @@
-import { Link, useNavigate, lazy, Suspense } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import ROICalculator from '../pricing_page/ROICalculator';
