@@ -108,21 +108,25 @@ export default function AdminUsuarios() {
   const handleSaveRole = async (userId) => {
     setSavingRole(userId);
     try {
-      console.log('Guardando rol:', { userId, role: tempRole });
-      const { data } = await api.patch(`/users/${userId}`, { role: tempRole });
-      console.log('Respuesta:', data);
+      console.log('[handleSaveRole] Inicio:', { userId, tempRole });
+      const payload = { role: tempRole };
+      console.log('[handleSaveRole] Payload a enviar:', payload);
+      const { data } = await api.patch(`/users/${userId}`, payload);
+      console.log('[handleSaveRole] Respuesta exitosa:', data);
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
       setEditingRole(null);
       setTempRole(null);
     } catch (err) => {
-      console.error('Error actualizando rol:', err.response?.data || err.message);
+      console.error('[handleSaveRole] Error completo:', err);
+      console.error('[handleSaveRole] Response data:', err.response?.data);
+      console.error('[handleSaveRole] Response status:', err.response?.status);
 
       // Extraer mensaje de error específico de validación
       let errMsg = 'Error al actualizar rol.';
-      if (err.response?.data?.errors) {
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
         // Validación failed - array de errores
-        const messages = err.response.data.errors.map(e => e.msg).join(', ');
-        errMsg = `Validación fallida: ${messages}`;
+        const messages = err.response.data.errors.map(e => `${e.param || 'campo'}: ${e.msg}`).join(' | ');
+        errMsg = `Validación: ${messages}`;
       } else if (err.response?.data?.error) {
         errMsg = err.response.data.error;
       } else if (err.response?.data?.message) {
