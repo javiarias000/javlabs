@@ -317,7 +317,7 @@ router.post('/', [
  */
 router.patch('/:id', [
   body('name').optional().notEmpty().isLength({ max: 100 }).withMessage('Name max 100 characters'),
-  body('role').optional().isIn(['ADMIN', 'AGENT', 'CLIENT']).withMessage('Invalid role'),
+  body('role').optional().isIn(['ADMIN', 'AGENT', 'CLIENT']).withMessage('Invalid role. Must be ADMIN, AGENT or CLIENT'),
   body('isActive').optional().isBoolean().withMessage('isActive must be boolean'),
   body('n8nProjectKey').optional().matches(/^[a-z0-9_]+$/).withMessage('Invalid n8nProjectKey format'),
   body('company').optional().isLength({ max: 100 }).withMessage('Company max 100 characters'),
@@ -326,6 +326,14 @@ router.patch('/:id', [
   try {
     if (req.user.role !== 'ADMIN') return res.status(403).json({ error: 'Sin permisos.' });
     if (req.params.id === req.user.userId) return res.status(400).json({ error: 'No puedes modificarte a ti mismo.' });
+
+    // Log para debugging
+    console.log('[PATCH /users/:id]', {
+      userId: req.params.id,
+      userRole: req.user.role,
+      body: req.body
+    });
+
     const { name, role, isActive, n8nProjectKey, company } = req.body;
     const user = await prisma.user.update({
       where: { id: req.params.id },

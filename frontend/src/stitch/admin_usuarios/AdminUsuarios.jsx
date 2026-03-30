@@ -114,10 +114,24 @@ export default function AdminUsuarios() {
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
       setEditingRole(null);
       setTempRole(null);
-    } catch (err) {
+    } catch (err) => {
       console.error('Error actualizando rol:', err.response?.data || err.message);
-      const errMsg = err.response?.data?.error || err.response?.data?.message || err.message;
-      setError(`Error al actualizar rol: ${errMsg}`);
+
+      // Extraer mensaje de error específico de validación
+      let errMsg = 'Error al actualizar rol.';
+      if (err.response?.data?.errors) {
+        // Validación failed - array de errores
+        const messages = err.response.data.errors.map(e => e.msg).join(', ');
+        errMsg = `Validación fallida: ${messages}`;
+      } else if (err.response?.data?.error) {
+        errMsg = err.response.data.error;
+      } else if (err.response?.data?.message) {
+        errMsg = err.response.data.message;
+      } else if (err.message) {
+        errMsg = err.message;
+      }
+
+      setError(errMsg);
       setEditingRole(null);
     } finally {
       setSavingRole(null);
