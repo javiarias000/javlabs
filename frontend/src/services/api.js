@@ -52,10 +52,9 @@ api.interceptors.response.use(
       try {
         const storedRefresh = localStorage.getItem(REFRESH_KEY);
 
-        const { data } = await axios.post(
+        const { data } = await api.post(
           '/auth/refresh',
-          { refreshToken: storedRefresh },
-          { withCredentials: true }
+          { refreshToken: storedRefresh }
         );
 
         const newToken = data.accessToken;

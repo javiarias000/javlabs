@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const { getDashboard, getChartData } = require('../controllers/dashboard.controller');
-const { authenticate } = require('../middlewares/auth.middleware');
+const { getDashboard, getChartData, getAdminOverview } = require('../controllers/dashboard.controller');
+const { authenticate, requireAdmin } = require('../middlewares/auth.middleware');
 
 /**
  * @swagger
@@ -99,5 +99,7 @@ router.get('/', authenticate, getDashboard);
  *         $ref: '#/components/responses/ServerError'
  */
 router.get('/chart', authenticate, getChartData);
+
+router.get('/admin/overview', authenticate, requireAdmin, getAdminOverview);
 
 module.exports = router;

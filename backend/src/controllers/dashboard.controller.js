@@ -142,4 +142,55 @@ const getChartData = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { getDashboard, getChartData };
+const getAdminOverview = async (req, res, next) => {
+  try {
+    // Obtener todos los usuarios CLIENT activos con sus proyectos
+    const clients = await prisma.user.findMany({
+      where: { role: 'CLIENT', isActive: true },
+      include: {
+        projects: {
+          include: {
+            automations: true,
+            _count: { select: { activities: true } }
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    // Calcular métricas por cliente
+    const clientMetrics = clients.map(client => ({
+      user: {
+        id: client.id,
+        name: client.name,
+        email: client.email,
+        company: client.company,
+        n8nProjectKey: client.n8nProjectKey,
+      },
+      metrics: {
+        projectCount: client.projects.length,
+        activeProjects: client.projects.filter(p => ['ACTIVE','IN_PROGRESS'].includes(p.status)).length,
+        automationCount: client.projects.reduce((sum, p) => sum + p.automations.length, 0),
+        activeAutomations: client.projects.reduce((sum, p) => sum + p.automations.filter(a => a.status === 'ACTIVE').length, 0),
+        totalTasksRun: client.projects.reduce((sum, p) => sum + p.automations.reduce((s, a) => s + (a.tasksRun || 0), 0), 0),
+        totalTimeSaved: client.projects.reduce((sum, p) => sum + p.automations.reduce((s, a) => s + (a.timeSaved || 0), 0), 0),
+        lastActivity: client.projects.length > 0
+          ? new Date(Math.max(...client.projects.map(p => new Date(p.updatedAt)))).toISOString()
+          : null,
+      }
+    }));
+
+    // KPIs globales del sistema
+    const globalKPIs = {
+      totalClients: clients.length,
+      totalProjects: clientMetrics.reduce((sum, cm) => sum + cm.metrics.projectCount, 0),
+      activeProjects: clientMetrics.reduce((sum, cm) => sum + cm.metrics.activeProjects, 0),
+      totalAutomations: clientMetrics.reduce((sum, cm) => sum + cm.metrics.automationCount, 0),
+      activeAutomations: clientMetrics.reduce((sum, cm) => sum + cm.metrics.activeAutomations, 0),
+    };
+
+    res.json({ globalKPIs, clientMetrics });
+  } catch (err) { next(err); }
+};
+
+module.exports = { getDashboard, getChartData, getAdminOverview };

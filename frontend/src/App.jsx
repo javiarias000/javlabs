@@ -21,8 +21,10 @@ const PublicLayout = lazy(() => import('./components/PublicLayout'));
 
 // Páginas privadas
 const AdminUsuarios = lazy(() => import('./stitch/admin_usuarios/AdminUsuarios'));
+const AdminDashboard = lazy(() => import('./stitch/admin_dashboard/AdminDashboard'));
 const ClientDashboard = lazy(() => import('./stitch/client_dashboard/ClientDashboard'));
 const ClientDashboardOverview = lazy(() => import('./stitch/client_dashboard_overview/ClientDashboardOverview'));
+const ClientProjectDashboard = lazy(() => import('./stitch/client_project_dashboard/ClientProjectDashboard'));
 const AutomationPerformanceDashboard = lazy(() => import('./stitch/automation_performance_dashboard/AutomationPerformanceDashboard'));
 const ActiveAutomationsListView = lazy(() => import('./stitch/active_automations_list_view/ActiveAutomationsListView'));
 const AutomationManagementTable = lazy(() => import('./stitch/automation_management_table/AutomationManagementTable'));
@@ -97,10 +99,12 @@ function AppRoutes() {
         </Route>
 
         {/* PRIVADO — Portal (sin footer unificado en dashboard) */}
+        <Route path="/admin" element={<P><AdminDashboard /></P>} />
         <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
         <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
         <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />
         <Route path="/dashboard/performance" element={<P><AutomationPerformanceDashboard /></P>} />
+        <Route path="/cliente/proyecto" element={<P><ClientProjectDashboard /></P>} />
 
         {/* PRIVADO — Automatizaciones */}
         <Route path="/automatizaciones"              element={<P><ActiveAutomationsListView /></P>} />

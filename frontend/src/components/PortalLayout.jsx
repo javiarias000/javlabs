@@ -4,14 +4,23 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const navItems = [
-  { icon: 'dashboard',            label: 'Dashboard',        path: '/dashboard/overview'      },
-  { icon: 'bolt',                 label: 'Automatizaciones', path: '/automatizaciones'        },
-  { icon: 'analytics',            label: 'Rendimiento',      path: '/dashboard/performance'   },
-  { icon: 'terminal',             label: 'Logs',             path: '/automatizaciones/logs'   },
-  { icon: 'support_agent',        label: 'Soporte',          path: '/soporte/chat'            },
-  { icon: 'admin_panel_settings', label: 'Admin',            path: '/admin/usuarios'          },
-];
+const getNavItems = (role) => {
+  const base = [
+    { icon: 'dashboard',            label: 'Dashboard',        path: role === 'ADMIN' || role === 'AGENT' ? '/admin' : '/cliente/proyecto' },
+    { icon: 'bolt',                 label: 'Automatizaciones', path: '/automatizaciones' },
+    { icon: 'analytics',            label: 'Rendimiento',      path: '/dashboard/performance' },
+    { icon: 'terminal',             label: 'Logs',             path: '/automatizaciones/logs' },
+    { icon: 'support_agent',        label: 'Soporte',          path: '/soporte/chat' },
+  ];
+
+  if (role === 'ADMIN' || role === 'AGENT') {
+    base.push(
+      { icon: 'admin_panel_settings', label: 'Usuarios', path: '/admin/usuarios' }
+    );
+  }
+
+  return base;
+};
 
 // ─── NotificationPanel ───────────────────────────────────────────────────────
 function NotificationPanel({ onClose }) {
@@ -198,6 +207,7 @@ export default function PortalLayout({ children }) {
   const [showNotif, setShowNotif] = useState(false);
   const [showUser,  setShowUser]  = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navItems = getNavItems(user?.role);
 
   const handleLogout = async () => {
     setShowUser(false);
