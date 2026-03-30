@@ -21,7 +21,7 @@ const ROLE_OPTIONS = [
 export default function AdminUsuarios() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(null);
+  const [editing, setEditing] = useState(null); // editing n8nProjectKey
   const [saving, setSaving] = useState(null);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
@@ -31,6 +31,10 @@ export default function AdminUsuarios() {
     name: '', email: '', password: '', role: 'CLIENT', company: '', phone: '', n8nProjectKey: ''
   });
   const [createError, setCreateError] = useState('');
+
+  // Role editor state
+  const [editingRole, setEditingRole] = useState(null); // userId that is being edited
+  const [tempRole, setTempRole] = useState(null); // temporary role value
 
   useEffect(() => {
     fetchUsers();
@@ -85,6 +89,31 @@ export default function AdminUsuarios() {
       setCreateError(err.response?.data?.error || 'Error al crear usuario.');
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleStartEditRole = (userId, currentRole) => {
+    setEditingRole(userId);
+    setTempRole(currentRole);
+  };
+
+  const handleCancelEditRole = () => {
+    setEditingRole(null);
+    setTempRole(null);
+  };
+
+  const handleSaveRole = async (userId) => {
+    setSaving(userId);
+    try {
+      const { data } = await api.patch(`/users/${userId}`, { role: tempRole });
+      setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
+      setEditingRole(null);
+      setTempRole(null);
+    } catch (err) {
+      setError('Error al actualizar rol.');
+      setEditingRole(null);
+    } finally {
+      setSaving(null);
     }
   };
 
@@ -153,11 +182,51 @@ export default function AdminUsuarios() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${
-                        user.role === 'ADMIN'
-                          ? 'bg-violet-500/10 text-violet-400 border border-violet-500/20'
-                          : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                      }`}>{user.role}</span>
+                      {editingRole === user.id ? (
+                        <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                          <select
+                            value={tempRole}
+                            onChange={e => setTempRole(e.target.value)}
+                            className="bg-slate-800 border border-primary text-slate-100 text-xs px-2 py-1.5 rounded outline-none focus:border-primary"
+                          >
+                            {ROLE_OPTIONS.map(r => (
+                              <option key={r.value} value={r.value}>{r.value}</option>
+                            ))}
+                          </select>
+                          <button
+                            onClick={() => handleSaveRole(user.id)}
+                            disabled={saving === user.id}
+                            className="p-1 text-emerald-400 hover:text-emerald-300"
+                            title="Guardar"
+                          >
+                            <span className="material-symbols-outlined text-sm">check</span>
+                          </button>
+                          <button
+                            onClick={handleCancelEditRole}
+                            className="p-1 text-slate-400 hover:text-slate-300"
+                            title="Cancelar"
+                          >
+                            <span className="material-symbols-outlined text-sm">close</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${
+                            user.role === 'ADMIN'
+                              ? 'bg-violet-500/10 text-violet-400 border border-violet-500/20'
+                              : user.role === 'AGENT'
+                                ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
+                          }`}>{user.role}</span>
+                          <button
+                            onClick={() => handleStartEditRole(user.id, user.role)}
+                            className="p-1 rounded text-slate-500 hover:text-violet-400 transition-colors"
+                            title="Cambiar rol"
+                          >
+                            <span className="material-symbols-outlined text-sm">edit</span>
+                          </button>
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       {editing === user.id ? (
@@ -191,18 +260,12 @@ export default function AdminUsuarios() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button onClick={() => setEditing(editing === user.id ? null : user.id)}
-                          className={`p-1.5 rounded transition-colors ${editing === user.id ? 'text-primary bg-primary/10' : 'text-slate-500 hover:text-primary'}`}>
+                          className={`p-1.5 rounded transition-colors ${editing === user.id ? 'text-primary bg-primary/10' : 'text-slate-500 hover:text-primary'}`}
+                          title="Editar proyecto n8n">
                           <span className="material-symbols-outlined text-sm">
                             {editing === user.id ? 'close' : 'edit'}
                           </span>
                         </button>
-                        {user.role !== 'ADMIN' && (
-                          <button onClick={() => handleSave(user.id, { role: user.role === 'ADMIN' ? 'CLIENT' : 'ADMIN' })}
-                            className="p-1.5 rounded text-slate-500 hover:text-violet-400 transition-colors"
-                            title="Cambiar rol">
-                            <span className="material-symbols-outlined text-sm">manage_accounts</span>
-                          </button>
-                        )}
                       </div>
                     </td>
                   </tr>
