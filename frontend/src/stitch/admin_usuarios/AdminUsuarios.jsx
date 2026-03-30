@@ -22,7 +22,8 @@ export default function AdminUsuarios() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null); // editing n8nProjectKey
-  const [saving, setSaving] = useState(null);
+  const [savingProject, setSavingProject] = useState(null);
+  const [savingRole, setSavingRole] = useState(null);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -52,27 +53,29 @@ export default function AdminUsuarios() {
   };
 
   const handleSave = async (userId, changes) => {
-    setSaving(userId);
+    setSavingProject(userId);
     try {
       const { data } = await api.patch(`/users/${userId}`, changes);
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
       setEditing(null);
-    } catch {
-      setError('Error al actualizar usuario.');
+    } catch (err) {
+      console.error('Error actualizando usuario:', err.response?.data || err.message);
+      setError(`Error al actualizar: ${err.response?.data?.error || err.message}`);
     } finally {
-      setSaving(null);
+      setSavingProject(null);
     }
   };
 
   const handleToggleActive = async (user) => {
-    setSaving(user.id);
+    setSavingProject(user.id);
     try {
       const { data } = await api.patch(`/users/${user.id}`, { isActive: !user.isActive });
       setUsers(prev => prev.map(u => u.id === user.id ? { ...u, ...data } : u));
-    } catch {
-      setError('Error al actualizar usuario.');
+    } catch (err) {
+      console.error('Error toggle active:', err.response?.data || err.message);
+      setError(`Error: ${err.response?.data?.error || err.message}`);
     } finally {
-      setSaving(null);
+      setSavingProject(null);
     }
   };
 
@@ -103,17 +106,21 @@ export default function AdminUsuarios() {
   };
 
   const handleSaveRole = async (userId) => {
-    setSaving(userId);
+    setSavingRole(userId);
     try {
+      console.log('Guardando rol:', { userId, role: tempRole });
       const { data } = await api.patch(`/users/${userId}`, { role: tempRole });
+      console.log('Respuesta:', data);
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
       setEditingRole(null);
       setTempRole(null);
     } catch (err) {
-      setError('Error al actualizar rol.');
+      console.error('Error actualizando rol:', err.response?.data || err.message);
+      const errMsg = err.response?.data?.error || err.response?.data?.message || err.message;
+      setError(`Error al actualizar rol: ${errMsg}`);
       setEditingRole(null);
     } finally {
-      setSaving(null);
+      setSavingRole(null);
     }
   };
 
@@ -195,15 +202,16 @@ export default function AdminUsuarios() {
                           </select>
                           <button
                             onClick={() => handleSaveRole(user.id)}
-                            disabled={saving === user.id}
-                            className="p-1 text-emerald-400 hover:text-emerald-300"
+                            disabled={savingRole === user.id}
+                            className="p-1 text-emerald-400 hover:text-emerald-300 disabled:opacity-50"
                             title="Guardar"
                           >
-                            <span className="material-symbols-outlined text-sm">check</span>
+                            <span className="material-symbols-outlined text-sm">{savingRole === user.id ? 'progress_activity' : 'check'}</span>
                           </button>
                           <button
                             onClick={handleCancelEditRole}
-                            className="p-1 text-slate-400 hover:text-slate-300"
+                            disabled={savingRole === user.id}
+                            className="p-1 text-slate-400 hover:text-slate-300 disabled:opacity-50"
                             title="Cancelar"
                           >
                             <span className="material-symbols-outlined text-sm">close</span>
@@ -233,7 +241,7 @@ export default function AdminUsuarios() {
                         <select
                           defaultValue={user.n8nProjectKey || ''}
                           onChange={e => handleSave(user.id, { n8nProjectKey: e.target.value || null })}
-                          className="bg-slate-800 border border-slate-700 text-slate-100 text-xs px-2 py-1.5 rounded outline-none focus:border-primary">
+                          className="bg-slate-800 border border-primary text-slate-100 text-xs px-2 py-1.5 rounded outline-none focus:border-primary">
                           {PROJECT_OPTIONS.map(p => (
                             <option key={p.key} value={p.key}>{p.label}</option>
                           ))}
@@ -245,13 +253,13 @@ export default function AdminUsuarios() {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <button onClick={() => handleToggleActive(user)} disabled={saving === user.id}
+                      <button onClick={() => handleToggleActive(user)} disabled={savingProject === user.id}
                         className={`px-2 py-1 rounded text-[10px] font-bold uppercase border transition-all ${
                           user.isActive
                             ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20'
                             : 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20'
                         }`}>
-                        {saving === user.id ? '...' : user.isActive ? 'Activo' : 'Inactivo'}
+                        {savingProject === user.id ? '...' : user.isActive ? 'Activo' : 'Inactivo'}
                       </button>
                     </td>
                     <td className="px-6 py-4 text-slate-500 text-xs">
