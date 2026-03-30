@@ -477,7 +477,7 @@ export default function AutomationPerformanceDashboard() {
                                   : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500'
                               }`}
                               onClick={() => navigate(`/proyectos/${p.key}`)}>
-                              {p.name.toUpperCase().slice(0, 12)}
+                              {(p.name || p.key).toUpperCase().slice(0, 12)}
                             </div>
                           ))}
                         </div>
