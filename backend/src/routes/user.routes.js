@@ -73,11 +73,126 @@ router.get('/', async (req, res, next) => {
       select: {
         id: true, name: true, email: true, role: true,
         company: true, isActive: true, createdAt: true,
-        n8nProjectKey: true,
+        n8nProjectKey: true, phone: true,
       },
       orderBy: { createdAt: 'desc' },
     });
     res.json(users);
+  } catch (err) { next(err); }
+});
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Crear usuario (solo admin)
+ *     description: Crea un nuevo usuario en el sistema. Solo administradores pueden acceder
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [name, email, password, role]
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 maxLength: 100
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 6
+ *               role:
+ *                 type: string
+ *                 enum: [ADMIN, AGENT, CLIENT]
+ *               company:
+ *                 type: string
+ *                 maxLength: 100
+ *               phone:
+ *                 type: string
+ *               n8nProjectKey:
+ *                 type: string
+ *                 pattern: ^[a-z0-9_]+$
+ *     responses:
+ *       201:
+ *         description: Usuario creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 role:
+ *                   type: string
+ *                 company:
+ *                   type: string
+ *                 isActive:
+ *                   type: boolean
+ *                 n8nProjectKey:
+ *                   type: string
+ *       400:
+ *         description: Validación fallida o email existente
+ *       403:
+ *         description: Sin permisos de administrador
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.post('/', [
+  body('name').notEmpty().isLength({ max: 100 }).withMessage('Name max 100 characters'),
+  body('email').isEmail().withMessage('Valid email required'),
+  body('password').isLength({ min: 6 }).withMessage('Password min 6 characters'),
+  body('role').isIn(['ADMIN', 'AGENT', 'CLIENT']).withMessage('Invalid role'),
+  body('company').optional().isLength({ max: 100 }).withMessage('Company max 100 characters'),
+  body('phone').optional(),
+  body('n8nProjectKey').optional().matches(/^[a-z0-9_]+$/).withMessage('Invalid n8nProjectKey format'),
+  validate,
+], async (req, res, next) => {
+  try {
+    if (req.user.role !== 'ADMIN') return res.status(403).json({ error: 'Sin permisos.' });
+
+    const { name, email, password, role, company, phone, n8nProjectKey } = req.body;
+
+    // Verificar si el email ya existe
+    const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
+    if (existing) {
+      return res.status(400).json({ error: 'El email ya está registrado.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email: email.toLowerCase(),
+        password: hashedPassword,
+        role,
+        company,
+        phone,
+        n8nProjectKey,
+      },
+      select: {
+        id: true, name: true, email: true, role: true,
+        company: true, isActive: true, n8nProjectKey: true, phone: true, createdAt: true,
+      },
+    });
+
+    logger.info(`Usuario creado por admin: ${email} (${role})`);
+
+    res.status(201).json(user);
   } catch (err) { next(err); }
 });
 
@@ -202,7 +317,7 @@ router.get('/', async (req, res, next) => {
  */
 router.patch('/:id', [
   body('name').optional().notEmpty().isLength({ max: 100 }).withMessage('Name max 100 characters'),
-  body('role').optional().isIn(['ADMIN', 'USER']).withMessage('Invalid role'),
+  body('role').optional().isIn(['ADMIN', 'AGENT', 'CLIENT']).withMessage('Invalid role'),
   body('isActive').optional().isBoolean().withMessage('isActive must be boolean'),
   body('n8nProjectKey').optional().matches(/^[a-z0-9_]+$/).withMessage('Invalid n8nProjectKey format'),
   body('company').optional().isLength({ max: 100 }).withMessage('Company max 100 characters'),

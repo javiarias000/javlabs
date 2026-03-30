@@ -1,30 +1,51 @@
 import { useState, useEffect } from 'react';
 import PortalLayout from '../../components/PortalLayout';
 import api from '../../services/api';
+import './AdminUsuarios.css';
 
 const PROJECT_OPTIONS = [
-  { key: '',           label: '— Sin proyecto —' },
-  { key: 'dentilook',  label: 'DentiLook'        },
-  { key: 'sama_shala', label: 'Sama Shala'       },
-  { key: 'facturas',   label: 'Datos & Facturas' },
-  { key: 'violin',     label: 'Clases Violin'    },
-  { key: 'general',    label: 'General'          },
+  { key: '', label: '— Sin proyecto —' },
+  { key: 'dentilook', label: 'DentiLook' },
+  { key: 'sama_shala', label: 'Sama Shala' },
+  { key: 'facturas', label: 'Datos & Facturas' },
+  { key: 'violin', label: 'Clases Violin' },
+  { key: 'general', label: 'General' },
+];
+
+const ROLE_OPTIONS = [
+  { value: 'ADMIN', label: 'Administrador' },
+  { value: 'AGENT', label: 'Agente' },
+  { value: 'CLIENT', label: 'Cliente' },
 ];
 
 export default function AdminUsuarios() {
-  const [users,    setUsers]    = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [editing,  setEditing]  = useState(null);
-  const [saving,   setSaving]   = useState(null);
-  const [error,    setError]    = useState('');
-  const [search,   setSearch]   = useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(null);
+  const [saving, setSaving] = useState(null);
+  const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [newUser, setNewUser] = useState({
+    name: '', email: '', password: '', role: 'CLIENT', company: '', phone: '', n8nProjectKey: ''
+  });
+  const [createError, setCreateError] = useState('');
 
   useEffect(() => {
-    api.get('/users')
-      .then(({ data }) => setUsers(data))
-      .catch(() => setError('Error al cargar usuarios.'))
-      .finally(() => setLoading(false));
+    fetchUsers();
   }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const { data } = await api.get('/users');
+      setUsers(data);
+    } catch {
+      setError('Error al cargar usuarios.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSave = async (userId, changes) => {
     setSaving(userId);
@@ -48,6 +69,22 @@ export default function AdminUsuarios() {
       setError('Error al actualizar usuario.');
     } finally {
       setSaving(null);
+    }
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    setCreateError('');
+    setCreating(true);
+    try {
+      const { data } = await api.post('/users', newUser);
+      setUsers(prev => [data, ...prev]);
+      setShowCreateModal(false);
+      setNewUser({ name: '', email: '', password: '', role: 'CLIENT', company: '', phone: '', n8nProjectKey: '' });
+    } catch (err) {
+      setCreateError(err.response?.data?.error || 'Error al crear usuario.');
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -181,6 +218,121 @@ export default function AdminUsuarios() {
           </div>
         )}
       </main>
+
+      {/* Modal Crear Usuario */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-slate-800">
+              <h2 className="text-xl font-bold text-white">Crear Nuevo Usuario</h2>
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-white">
+                <span className="material-symbols-outlined text-2xl">close</span>
+              </button>
+            </div>
+            <form onSubmit={handleCreateUser} className="p-6 space-y-4">
+              {createError && (
+                <div className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-sm">
+                  {createError}
+                </div>
+              )}
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Nombre</label>
+                <input
+                  type="text"
+                  required
+                  value={newUser.name}
+                  onChange={e => setNewUser({ ...newUser, name: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                  placeholder="Juan Pérez"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={newUser.email}
+                  onChange={e => setNewUser({ ...newUser, email: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                  placeholder="juan@ejemplo.com"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Password</label>
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  value={newUser.password}
+                  onChange={e => setNewUser({ ...newUser, password: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Rol</label>
+                <select
+                  value={newUser.role}
+                  onChange={e => setNewUser({ ...newUser, role: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                >
+                  {ROLE_OPTIONS.map(r => (
+                    <option key={r.value} value={r.value}>{r.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Empresa (opcional)</label>
+                <input
+                  type="text"
+                  value={newUser.company || ''}
+                  onChange={e => setNewUser({ ...newUser, company: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                  placeholder="Nombre de la empresa"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Teléfono (opcional)</label>
+                <input
+                  type="tel"
+                  value={newUser.phone || ''}
+                  onChange={e => setNewUser({ ...newUser, phone: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                  placeholder="+34 000 000 000"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Proyecto n8n (opcional)</label>
+                <select
+                  value={newUser.n8nProjectKey}
+                  onChange={e => setNewUser({ ...newUser, n8nProjectKey: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 px-4 py-2.5 rounded outline-none focus:border-primary"
+                >
+                  {PROJECT_OPTIONS.map(p => (
+                    <option key={p.key} value={p.key}>{p.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="flex-1 px-4 py-2.5 border border-slate-700 text-slate-300 rounded hover:bg-slate-800 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={creating}
+                  className="flex-1 px-4 py-2.5 bg-primary text-white rounded hover:bg-primary/80 disabled:opacity-50 transition-colors"
+                >
+                  {creating ? 'Creando...' : 'Crear Usuario'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </PortalLayout>
   );
 }

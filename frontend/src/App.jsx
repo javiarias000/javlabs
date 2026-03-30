@@ -22,6 +22,7 @@ const PublicLayout = lazy(() => import('./components/PublicLayout'));
 // Páginas privadas
 const AdminUsuarios = lazy(() => import('./stitch/admin_usuarios/AdminUsuarios'));
 const AdminDashboard = lazy(() => import('./stitch/admin_dashboard/AdminDashboard'));
+const AdminContactos = lazy(() => import('./stitch/admin_contactos/AdminContactos'));
 const ClientDashboard = lazy(() => import('./stitch/client_dashboard/ClientDashboard'));
 const ClientDashboardOverview = lazy(() => import('./stitch/client_dashboard_overview/ClientDashboardOverview'));
 const ClientProjectDashboard = lazy(() => import('./stitch/client_project_dashboard/ClientProjectDashboard'));
@@ -101,6 +102,7 @@ function AppRoutes() {
         {/* PRIVADO — Portal (sin footer unificado en dashboard) */}
         <Route path="/admin" element={<P><AdminDashboard /></P>} />
         <Route path="/admin/usuarios" element={<P><AdminUsuarios /></P>} />
+        <Route path="/admin/contactos" element={<P><AdminContactos /></P>} />
         <Route path="/dashboard"             element={<P><ClientDashboard /></P>} />
         <Route path="/dashboard/overview"    element={<P><ClientDashboardOverview /></P>} />
         <Route path="/dashboard/performance" element={<P><AutomationPerformanceDashboard /></P>} />

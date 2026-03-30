@@ -1,0 +1,9 @@
+/* Admin Usuarios Styles */
+.admin-usuarios {
+  /* Custom styles if needed */
+}
+
+/* Modal backdrop */
+.fixed.inset-0.bg-black\/60 {
+  backdrop-filter: blur(2px);
+}

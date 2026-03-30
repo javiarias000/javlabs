@@ -15,7 +15,8 @@ const getNavItems = (role) => {
 
   if (role === 'ADMIN' || role === 'AGENT') {
     base.push(
-      { icon: 'admin_panel_settings', label: 'Usuarios', path: '/admin/usuarios' }
+      { icon: 'admin_panel_settings', label: 'Usuarios', path: '/admin/usuarios' },
+      { icon: 'inbox', label: 'Contactos', path: '/admin/contactos' }
     );
   }
 

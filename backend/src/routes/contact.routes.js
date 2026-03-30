@@ -98,8 +98,8 @@ router.get('/', authenticate, getContacts);
  * @swagger
  * /contact/{id}:
  *   patch:
- *     summary: Actualizar estado de mensaje de contacto (solo admin/agent)
- *     description: Actualiza el estado (status) de un mensaje de contacto. Solo administradores y agentes pueden acceder
+ *     summary: Actualizar mensaje de contacto (solo admin/agent)
+ *     description: Actualiza el estado, crea usuario desde contacto, asigna proyecto n8n. Solo administradores y agentes pueden acceder
  *     tags: [Contact]
  *     security:
  *       - bearerAuth: []
@@ -116,21 +116,26 @@ router.get('/', authenticate, getContacts);
  *           format: uuid
  *         description: ID del mensaje de contacto
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - status
  *             properties:
  *               status:
  *                 type: string
  *                 enum: [PENDING, READ, REPLIED, CLOSED]
  *                 example: READ
+ *               createUser:
+ *                 type: boolean
+ *                 description: Si true y el contacto no tiene usuario, crea un CLIENT automáticamente
+ *               n8nProjectKey:
+ *                 type: string
+ *                 pattern: ^[a-z0-9_]+$
+ *                 example: dentilook
  *     responses:
  *       200:
- *         description: Estado actualizado exitosamente
+ *         description: Contacto actualizado exitosamente
  *         content:
  *           application/json:
  *             schema:
@@ -146,7 +151,12 @@ router.get('/', authenticate, getContacts);
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */
-router.patch('/:id', authenticate, updateContact);
+router.patch('/:id', authenticate, [
+  body('status').optional().isIn(['PENDING', 'READ', 'REPLIED', 'CLOSED']).withMessage('Invalid status'),
+  body('n8nProjectKey').optional().matches(/^[a-z0-9_]+$/).withMessage('Invalid n8nProjectKey format'),
+  body('createUser').optional().isBoolean().withMessage('createUser must be boolean'),
+  validate,
+], updateContact);
 
 module.exports = router;
 
