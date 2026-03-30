@@ -14,11 +14,34 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const res = await api.get('/dashboard/admin/overview');
+      // Timeout de 15 segundos
+      const withTimeout = (promise, ms) => Promise.race([
+        promise,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout después de ' + ms + 'ms')), ms)
+        )
+      ]);
+
+      const res = await withTimeout(api.get('/dashboard/admin/overview'), 15000);
       setData(res.data);
     } catch (err) {
       console.error('Error fetching admin overview:', err);
-      setError('Error cargando dashboard administrativo');
+      if (err.message?.includes('Timeout')) {
+        setError('Tiempo de espera agotado. El servidor no responde.');
+      } else if (err.response) {
+        // Error HTTP
+        if (err.response.status === 403) {
+          setError('Acceso denegado. Necesitas permisos de administrador.');
+        } else if (err.response.status === 401) {
+          setError('Sesión expirada. Por favor, inicia sesión de nuevo.');
+        } else {
+          setError(`Error ${err.response.status}: ${err.response.data?.error || 'Error del servidor'}`);
+        }
+      } else if (err.request) {
+        setError('No se pudo conectar con el servidor. Verifica la conexión.');
+      } else {
+        setError('Error al cargar los datos: ' + err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -41,9 +64,15 @@ export default function AdminDashboard() {
     return (
       <PortalLayout>
         <main className="flex-1 p-8">
-          <div className="p-4 bg-red-500/10 border border-red-500/30 rounded text-red-400">
+          <div className="p-4 bg-red-500/10 border border-red-500/30 rounded text-red-400 mb-4">
             {error}
           </div>
+          <button
+            onClick={fetchData}
+            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80 transition-colors"
+          >
+            Reintentar
+          </button>
         </main>
       </PortalLayout>
     );
