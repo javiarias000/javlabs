@@ -1,280 +1,133 @@
-# 🎯 JAV LABS - Guía para Claude Code
+# CLAUDE.md
 
-**Proyecto:** Aplicación web de automatización - JAV LABS
-**Rama actual:** develop
-**Fecha:** 2026-03-25
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ---
 
-## 📋 Descripción
+## Deployment: VPS via EasyPanel + GitHub
 
-Proyecto completo de aplicación web con:
-- **Frontend:** React + Vite + Tailwind CSS + Framer Motion
-- **Backend:** Node.js + Express + Prisma + PostgreSQL
-- **Integración:** n8n workflows
-- **Sistema:** Autenticación con roles, tickets de soporte
+**Todo cambio de código debe terminar en un commit y push a `main` para desplegarse.**
 
----
+EasyPanel usa el `Dockerfile` de la raíz para construir y desplegar automáticamente al detectar un push en `main` de `https://github.com/javiarias000/javlabs.git`.
 
-## 🚀 Comandos Esenciales
-
-### Frontend
 ```bash
-cd frontend
-npm install          # Instalar dependencias
-npm run dev          # Servidor desarrollo (puerto 5173)
-npm run build        # Build producción
-npm run lint         # ESLint
+git add <archivos>
+git commit -m "tipo(scope): descripción"
+git push origin main
 ```
 
-### Backend
+El remote ya tiene el PAT configurado en la URL — el push funciona sin intervención extra.
+
+---
+
+## Arquitectura de despliegue
+
+El `Dockerfile` en la raíz usa **multi-stage build**:
+
+1. **Stage 1** (`frontend-build`): compila el frontend con `vite build` → genera `/app/frontend/dist`
+2. **Stage 2**: instala dependencias del backend, genera el cliente Prisma, copia el build del frontend a `/app/dist`
+
+El backend Express sirve el frontend compilado como archivos estáticos en la misma instancia:
+- `app.use(express.static(path.join(__dirname, '../../dist')))` — sirve el SPA
+- `app.get('*', ...)` — SPA fallback para rutas de React Router
+- Todas las rutas API bajo `/api/*`
+
+**No usar `docker-compose.yml` en producción** — ese archivo es para desarrollo local separado (frontend en :80, backend en :3002). En producción todo corre en un solo contenedor en el puerto 3000.
+
+---
+
+## Comandos de desarrollo local
+
 ```bash
-cd backend
-npm install
-npm run dev          # Servidor desarrollo (puerto 3000)
-npx prisma migrate dev
+# Frontend (puerto 5173)
+cd frontend && npm run dev
+cd frontend && npm run build       # Verificar que el build no falle antes de hacer push
+cd frontend && npm run lint
+cd frontend && npm run test        # vitest (watch mode)
+cd frontend && npm run test:run    # vitest (una sola vez)
+
+# Backend (puerto 3000)
+cd backend && npm run dev          # nodemon
+cd backend && npm run db:migrate   # npx prisma migrate dev
+cd backend && npm run db:generate  # npx prisma generate (tras cambios en schema)
+cd backend && npm run db:seed
+cd backend && npm test             # jest
 ```
 
-### Docker
+**Antes de hacer push siempre ejecutar:**
 ```bash
-docker-compose up --build      # Iniciar todos los servicios
-docker-compose logs -f [servicio]  # Ver logs
-docker-compose down           # Detener
+cd frontend && npm run build
 ```
+Un error de build aquí rompe el despliegue en EasyPanel.
 
 ---
 
-## 🏗️ Estructura del Proyecto
+## Estructura de código
 
-```
-/home/jav/javlabs/
-├── backend/              # API Node.js + Express
-│   ├── src/
-│   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── migrations/
-│   └── package.json
-├── frontend/             # React + Vite
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   ├── index.css
-│   │   ├── styles/
-│   │   │   └── design-tokens.css  # Variables CSS
-│   │   ├── components/
-│   │   │   ├── PublicLayout.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── ExpandableCard.jsx
-│   │   │   └── ...
-│   │   └── stitch/      # Páginas
-│   │       ├── landing_page_1/
-│   │       │   ├── LandingPage1.jsx
-│   │       │   ├── ExamplesSection.jsx
-│   │       │   ├── ObjectionBuster.jsx
-│   │       │   └── FAQSection.jsx
-│   │       ├── services_page_variant_1/
-│   │       │   └── ServicesPageVariant1.jsx  # CORREGIDA
-│   │       ├── pricing_page/
-│   │       ├── about_page/
-│   │       ├── contact_page_variant_1/
-│   │       └── ...
-│   └── tailwind.config.js
-├── .claude/              # Configuración Claude Code
-│   ├── settings.json
-│   ├── settings.local.json
-│   ├── agents/
-│   ├── skills/
-│   └── plans/
-├── support_n8n_workflow.json
-├── docker-compose.yml
-├── PROYECTO_INFO.md     # Documentación completa
-└── CLAUDE.md            # Este archivo
-```
+### Frontend (`frontend/src/`)
+
+- `App.jsx` — router raíz. Todas las páginas son lazy-loaded con `React.lazy`. Las rutas privadas se envuelven en el componente `<P>` que usa `PrivateRoute`.
+- `stitch/` — páginas completas, una carpeta por vista. Agregar nuevas páginas aquí y registrarlas en `App.jsx`.
+- `components/` — componentes reutilizables. `PublicLayout.jsx` incluye `PublicNavbar` y `Footer`; no agregar footer propio en páginas dentro de `PublicLayout`.
+- `context/AuthContext.jsx` — estado global de autenticación. Expone `user`, `login`, `register`, `logout`, `loading`, `accessToken`, `loginWithTokens`.
+- `services/api.js` — instancia axios configurada. Interceptor de request adjunta `Authorization: Bearer <token>`. Interceptor de response renueva automáticamente con `/api/auth/refresh` ante 401 y redirige a `/login` si falla.
+- `styles/design-tokens.css` — variables CSS globales (colores, tipografía). Se importa en `App.jsx`.
+
+**Tokens de sesión:** `localStorage` con claves `accessToken` y `refreshToken`. Usar siempre estas claves exactas — cualquier otra provoca bugs silenciosos.
+
+### Backend (`backend/src/`)
+
+CommonJS (`require`/`module.exports`). Entry point: `src/index.js` → `src/app.js`.
+
+- `routes/` — define endpoints, delega a controladores
+- `controllers/` — lógica de negocio (auth, contact, dashboard, project)
+- `middlewares/auth.middleware.js` — verifica JWT; `middlewares/validate.middleware.js` — express-validator
+- `config/passport.js` — OAuth Google (passport-google-oauth20)
+- `utils/logger.js` — winston
+
+**CORS:** lista de orígenes permitidos está hardcodeada en `app.js`. Para agregar un nuevo origen (ej. dominio de producción), editarlo ahí y actualizar también la variable de entorno `FRONTEND_URL`.
+
+### Base de datos (Prisma + PostgreSQL)
+
+Modelos principales: `User` (roles: `ADMIN | AGENT | CLIENT`), `Project`, `Automation`, `ContactForm`, `SupportTicket`, `TicketMessage`, `N8nProject`, `RefreshToken`.
+
+Tras cualquier cambio en `backend/prisma/schema.prisma` ejecutar `npm run db:generate` (y `db:migrate` si hay cambio de esquema).
 
 ---
 
-## 🎨 Sistema de Diseño
+## Sistema de diseño
 
-### Design Tokens (`design-tokens.css`)
+Tailwind con variables CSS en `design-tokens.css`. Las clases de color usan el nombre **sin** el prefijo `color-`:
 
-**Colores principales:**
-- `--color-primary: #0d7ff2` (Azul)
-- `--color-accent: #8b5cf6` (Violeta)
-- `--bg-primary: #0D1B2A` (Fondo oscuro)
-- `--text-secondary: #94a3b8`
-- `--text-muted: #64748b`
+| Correcto | Incorrecto |
+|---|---|
+| `text-primary` | `text-color-primary` |
+| `bg-accent` | `bg-color-accent` |
 
-**Tipografía:**
-- Display: **Michroma** (títulos)
-- Body: **Montserrat** (texto)
-- Mono: **Fira Code** (código)
+**Iconos Material Symbols:** requieren el override `!important` en `index.css` para que `font-family` no sea sobrescrita por Tailwind. Si los iconos aparecen como texto, verificar ese bloque.
 
-**Clases utilitarias propias:**
-```css
-.text-text-secondary  /* = var(--text-secondary) */
-.text-text-muted      /* = var(--text-muted) */
-.bg-navy-darker       /* = var(--bg-navy-darker) */
-```
+**Tipografías:** Michroma (títulos/display), Montserrat (body), Fira Code (mono).
 
 ---
 
-## ⚠️ Problemas Comunes y Soluciones
+## Problemas conocidos / invariantes
 
-### 1. Iconos no aparecen (solo texto)
-**Causa:** Material Symbols CSS sobrescrito
-**Solución:** Verificar que `index.css` tenga:
-```css
-span.material-symbols-outlined,
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined' !important;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
-  ... !important;
-}
-```
-
-### 2. Footer duplicado
-**Causa:** Página con footer local + footer global
-**Solución:** Eliminar footer local, usar solo el de `PublicLayout`
-
-### 3. Clases Tailwind no reconocidas
-**Error:** `text-color-primary` no existe
-**Correcto:** `text-primary` (sin prefijo `color-`)
-**Aplicar a:** `bg-color-`, `border-color-`, `from-color-`, etc.
-
-### 4. Build falla
-```bash
-rm -rf node_modules
-npm install
-npm run build
-```
-
-### 5. Puertos en uso
-```bash
-# Ver qué usa puertos 3000 y 5173
-ss -tulpn | grep -E ':(3000|5173)'
-# Matar proceso
-kill -9 <PID>
-```
+- **Footer duplicado:** páginas bajo `<PublicLayout>` no deben incluir su propio footer — ya lo renderiza el layout.
+- **`catch (err) =>` es sintaxis inválida** en JS — el bloque catch no acepta arrow function. Usar `catch (err) {`.
+- **Atributos JSX duplicados** (`badge="A" badge="B"`) causan error de build en esbuild — solo puede haber uno por prop.
+- `app.set('trust proxy', 1)` es necesario para que `express-rate-limit` funcione correctamente detrás del proxy de EasyPanel.
+- El `docker-compose.yml` incluye un healthcheck apuntando a puerto 3000 pero el backend en ese archivo corre en 3002 — inconsistencia conocida, no afecta producción.
 
 ---
 
-## ✅ Estados de Servidores
+## Variables de entorno (producción — configuradas en EasyPanel)
 
-| Servicio | Puerto | Estado | Comando |
-|----------|--------|--------|---------|
-| Frontend | 5173 | ✅ | `npm run dev` |
-| Backend | 3000 | ✅ | `npm run dev` |
-| Ollama | 11434 | ✅ | `ollama serve` |
-
----
-
-## 🧪 Testing Checklist
-
-### Antes de commit
-- [ ] Build de producción exitoso
-- [ ] ESLint sin errores críticos
-- [ ] Servidores frontend y backend funcionando
-- [ ] Iconos de Material Symbols visibles
-- [ ] Footer no duplicado
-- [ ] Responsive en móvil/tablet/desktop
-- [ ] Sin errores en consola del navegador
-
-### rutas importantes
-- `/` - Landing page
-- `/servicios` - Página de servicios (CORREGIDA)
-- `/nosotros` - About
-- `/contacto` - Contacto
-- `/precios` - Pricing con ROI calculator
-- `/dashboard` - Privado (requiere auth)
-- `/automatizaciones` - Gestión de automatizaciones
-- `/soporte` - Sistema de tickets
-
----
-
-## 🔧 Configuración
-
-### Variables de Entorno
-
-**Backend (.env):**
-```
-DATABASE_URL="postgresql://..."
-JWT_SECRET="..."
-N8N_URL="..."
-PORT=3000
-```
-
-**Frontend (.env):**
-```
-VITE_API_URL=http://localhost:3000
-```
-
-### Tailwind Colors
-Las clases usan colores directamente: `text-primary`, `bg-accent`, `border-primary/50`
-
-NO usar: `text-color-primary`, `bg-color-accent` ❌
-
----
-
-## 📦 Dependencias Clave
-
-### Frontend (`frontend/package.json`)
-```json
-{
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.13.1",
-    "framer-motion": "^12.38.0",
-    "tailwindcss": "^3.4.19",
-    "axios": "^1.13.6"
-  }
-}
-```
-
----
-
-## 🗂️ Archivos Modificados Recientemente
-
-| Archivo | Cambio | Fecha |
-|---------|--------|-------|
-| `ServicesPageVariant1.jsx` | Corregido: motion import, clases CSS | 2026-03-25 |
-| `LandingPage1.jsx` | Eliminado footer duplicado | 2026-03-25 |
-| `index.css` | Mejorado Material Symbols | 2026-03-25 |
-
----
-
-## 📄 Documentación
-
-- `PROYECTO_INFO.md` - Documentación completa del proyecto
-- `PLAN_DE_DESARROLLO.md` - Plan general de desarrollo
-- `frontend/README.md` - Documentación específica frontend
-
----
-
-## 🎯 Estado Actual
-
-✅ **Proyecto funcional y corregido**
-
-**Últimas correcciones:**
-- ✅ Página de servicios funcionando
-- ✅ Landing page sin footer duplicado
-- ✅ Iconos de Material Symbols visibles
-- ✅ Build de producción exitoso
-
----
-
-## 🆘 Soporte
-
-Si encuentras problemas:
-
-1. **Revisa este archivo** (CLAUDE.md)
-2. **Consulta PROYECTO_INFO.md** para detalles
-3. **Verifica consola del navegador** (F12) para errores
-4. **Revisa logs** de Docker si usas contenedores
-5. **Limpia caché** navegador: Ctrl+Shift+R
-6. **Reinicia servidores** frontend y backend
-
----
-
-**Última actualización:** 2026-03-25
-**Mantenido por:** Claude Code Assistant
+| Variable | Uso |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` / `JWT_REFRESH_SECRET` | Firma de tokens |
+| `FRONTEND_URL` | Origen permitido en CORS |
+| `N8N_URL` / `N8N_API_KEY` / `N8N_SUPPORT_WEBHOOK_URL` | Integración n8n |
+| `SMTP_*` / `EMAIL_FROM` / `EMAIL_ADMIN` | Nodemailer |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` / `GOOGLE_CALLBACK_URL` | OAuth Google |
+| `VITE_API_URL` | URL base de la API desde el frontend (build-time) |
