@@ -821,7 +821,6 @@ export default function LandingPage1() {
                   { title: 'Agente IA personalizado', desc: 'Entrenado con tu tono, vocabulario y catálogo de productos.' },
                 ]}
                 badge="MÁS POPULAR"
-                badge="Ahorra hasta $428/mes"
                 badgeGradient="linear-gradient(90deg, #8b5cf6, #0d7ff2)"
                 popular={true}
                 ctaText="Comenzar"

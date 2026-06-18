@@ -116,7 +116,7 @@ export default function AdminUsuarios() {
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
       setEditingRole(null);
       setTempRole(null);
-    } catch (err) => {
+    } catch (err) {
       console.error('[handleSaveRole] Error completo:', err);
       console.error('[handleSaveRole] Response data:', err.response?.data);
       console.error('[handleSaveRole] Response status:', err.response?.status);
