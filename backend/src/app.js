@@ -28,6 +28,13 @@ const app = express();
 // Esto permite que express-rate-limit use X-Forwarded-For correctamente
 app.set('trust proxy', 1);
 
+// Archivos estáticos del frontend ANTES del middleware CORS para que los
+// assets (JS/CSS) se sirvan sin validación de origen — son propios del servidor.
+app.use(express.static(path.join(__dirname, '../../dist')));
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../dist/favicon.ico'));
+});
+
 // 🔹 Seguridad y logging
 app.use(helmet({
   contentSecurityPolicy: {
@@ -128,12 +135,6 @@ app.use('/api/dashboard',   dashboardRoutes);
 app.use('/api/support',     supportRoutes.webhook); // Webhook sin autenticación
 app.use('/api/support',     supportRoutes); // Rutas autenticadas
 app.use('/api/webhooks',    webhookRoutes);
-
-// 🔹 Servir frontend compilado
-app.use(express.static(path.join(__dirname, '../../dist')));
-app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../dist/favicon.ico'));
-});
 
 // 🔹 SPA fallback
 app.get('*', (req, res) => {
