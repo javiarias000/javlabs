@@ -1,5 +1,7 @@
+const bcrypt = require('bcryptjs');
 const prisma = require('../config/prisma');
 const { logger } = require('../utils/logger');
+const { sendContactNotification } = require('../utils/email');
 
 const submitContact = async (req, res, next) => {
   try {
@@ -39,6 +41,10 @@ const submitContact = async (req, res, next) => {
     });
 
     logger.info(`Nuevo contacto de: ${email} (usuario: ${user.id})`);
+
+    sendContactNotification({ name, company, email, phone, service, message }).catch(err => {
+      logger.error(`Error enviando email de notificación de contacto: ${err.message}`);
+    });
 
     res.status(201).json({
       message: 'Formulario enviado. Te contactaremos pronto.',
