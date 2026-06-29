@@ -1,19 +1,33 @@
-const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 const { logger } = require('./logger');
 
-const createTransporter = () => nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    type: 'OAuth2',
-    user: process.env.GMAIL_USER,
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-  },
-});
+const getGmailClient = () => {
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+  );
+  oauth2Client.setCredentials({ refresh_token: process.env.GMAIL_REFRESH_TOKEN });
+  return google.gmail({ version: 'v1', auth: oauth2Client });
+};
+
+const buildRawEmail = ({ from, to, subject, html, replyTo }) => {
+  const lines = [
+    `From: ${from}`,
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    `Reply-To: ${replyTo}`,
+    'MIME-Version: 1.0',
+    'Content-Type: text/html; charset=utf-8',
+    '',
+    html,
+  ];
+  return Buffer.from(lines.join('\r\n')).toString('base64url');
+};
 
 const sendContactNotification = async ({ name, company, email, phone, service, message }) => {
   const adminEmail = process.env.EMAIL_ADMIN || 'jorge.arias.amauta@gmail.com';
+  const senderEmail = process.env.GMAIL_USER || 'jorge.arias.amauta@gmail.com';
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -37,15 +51,16 @@ const sendContactNotification = async ({ name, company, email, phone, service, m
     </div>
   `;
 
-  const transporter = createTransporter();
-  await transporter.sendMail({
-    from: `"JAV LABS" <${process.env.GMAIL_USER}>`,
+  const gmail = getGmailClient();
+  const raw = buildRawEmail({
+    from: `"JAV LABS" <${senderEmail}>`,
     to: adminEmail,
     subject: `Nuevo contacto: ${name} — ${service || 'sin servicio'}`,
     html,
     replyTo: email,
   });
 
+  await gmail.users.messages.send({ userId: 'me', requestBody: { raw } });
   logger.info(`Email enviado a ${adminEmail} por contacto de ${email}`);
 };
 
