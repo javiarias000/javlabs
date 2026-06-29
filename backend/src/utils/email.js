@@ -1,13 +1,14 @@
 const nodemailer = require('nodemailer');
 const { logger } = require('./logger');
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: Number(process.env.SMTP_PORT) || 587,
-  secure: false,
+const createTransporter = () => nodemailer.createTransport({
+  service: 'gmail',
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    type: 'OAuth2',
+    user: process.env.GMAIL_USER,
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    refreshToken: process.env.GMAIL_REFRESH_TOKEN,
   },
 });
 
@@ -31,20 +32,21 @@ const sendContactNotification = async ({ name, company, email, phone, service, m
         <p style="margin: 8px 0 0; white-space: pre-wrap;">${message}</p>
       </div>
       <p style="margin-top: 24px; font-size: 12px; color: #aaa;">
-        Enviado desde el formulario de contacto de javlabs.com
+        Enviado desde el formulario de contacto de javlabsautomatic.com
       </p>
     </div>
   `;
 
+  const transporter = createTransporter();
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || `"JAV LABS" <${process.env.SMTP_USER}>`,
+    from: `"JAV LABS" <${process.env.GMAIL_USER}>`,
     to: adminEmail,
     subject: `Nuevo contacto: ${name} — ${service || 'sin servicio'}`,
     html,
     replyTo: email,
   });
 
-  logger.info(`Email de notificación enviado a ${adminEmail} por contacto de ${email}`);
+  logger.info(`Email enviado a ${adminEmail} por contacto de ${email}`);
 };
 
 module.exports = { sendContactNotification };
