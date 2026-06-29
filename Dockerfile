@@ -32,4 +32,4 @@
     EXPOSE 3000
     
     # Comando de inicio
-    CMD ["node", "backend/src/index.js"]
+    CMD ["sh", "-c", "cd backend && npx prisma migrate deploy && node src/index.js"]
