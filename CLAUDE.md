@@ -131,3 +131,21 @@ Tailwind con variables CSS en `design-tokens.css`. Las clases de color usan el n
 | `SMTP_*` / `EMAIL_FROM` / `EMAIL_ADMIN` | Nodemailer |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` / `GOOGLE_CALLBACK_URL` | OAuth Google |
 | `VITE_API_URL` | URL base de la API desde el frontend (build-time) |
+
+---
+
+## Diagnóstico de errores en producción (EasyPanel)
+
+Cuando algo falla en producción y **no se puede reproducir localmente**, los logs del contenedor en EasyPanel son la fuente principal de información:
+
+1. Ir a EasyPanel → seleccionar el servicio `javlabs` → pestaña **Logs**
+2. Los logs de Express (morgan) y Winston aparecen ahí en tiempo real
+3. Los errores de Prisma, email y runtime lanzan mensajes con nivel `error`
+
+**Variables críticas a verificar en EasyPanel → Environment:**
+- `VITE_API_URL` debe terminar en `/api` (ej: `https://javlabsautomatic.com/api`). Si falta el `/api`, el frontend posta a la ruta incorrecta y el SPA devuelve HTML en vez de JSON → el formulario siempre falla silenciosamente.
+- `DATABASE_URL` — si no está, Prisma no conecta y todas las rutas que tocan BD retornan 500.
+- `GMAIL_REFRESH_TOKEN` / `GMAIL_USER` — si faltan, el email de notificación falla, pero **no bloquea** la respuesta del formulario (el error se captura con `.catch()`).
+
+**Flujo de deploy:**
+Todo cambio de código debe commitearse y pushearse a `main`. EasyPanel detecta el push, reconstruye la imagen Docker y reinicia el contenedor automáticamente. No hay que hacer nada manual.

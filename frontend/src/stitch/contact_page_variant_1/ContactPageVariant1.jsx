@@ -16,19 +16,29 @@ export default function ContactPageVariant1() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (form.message.trim().length < 10) {
+      setError('El mensaje debe tener al menos 10 caracteres.');
+      return;
+    }
+
     setLoading(true);
     try {
       await api.post('/contact', {
         name: form.name,
         email: form.email,
         message: form.message,
-        service: form.service,
-        phone: form.phone,
-        company: form.company
+        ...(form.service && { service: form.service }),
+        ...(form.phone && { phone: form.phone }),
+        ...(form.company && { company: form.company }),
       });
       setSuccess(true);
     } catch (err) {
-      setError('Hubo un error al enviar. Intenta de nuevo.');
+      const apiMsg =
+        err.response?.data?.errors?.[0]?.msg ||
+        err.response?.data?.error ||
+        'Hubo un error al enviar. Intenta de nuevo.';
+      setError(apiMsg);
     } finally {
       setLoading(false);
     }
