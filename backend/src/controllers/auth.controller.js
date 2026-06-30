@@ -223,7 +223,7 @@ const googleCallback = async (req, res, next) => {
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
     // ✅ Redirige al frontend con el accessToken en la URL (lo captura GoogleCallback page)
-    res.redirect(`${frontendUrl}/auth/google/callback?token=${accessToken}&refresh=${refreshToken}`);
+    res.redirect(`${frontendUrl}/auth/google/callback?token=${accessToken}`);
 
   } catch (err) {
     next(err);

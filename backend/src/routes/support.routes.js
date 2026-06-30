@@ -1014,6 +1014,13 @@ router.patch('/tickets/:id', [
     const { id } = req.params;
     const { status, priority } = req.body;
 
+    const existing = await prisma.supportTicket.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Ticket no encontrado.' });
+
+    if (req.user.role === 'CLIENT' && existing.userId !== req.user.id) {
+      return res.status(403).json({ error: 'No tienes acceso a este ticket.' });
+    }
+
     const updateData = {};
     if (status) updateData.status = status;
     if (priority) updateData.priority = priority;
@@ -1021,9 +1028,7 @@ router.patch('/tickets/:id', [
     const ticket = await prisma.supportTicket.update({
       where: { id },
       data: updateData,
-      include: {
-        assignedAgent: true
-      }
+      include: { assignedAgent: true }
     });
 
     res.json(ticket);
@@ -1137,6 +1142,10 @@ router.patch('/tickets/:id', [
 webhookRouter.get('/tickets/:id/public', [
   param('id').isUUID()
 ], async (req, res) => {
+  const secret = process.env.N8N_WEBHOOK_SECRET;
+  if (secret && req.headers['x-webhook-secret'] !== secret) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
   try {
     const { id } = req.params;
 

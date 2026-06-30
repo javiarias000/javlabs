@@ -231,8 +231,11 @@ router.post('/', [
  */
 router.get('/:id', async (req, res, next) => {
   try {
-    const automation = await prisma.automation.findUnique({
-      where: { id: req.params.id },
+    const where = req.user.role === 'ADMIN'
+      ? { id: req.params.id }
+      : { id: req.params.id, project: { userId: req.user.userId } };
+    const automation = await prisma.automation.findFirst({
+      where,
       include: { project: { select: { id: true, name: true } } },
     });
     if (!automation) return res.status(404).json({ error: 'No encontrado.' });
@@ -310,6 +313,11 @@ router.patch('/:id', [
 ], async (req, res, next) => {
   try {
     const { status, name, description, webhookUrl } = req.body;
+    const where = req.user.role === 'ADMIN'
+      ? { id: req.params.id }
+      : { id: req.params.id, project: { userId: req.user.userId } };
+    const existing = await prisma.automation.findFirst({ where });
+    if (!existing) return res.status(404).json({ error: 'No encontrado.' });
     const updated = await prisma.automation.update({
       where: { id: req.params.id },
       data: { ...(status && { status }), ...(name && { name }), ...(description && { description }), ...(webhookUrl && { webhookUrl }) },

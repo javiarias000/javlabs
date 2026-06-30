@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const axios  = require('axios');
 const prisma = require('../config/prisma');
-const { authenticate } = require('../middlewares/auth.middleware');
+const { authenticate, requireAdmin } = require('../middlewares/auth.middleware');
 const { query, body } = require('express-validator');
 const { validate } = require('../middlewares/validate.middleware');
+
+router.use(authenticate, requireAdmin);
 
 // Cliente HTTP para comunicarse con n8n
 const getN8nBaseURL = () => {
