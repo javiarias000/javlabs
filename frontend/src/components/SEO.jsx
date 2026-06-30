@@ -58,10 +58,9 @@ export default function SEO({
       availableLanguage: ['es'],
     },
     sameAs: [
-      // Agrega aquí los perfiles de redes sociales cuando estén disponibles:
+      'https://www.facebook.com/profile.php?id=61578464162176',
       // 'https://www.linkedin.com/company/jav-labs',
       // 'https://www.instagram.com/jav_labs',
-      // 'https://www.facebook.com/javlabs',
     ],
   };
   jsonLdData['@graph'].push(organizationSchema);
