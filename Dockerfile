@@ -2,7 +2,7 @@
     FROM node:20 AS frontend-build
     WORKDIR /app/frontend
     COPY frontend/package*.json ./
-    RUN npm install
+    RUN npm ci
     COPY frontend/ ./
     RUN npm run build
     
@@ -14,7 +14,7 @@
     COPY backend/package*.json ./backend/
     
     # Instalar dependencias de producción
-    RUN cd backend && npm install --production
+    RUN cd backend && npm ci --omit=dev
     
     # Copiar Prisma schema y generar cliente
     COPY backend/prisma ./backend/prisma
