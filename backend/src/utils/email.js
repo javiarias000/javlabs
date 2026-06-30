@@ -11,14 +11,19 @@ const getGmailClient = () => {
   return google.gmail({ version: 'v1', auth: oauth2Client });
 };
 
+// RFC 2047 — evita caracteres no-ASCII corruptos en el asunto del email
+const encodeSubject = (text) =>
+  `=?UTF-8?B?${Buffer.from(text, 'utf8').toString('base64')}?=`;
+
 const buildRawEmail = ({ from, to, subject, html, replyTo }) => {
   const lines = [
     `From: ${from}`,
     `To: ${to}`,
-    `Subject: ${subject}`,
+    `Subject: ${encodeSubject(subject)}`,
     `Reply-To: ${replyTo}`,
     'MIME-Version: 1.0',
     'Content-Type: text/html; charset=utf-8',
+    'Content-Transfer-Encoding: quoted-printable',
     '',
     html,
   ];
@@ -29,33 +34,125 @@ const sendContactNotification = async ({ name, company, email, phone, service, m
   const adminEmail = process.env.EMAIL_ADMIN || 'jorge.arias.amauta@gmail.com';
   const senderEmail = process.env.GMAIL_USER || 'jorge.arias.amauta@gmail.com';
 
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #1a1a2e; border-bottom: 2px solid #e94560; padding-bottom: 8px;">
-        Nuevo contacto desde JAV LABS
-      </h2>
-      <table style="width:100%; border-collapse: collapse; margin-top: 16px;">
-        <tr><td style="padding: 8px; font-weight: bold; color: #555;">Nombre</td><td style="padding: 8px;">${name}</td></tr>
-        <tr style="background:#f9f9f9"><td style="padding: 8px; font-weight: bold; color: #555;">Email</td><td style="padding: 8px;">${email}</td></tr>
-        <tr><td style="padding: 8px; font-weight: bold; color: #555;">Empresa</td><td style="padding: 8px;">${company || '—'}</td></tr>
-        <tr style="background:#f9f9f9"><td style="padding: 8px; font-weight: bold; color: #555;">Teléfono</td><td style="padding: 8px;">${phone || '—'}</td></tr>
-        <tr><td style="padding: 8px; font-weight: bold; color: #555;">Servicio</td><td style="padding: 8px;">${service || '—'}</td></tr>
-      </table>
-      <div style="margin-top: 16px; padding: 12px; background: #f0f0f0; border-left: 4px solid #e94560;">
-        <strong style="color: #555;">Mensaje:</strong>
-        <p style="margin: 8px 0 0; white-space: pre-wrap;">${message}</p>
-      </div>
-      <p style="margin-top: 24px; font-size: 12px; color: #aaa;">
-        Enviado desde el formulario de contacto de javlabsautomatic.com
-      </p>
-    </div>
-  `;
+  const now = new Date().toLocaleString('es-EC', {
+    timeZone: 'America/Guayaquil',
+    dateStyle: 'long',
+    timeStyle: 'short',
+  });
+
+  const row = (label, value) =>
+    value
+      ? `<tr>
+           <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;width:130px">${label}</td>
+           <td style="padding:12px 16px;font-size:15px;color:#e2e8f0;border-left:1px solid #1e293b">${value}</td>
+         </tr>`
+      : '';
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nuevo contacto — JAV LABS</title>
+</head>
+<body style="margin:0;padding:0;background:#0a0f1e;font-family:'Segoe UI',Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0f1e;padding:32px 16px">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%">
+
+          <!-- HEADER -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0d1b2a 0%,#1a1040 100%);border-radius:12px 12px 0 0;padding:32px 40px;border-bottom:2px solid #7c3aed">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;color:#7c3aed;text-transform:uppercase">JAV LABS</p>
+                    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff">Nuevo mensaje de contacto</h1>
+                  </td>
+                  <td align="right" style="vertical-align:top">
+                    <span style="display:inline-block;background:#7c3aed22;border:1px solid #7c3aed55;border-radius:20px;padding:6px 14px;font-size:12px;color:#a78bfa;font-weight:600">Formulario Web</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- NOMBRE DESTACADO -->
+          <tr>
+            <td style="background:#0f172a;padding:28px 40px 20px">
+              <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;color:#64748b;text-transform:uppercase">De parte de</p>
+              <h2 style="margin:0;font-size:26px;font-weight:700;color:#f8fafc">${name}</h2>
+              ${company ? `<p style="margin:6px 0 0;font-size:14px;color:#94a3b8">${company}</p>` : ''}
+            </td>
+          </tr>
+
+          <!-- TABLA DE DATOS -->
+          <tr>
+            <td style="background:#0f172a;padding:0 40px 24px">
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #1e293b;border-radius:8px;overflow:hidden">
+                ${row('Email', `<a href="mailto:${email}" style="color:#60a5fa;text-decoration:none">${email}</a>`)}
+                ${row('Teléfono', phone ? `<a href="tel:${phone}" style="color:#60a5fa;text-decoration:none">${phone}</a>` : null)}
+                ${row('Servicio', service)}
+              </table>
+            </td>
+          </tr>
+
+          <!-- MENSAJE -->
+          <tr>
+            <td style="background:#0f172a;padding:0 40px 32px">
+              <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:2px;color:#64748b;text-transform:uppercase">Mensaje</p>
+              <div style="background:#0d1b2a;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:16px 20px">
+                <p style="margin:0;font-size:15px;color:#cbd5e1;line-height:1.7;white-space:pre-wrap">${message}</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ACCIONES -->
+          <tr>
+            <td style="background:#0f172a;padding:0 40px 32px">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding-right:12px">
+                    <a href="mailto:${email}?subject=Re: Tu consulta en JAV LABS" style="display:inline-block;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px">Responder ahora</a>
+                  </td>
+                  ${phone ? `<td>
+                    <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}" style="display:inline-block;background:#065f46;color:#6ee7b7;text-decoration:none;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px">WhatsApp</a>
+                  </td>` : ''}
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background:#060c18;border-radius:0 0 12px 12px;padding:20px 40px;border-top:1px solid #1e293b">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <p style="margin:0;font-size:12px;color:#475569">Recibido el ${now} (Ecuador)</p>
+                    <p style="margin:4px 0 0;font-size:12px;color:#334155">Formulario de contacto &mdash; javlabsautomatic.com</p>
+                  </td>
+                  <td align="right">
+                    <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:2px;color:#334155">JAV LABS</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
 
   const gmail = getGmailClient();
   const raw = buildRawEmail({
     from: `"JAV LABS" <${senderEmail}>`,
     to: adminEmail,
-    subject: `Nuevo contacto: ${name} — ${service || 'sin servicio'}`,
+    subject: `Nuevo contacto: ${name}${service ? ` — ${service}` : ''}`,
     html,
     replyTo: email,
   });
