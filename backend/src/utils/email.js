@@ -152,7 +152,7 @@ const sendContactNotification = async ({ name, company, email, phone, service, m
   const raw = buildRawEmail({
     from: `"JAV LABS" <${senderEmail}>`,
     to: adminEmail,
-    subject: `Nuevo contacto: ${name}${service ? ` — ${service}` : ''}`,
+    subject: 'Cliente Interesado javlabs',
     html,
     replyTo: email,
   });
