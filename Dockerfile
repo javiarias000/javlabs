@@ -32,4 +32,4 @@
     EXPOSE 3000
     
     # Comando de inicio
-    CMD ["sh", "-c", "cd backend && npx prisma db push --skip-generate && node src/index.js"]
+    CMD ["sh", "-c", "cd backend && npx prisma db push --skip-generate && node prisma/seed.js && node src/index.js"]
