@@ -1,0 +1,17 @@
+{
+  "name": "JAV LABS",
+  "short_name": "JAVLABS",
+  "description": "Agencia de automatización con IA en Ecuador",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020817",
+  "theme_color": "#0d7ff2",
+  "icons": [
+    {
+      "src": "/Favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
