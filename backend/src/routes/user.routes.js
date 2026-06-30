@@ -73,7 +73,7 @@ router.get('/', async (req, res, next) => {
       select: {
         id: true, name: true, email: true, role: true,
         company: true, isActive: true, createdAt: true,
-        n8nProjectKey: true, phone: true,
+        n8nProjectKey: true, phone: true, services: true,
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -334,7 +334,7 @@ router.patch('/:id', [
       body: req.body
     });
 
-    const { name, role, isActive, n8nProjectKey, company } = req.body;
+    const { name, role, isActive, n8nProjectKey, company, services } = req.body;
     const user = await prisma.user.update({
       where: { id: req.params.id },
       data: {
@@ -343,10 +343,11 @@ router.patch('/:id', [
         ...(isActive      !== undefined && { isActive }),
         ...(n8nProjectKey !== undefined && { n8nProjectKey }),
         ...(company       !== undefined && { company }),
+        ...(services      !== undefined && { services }),
       },
       select: {
         id: true, name: true, email: true, role: true,
-        company: true, isActive: true, n8nProjectKey: true,
+        company: true, isActive: true, n8nProjectKey: true, services: true,
       },
     });
     res.json(user);

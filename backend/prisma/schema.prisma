@@ -17,6 +17,7 @@ model User {
   phone         String?
   isActive      Boolean        @default(true)
   n8nProjectKey String?
+  services      String[]       @default([])
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   projects      Project[]

@@ -4,23 +4,56 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const getNavItems = (role) => {
-  const base = [
-    { icon: 'dashboard',            label: 'Dashboard',        path: role === 'ADMIN' || role === 'AGENT' ? '/admin' : '/cliente/proyecto' },
-    { icon: 'bolt',                 label: 'Automatizaciones', path: '/automatizaciones' },
-    { icon: 'analytics',            label: 'Rendimiento',      path: '/dashboard/performance' },
-    { icon: 'terminal',             label: 'Logs',             path: '/automatizaciones/logs' },
-    { icon: 'support_agent',        label: 'Soporte',          path: '/soporte/chat' },
-  ];
+// Mapa de servicios contratados → items de navegación
+const SERVICE_NAV_MAP = {
+  AGENTES_IA: [
+    { icon: 'dashboard',  label: 'Resumen IA',        path: '/dashboard/overview',    section: 'Agentes IA' },
+    { icon: 'bolt',       label: 'Automatizaciones',  path: '/automatizaciones',      section: 'Agentes IA' },
+    { icon: 'analytics',  label: 'Rendimiento',       path: '/dashboard/performance', section: 'Agentes IA' },
+    { icon: 'terminal',   label: 'Logs',              path: '/automatizaciones/logs', section: 'Agentes IA' },
+  ],
+  AUTOMATIZACION: [
+    { icon: 'memory',     label: 'Automatizaciones',  path: '/automatizaciones',      section: 'Automatización' },
+    { icon: 'terminal',   label: 'Logs',              path: '/automatizaciones/logs', section: 'Automatización' },
+  ],
+  INTEGRACION: [
+    { icon: 'hub',        label: 'Integraciones',     path: '/automatizaciones',      section: 'Integración' },
+  ],
+  DESARROLLO_WEB: [
+    { icon: 'web',        label: 'Proyectos Web',     path: '/web',                   section: 'Desarrollo Web' },
+  ],
+  MARKETING_META: [
+    { icon: 'campaign',   label: 'Marketing',         path: '/marketing',             section: 'Marketing' },
+  ],
+};
 
-  if (role === 'ADMIN' || role === 'AGENT') {
-    base.push(
-      { icon: 'admin_panel_settings', label: 'Usuarios', path: '/admin/usuarios' },
-      { icon: 'inbox', label: 'Contactos', path: '/admin/contactos' }
-    );
+const ADMIN_NAV = [
+  { icon: 'dashboard',            label: 'Dashboard',        path: '/admin' },
+  { icon: 'bolt',                 label: 'Automatizaciones', path: '/automatizaciones' },
+  { icon: 'analytics',            label: 'Rendimiento',      path: '/dashboard/performance' },
+  { icon: 'terminal',             label: 'Logs',             path: '/automatizaciones/logs' },
+  { icon: 'support_agent',        label: 'Soporte',          path: '/soporte/chat' },
+  { icon: 'admin_panel_settings', label: 'Usuarios',         path: '/admin/usuarios' },
+  { icon: 'inbox',                label: 'Contactos',        path: '/admin/contactos' },
+];
+
+const getNavItems = (role, services = []) => {
+  if (role === 'ADMIN' || role === 'AGENT') return ADMIN_NAV;
+
+  // CLIENT: construir nav desde servicios contratados (sin duplicar paths)
+  const seen = new Set();
+  const items = [];
+  for (const svc of services) {
+    for (const item of (SERVICE_NAV_MAP[svc] || [])) {
+      if (!seen.has(item.path)) {
+        seen.add(item.path);
+        items.push(item);
+      }
+    }
   }
-
-  return base;
+  // Soporte siempre visible
+  items.push({ icon: 'support_agent', label: 'Soporte', path: '/soporte', section: null });
+  return items;
 };
 
 // ─── NotificationPanel ───────────────────────────────────────────────────────
@@ -200,6 +233,64 @@ function UserMenu({ user, onLogout, onClose }) {
   );
 }
 
+// ─── NavItems — renderiza nav agrupado por sección ───────────────────────────
+function NavItems({ items, pathname, onNavigate }) {
+  const hasSections = items.some(i => i.section);
+
+  if (!hasSections) {
+    return (
+      <div className="space-y-1">
+        {items.map(item => <NavBtn key={item.path} item={item} pathname={pathname} onNavigate={onNavigate} />)}
+      </div>
+    );
+  }
+
+  // Agrupar por sección manteniendo el orden
+  const groups = [];
+  let lastSection = undefined;
+  for (const item of items) {
+    if (item.section !== lastSection) {
+      groups.push({ label: item.section, items: [] });
+      lastSection = item.section;
+    }
+    groups[groups.length - 1].items.push(item);
+  }
+
+  return (
+    <div className="space-y-1">
+      {groups.map(({ label, items: groupItems }) => (
+        <div key={label || '_common'}>
+          {label && (
+            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600 px-4 pt-4 pb-1">
+              {label}
+            </p>
+          )}
+          {groupItems.map(item => <NavBtn key={item.path} item={item} pathname={pathname} onNavigate={onNavigate} />)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function NavBtn({ item, pathname, onNavigate }) {
+  const active = pathname === item.path || pathname.startsWith(item.path + '/');
+  return (
+    <button
+      onClick={() => onNavigate(item.path)}
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 text-left ${
+        active
+          ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent text-white'
+          : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'
+      }`}
+    >
+      <span className={`material-symbols-outlined text-xl ${active ? 'text-primary' : ''}`}>{item.icon}</span>
+      <span className={active ? 'bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold' : ''}>
+        {item.label}
+      </span>
+    </button>
+  );
+}
+
 // ─── PortalLayout ─────────────────────────────────────────────────────────────
 export default function PortalLayout({ children }) {
   const navigate             = useNavigate();
@@ -208,7 +299,7 @@ export default function PortalLayout({ children }) {
   const [showNotif, setShowNotif] = useState(false);
   const [showUser,  setShowUser]  = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navItems = getNavItems(user?.role);
+  const navItems = getNavItems(user?.role, user?.services);
 
   const handleLogout = async () => {
     setShowUser(false);
@@ -275,25 +366,8 @@ export default function PortalLayout({ children }) {
               </div>
 
               {/* Mobile Nav */}
-              <nav className="flex-1 px-4 py-4 space-y-1 font-montserrat overflow-y-auto">
-                {navItems.map(item => {
-                  const active = pathname === item.path || pathname.startsWith(item.path + '/');
-                  return (
-                    <button key={item.path} onClick={() => { navigate(item.path); setSidebarOpen(false); }}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 text-left ${
-                        active
-                          ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent text-white'
-                          : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'
-                      }`}>
-                      <span className={`material-symbols-outlined text-xl ${active ? 'text-primary' : ''}`}>
-                        {item.icon}
-                      </span>
-                      <span className={active ? 'bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold' : ''}>
-                        {item.label}
-                      </span>
-                    </button>
-                  );
-                })}
+              <nav className="flex-1 px-4 py-4 font-montserrat overflow-y-auto">
+                <NavItems items={navItems} pathname={pathname} onNavigate={(p) => { navigate(p); setSidebarOpen(false); }} />
               </nav>
 
               {/* Mobile Sidebar Footer */}
@@ -332,25 +406,8 @@ export default function PortalLayout({ children }) {
           </div>
 
           {/* Nav */}
-          <nav className="flex-1 px-4 py-4 space-y-1 font-montserrat overflow-y-auto">
-            {navItems.map(item => {
-              const active = pathname === item.path || pathname.startsWith(item.path + '/');
-              return (
-                <button key={item.path} onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all border-l-4 text-left ${
-                    active
-                      ? 'border-primary bg-gradient-to-r from-primary/20 to-transparent text-white'
-                      : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'
-                  }`}>
-                  <span className={`material-symbols-outlined text-xl ${active ? 'text-primary' : ''}`}>
-                    {item.icon}
-                  </span>
-                  <span className={active ? 'bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent font-bold' : ''}>
-                    {item.label}
-                  </span>
-                </button>
-              );
-            })}
+          <nav className="flex-1 px-4 py-4 font-montserrat overflow-y-auto">
+            <NavItems items={navItems} pathname={pathname} onNavigate={navigate} />
           </nav>
 
           {/* Sidebar footer */}

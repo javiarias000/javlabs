@@ -38,6 +38,8 @@ const TechnicalSupportChat = lazy(() => import('./stitch/technical_support_chat/
 const TicketConversationView = lazy(() => import('./stitch/ticket_conversation_view/TicketConversationView'));
 const SupportTicketList = lazy(() => import('./stitch/support_ticket_list/SupportTicketList'));
 const ProjectDetailView = lazy(() => import('./pages/ProjectDetailView'));
+const MarketingDashboard = lazy(() => import('./stitch/marketing_dashboard/MarketingDashboard'));
+const WebProjectsDashboard = lazy(() => import('./stitch/web_projects_dashboard/WebProjectsDashboard'));
 
 // ================= SCROLL =================
 function ScrollToTop() {
@@ -122,6 +124,10 @@ function AppRoutes() {
 
         {/* PRIVADO — Workflows */}
         <Route path="/workflow/:id"    element={<P><WorkflowDetailsVariant1 /></P>} />
+
+        {/* PRIVADO — Servicios de cliente */}
+        <Route path="/marketing" element={<P><MarketingDashboard /></P>} />
+        <Route path="/web"       element={<P><WebProjectsDashboard /></P>} />
 
         {/* PRIVADO — Soporte */}
         <Route path="/soporte"         element={<P><SupportTicketList /></P>} />

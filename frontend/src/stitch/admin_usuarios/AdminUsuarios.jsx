@@ -18,6 +18,14 @@ const ROLE_OPTIONS = [
   { value: 'CLIENT', label: 'Cliente' },
 ];
 
+const SERVICE_OPTIONS = [
+  { key: 'AGENTES_IA',     label: 'Agentes de IA',    icon: 'smart_toy',  color: 'text-violet-400',  bg: 'bg-violet-500/10 border-violet-500/20' },
+  { key: 'AUTOMATIZACION', label: 'Automatización',    icon: 'memory',     color: 'text-primary',     bg: 'bg-primary/10 border-primary/20' },
+  { key: 'INTEGRACION',    label: 'Integración',       icon: 'hub',        color: 'text-cyan-400',    bg: 'bg-cyan-500/10 border-cyan-500/20' },
+  { key: 'DESARROLLO_WEB', label: 'Desarrollo Web',    icon: 'web',        color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+  { key: 'MARKETING_META', label: 'Marketing Meta',    icon: 'campaign',   color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
+];
+
 export default function AdminUsuarios() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,8 +42,13 @@ export default function AdminUsuarios() {
   const [createError, setCreateError] = useState('');
 
   // Role editor state
-  const [editingRole, setEditingRole] = useState(null); // userId that is being edited
-  const [tempRole, setTempRole] = useState(null); // temporary role value
+  const [editingRole, setEditingRole] = useState(null);
+  const [tempRole, setTempRole] = useState(null);
+
+  // Services editor state
+  const [editingServices, setEditingServices] = useState(null); // userId
+  const [tempServices, setTempServices] = useState([]);
+  const [savingServices, setSavingServices] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -142,6 +155,30 @@ export default function AdminUsuarios() {
     }
   };
 
+  const handleOpenServices = (user) => {
+    setEditingServices(user.id);
+    setTempServices(user.services || []);
+  };
+
+  const handleToggleService = (key) => {
+    setTempServices(prev =>
+      prev.includes(key) ? prev.filter(s => s !== key) : [...prev, key]
+    );
+  };
+
+  const handleSaveServices = async (userId) => {
+    setSavingServices(userId);
+    try {
+      const { data } = await api.patch(`/users/${userId}`, { services: tempServices });
+      setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...data } : u));
+      setEditingServices(null);
+    } catch (err) {
+      setError(`Error al guardar servicios: ${err.response?.data?.error || err.message}`);
+    } finally {
+      setSavingServices(null);
+    }
+  };
+
   const filtered = users.filter(u =>
     u.name?.toLowerCase().includes(search.toLowerCase()) ||
     u.email?.toLowerCase().includes(search.toLowerCase()) ||
@@ -185,6 +222,7 @@ export default function AdminUsuarios() {
                 <tr>
                   <th className="px-6 py-4">Usuario</th>
                   <th className="px-6 py-4">Rol</th>
+                  <th className="px-6 py-4">Servicios</th>
                   <th className="px-6 py-4">Proyecto n8n</th>
                   <th className="px-6 py-4">Estado</th>
                   <th className="px-6 py-4">Creado</th>
@@ -254,6 +292,33 @@ export default function AdminUsuarios() {
                         </div>
                       )}
                     </td>
+                    {/* Servicios */}
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1 max-w-[180px]">
+                        {(user.services || []).length === 0 ? (
+                          <span className="text-slate-600 text-xs">— Sin servicios —</span>
+                        ) : (
+                          (user.services || []).map(svcKey => {
+                            const svc = SERVICE_OPTIONS.find(s => s.key === svcKey);
+                            if (!svc) return null;
+                            return (
+                              <span key={svcKey} className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase border ${svc.bg} ${svc.color}`}>
+                                <span className="material-symbols-outlined text-[10px]">{svc.icon}</span>
+                                {svc.label.split(' ')[0]}
+                              </span>
+                            );
+                          })
+                        )}
+                        <button
+                          onClick={() => handleOpenServices(user)}
+                          className="p-0.5 text-slate-600 hover:text-primary transition-colors"
+                          title="Editar servicios"
+                        >
+                          <span className="material-symbols-outlined text-xs">edit</span>
+                        </button>
+                      </div>
+                    </td>
+
                     <td className="px-6 py-4">
                       {editing === user.id ? (
                         <select
@@ -307,6 +372,73 @@ export default function AdminUsuarios() {
           </div>
         )}
       </main>
+
+      {/* Modal Servicios */}
+      {editingServices && (() => {
+        const targetUser = users.find(u => u.id === editingServices);
+        if (!targetUser) return null;
+        return (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full">
+              <div className="flex items-center justify-between p-6 border-b border-slate-800">
+                <div>
+                  <h2 className="text-lg font-bold text-white">Servicios contratados</h2>
+                  <p className="text-slate-500 text-xs mt-0.5">{targetUser.name} · {targetUser.email}</p>
+                </div>
+                <button onClick={() => setEditingServices(null)} className="text-slate-400 hover:text-white">
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+              </div>
+              <div className="p-6 space-y-3">
+                <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-4">
+                  Selecciona los servicios que tiene este cliente
+                </p>
+                {SERVICE_OPTIONS.map(svc => {
+                  const checked = tempServices.includes(svc.key);
+                  return (
+                    <button
+                      key={svc.key}
+                      onClick={() => handleToggleService(svc.key)}
+                      className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
+                        checked
+                          ? `${svc.bg} border-opacity-60`
+                          : 'border-slate-700 bg-slate-800/30 hover:border-slate-600'
+                      }`}
+                    >
+                      <div className={`size-9 rounded-lg flex items-center justify-center flex-shrink-0 ${checked ? svc.bg : 'bg-slate-800'} border ${checked ? '' : 'border-slate-700'}`}>
+                        <span className={`material-symbols-outlined text-lg ${checked ? svc.color : 'text-slate-500'}`}>{svc.icon}</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-bold text-sm ${checked ? 'text-white' : 'text-slate-400'}`}>{svc.label}</p>
+                      </div>
+                      <div className={`size-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                        checked ? 'bg-primary border-primary' : 'border-slate-600'
+                      }`}>
+                        {checked && <span className="material-symbols-outlined text-white text-sm">check</span>}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex gap-3 p-6 border-t border-slate-800">
+                <button
+                  onClick={() => setEditingServices(null)}
+                  className="flex-1 px-4 py-2.5 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => handleSaveServices(editingServices)}
+                  disabled={savingServices === editingServices}
+                  className="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/80 disabled:opacity-50 transition-colors text-sm font-bold"
+                >
+                  {savingServices === editingServices ? 'Guardando...' : 'Guardar servicios'}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Modal Crear Usuario */}
       {showCreateModal && (

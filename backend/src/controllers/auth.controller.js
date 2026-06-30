@@ -192,7 +192,7 @@ const me = async (req, res, next) => {
       where: { id: req.user.userId },
       select: {
         id: true, name: true, email: true, role: true,
-        company: true, phone: true, createdAt: true,
+        company: true, phone: true, createdAt: true, services: true,
       },
     });
 
