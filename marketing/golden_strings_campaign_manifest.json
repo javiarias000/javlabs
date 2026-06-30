@@ -1,0 +1,91 @@
+{
+  "updated_at": "2026-06-26",
+  "status": "DRAFT_COMPLETE",
+  "account": {
+    "id": "act_1344807997712643",
+    "name": "Golden_String"
+  },
+  "page": {
+    "id": "744238478769006",
+    "name": "Golden Strings"
+  },
+  "campaign": {
+    "id": "120250474635510725",
+    "name": "Golden Strings — Eventos 2026-06-26",
+    "objective": "OUTCOME_ENGAGEMENT",
+    "status": "PAUSED"
+  },
+  "adset": {
+    "id": "120250475965990725",
+    "name": "Eventos Ambato | 28-50 | Bodas & Graduaciones",
+    "daily_budget_usd": 3.0,
+    "optimization_goal": "CONVERSATIONS",
+    "bid_amount_cents": 200,
+    "status": "PAUSED",
+    "targeting": {
+      "city": "Ambato, Tungurahua (key 638102, 25km radio)",
+      "age": "28-50",
+      "interests": [
+        "Bodas (concepto social) — 6003409392877",
+        "Organización de bodas — 6003069898229",
+        "Gestión de eventos — 6003092932417",
+        "Acto de graduación — 6003243959401",
+        "Eventos y ocasiones especiales — 6899296281873"
+      ]
+    }
+  },
+  "ads": [
+    {
+      "id": "A1_emotional",
+      "ad_id": "120250475966390725",
+      "creative_id": "27174372678921881",
+      "status": "PAUSED",
+      "angle": "Emocional — copy probado CTR 2.11%",
+      "hook": "El momento que todos recuerdan no es el pastel. Es la música.🎻",
+      "body": "El momento que todos recuerdan no es el pastel. Es la música. 🎻\n\nBodas, graduaciones, quinceañeras en Ambato.\nEscríbeme con tu fecha — te confirmo disponibilidad hoy.",
+      "headline": "Agenta ya tu Evento 🎻",
+      "description": "Bodas · Graduaciones · Ambato",
+      "cta": "WHATSAPP_MESSAGE",
+      "creativo": "VIDEO",
+      "instruccion": "Subir el VIDEO aquí. Copy emocional — el movimiento refuerza el hook."
+    },
+    {
+      "id": "A2_social_proof",
+      "ad_id": "120250475966820725",
+      "creative_id": "1238907408212926",
+      "status": "PAUSED",
+      "angle": "Prueba social — credibilidad por volumen",
+      "hook": "¿Quién era el violinista? — frase que escuchas al final de cada evento",
+      "body": "\"¿Quién era el violinista?\"\n\nEsa es la pregunta que me hacen al final de cada evento.\n\nMás de 50 bodas y graduaciones en Ecuador.\nEscríbeme con tu fecha — Ambato. 🎻",
+      "headline": "+50 Eventos en Ecuador 🎻",
+      "description": "Bodas · Graduaciones · Ambato",
+      "cta": "WHATSAPP_MESSAGE",
+      "creativo": "VIDEO",
+      "instruccion": "Subir el mismo VIDEO aquí. La prueba social se refuerza con el mismo material visual."
+    },
+    {
+      "id": "A3_contrarian",
+      "ad_id": "120250475967900725",
+      "creative_id": "1038008098759348",
+      "status": "PAUSED",
+      "angle": "Contrarian — rompe expectativa, genera curiosidad",
+      "hook": "La diferencia entre una fiesta y un evento memorable",
+      "body": "Lo que nadie recuerda de tu evento:\n✗ El color de las flores\n✗ El menú\n✗ Los centros de mesa\n\nLo que sí recuerdan:\n✓ La música que los emocionó\n\nViolín en vivo — Ambato 🎻 Escríbeme.",
+      "headline": "¿Fiesta o Evento Memorable?",
+      "description": "Violín en Vivo · Ambato",
+      "cta": "WHATSAPP_MESSAGE",
+      "creativo": "FOTO",
+      "instruccion": "Subir la FOTO aquí. El hook contrarian funciona mejor con imagen estática impactante."
+    }
+  ],
+  "next_steps": [
+    "1. Abrir Meta Ads Manager → https://adsmanager.facebook.com/adsmanager/manage/ads?act=1344807997712643",
+    "2. Filtrar por la campaña 'Golden Strings — Eventos 2026-06-26'",
+    "3. A1 y A2: editar → cambiar medio a VIDEO → subir el video",
+    "4. A3: editar → cambiar medio a IMAGEN → subir la foto",
+    "5. Revisar preview en móvil de cada ad",
+    "6. Si apruebas todo → cambiar status de la CAMPAÑA a ACTIVE",
+    "7. Monitorear primeros 3 días: CTR debe estar >1.5%, costo/conversación <$3"
+  ],
+  "review_url": "https://adsmanager.facebook.com/adsmanager/manage/ads?act=1344807997712643"
+}

@@ -4,6 +4,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## Ramas de trabajo
+
+| Rama | Propósito |
+|---|---|
+| `main` | Producción — todo push aquí dispara el deploy en EasyPanel |
+| `marketing/meta-ads` | Desarrollo del módulo de Marketing Meta Ads (Streamlit wizard + dashboard) |
+
+**Regla:** Si estás desarrollando algo relacionado con marketing, campañas Meta, o el wizard de campañas (`marketing/`), trabaja en la rama `marketing/meta-ads`. Cuando el trabajo esté listo para producción, haz merge a `main`:
+
+```bash
+# Estando en marketing/meta-ads:
+git add <archivos>
+git commit -m "feat(marketing): descripción"
+
+# Para subir a producción:
+git checkout main
+git merge marketing/meta-ads
+git push origin main
+
+# O directamente desde marketing/meta-ads:
+git push origin marketing/meta-ads:main
+```
+
+---
+
 ## Deployment: VPS via EasyPanel + GitHub
 
 **Todo cambio de código debe terminar en un commit y push a `main` para desplegarse.**
@@ -34,6 +59,30 @@ El backend Express sirve el frontend compilado como archivos estáticos en la mi
 
 **No usar `docker-compose.yml` en producción** — ese archivo es para desarrollo local separado (frontend en :80, backend en :3002). En producción todo corre en un solo contenedor en el puerto 3000.
 
+### Servicio de Marketing (Streamlit — servicio separado)
+
+El wizard de campañas Meta Ads (`marketing/`) es una app Python/Streamlit que corre como **servicio independiente** en EasyPanel:
+
+- **Dockerfile:** `Dockerfile.marketing` en la raíz del repo
+- **Puerto:** 8501
+- **Deploy:** EasyPanel → nuevo servicio → Dockerfile path: `Dockerfile.marketing`
+- **Variables de entorno requeridas en EasyPanel (servicio marketing):**
+
+| Variable | Descripción |
+|---|---|
+| `META_APP_ID` | ID de la app de Facebook |
+| `META_APP_SECRET` | Secret de la app de Facebook |
+| `META_ACCESS_TOKEN` | Token de usuario de larga duración |
+| `META_AD_ACCOUNT_ID` | ID de la cuenta publicitaria (sin prefijo act_) |
+| `META_PAGE_ID` | ID de la página de Facebook |
+| `META_PAGE_ACCESS_TOKEN` | Token de la página (fallback a ACCESS_TOKEN) |
+| `OPENIA_API_KEY` | Clave OpenAI (typo intencional — sin N) |
+| `ANTHROPIC_API_KEY` | Clave Anthropic (Claude) — preferida sobre OpenAI |
+
+- **Variable en el servicio principal (Node.js):**
+  `VITE_MARKETING_URL` = URL del servicio Streamlit (ej. `https://marketing.javlabsautomatic.com`)
+  → El frontend React usa esta variable para incrustar el wizard en `/marketing`.
+
 ---
 
 ## Comandos de desarrollo local
@@ -59,6 +108,13 @@ cd backend && npm test             # jest
 cd frontend && npm run build
 ```
 Un error de build aquí rompe el despliegue en EasyPanel.
+
+```bash
+# Marketing / Streamlit (puerto 8501) — rama: marketing/meta-ads
+cd marketing && pip install -r requirements.txt   # primera vez
+cd marketing && streamlit run wizard_app.py       # wizard principal
+cd marketing && streamlit run gui_app.py          # legacy GUI
+```
 
 ---
 
